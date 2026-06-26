@@ -12,9 +12,6 @@ const config = {
 		}),
 		files: {
 			assets: 'static'
-		},
-		alias: {
-			$types: 'src/types'
 		}
 	}
 };
