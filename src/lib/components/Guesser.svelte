@@ -89,7 +89,7 @@
 	.container {
 		--size: 1em;
 		display: flex;
-		font-size: 20vw;
+		font-size: 10vw;
 		box-sizing: content-box;
 		flex-direction: column;
 	}
