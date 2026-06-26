@@ -1,15 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	type Props = {
-		id?: string;
-		viewBox?: string;
-		animationDurationMs: number;
-		animationSpacingMs: number;
-		strokeDelayMs: number;
-		svgContent: Snippet;
-	};
-
 	let {
 		id,
 		viewBox = '0 0 1024 1024',
@@ -17,7 +8,14 @@
 		animationSpacingMs = 300,
 		strokeDelayMs = 0,
 		svgContent
-	}: Props = $props();
+	} = $props<{
+		id?: string;
+		viewBox?: string;
+		animationDurationMs: number;
+		animationSpacingMs: number;
+		strokeDelayMs: number;
+		svgContent: Snippet;
+	}>();
 </script>
 
 <svg
@@ -25,7 +23,7 @@
 	{id}
 	width="100%"
 	height="100%"
-	class="container"
+	class="svg-container"
 	style:--anim-stroke-delay={strokeDelayMs}
 	style:--anim-dur={`${animationDurationMs}ms`}
 	style:--anim-spacing={`${animationSpacingMs}ms`}
@@ -34,11 +32,12 @@
 </svg>
 
 <style>
-	.container {
+	.svg-container {
 		flex-basis: 1em;
+		fill: light-dark(var(--color-surface-950), var(--color-surface-50));
 	}
 
-	.container :global(mask > path) {
+	.svg-container :global(mask > path) {
 		fill: none;
 		stroke: #fff;
 
