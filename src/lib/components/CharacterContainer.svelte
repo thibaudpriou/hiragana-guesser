@@ -20,7 +20,7 @@
 
 <svg
 	{viewBox}
-	id={character.id}
+	{id}
 	width="100%"
 	height="100%"
 	class="svg-container"

@@ -15,6 +15,9 @@
 
 	const randomInt = (max: number) => Math.floor(Math.random() * max);
 
+	const getRandomKey = () => `${Math.random()}`;
+	let forceRerenderKey = $state(getRandomKey());
+
 	// TODO move to $lib/utils
 	const getRandomEl = (arr: Character[]) => {
 		const index = randomInt(arr.length);
@@ -39,6 +42,7 @@
 		}
 
 		chars = getRandomChars();
+		forceRerenderKey = getRandomKey();
 		displayName = false;
 	};
 
@@ -57,17 +61,19 @@
 
 <div class="container" onclick={handleClick} onkeydown={handleClick} tabindex="0" role="button">
 	<div>
-		{#each delayedChars as character, i (character.name + i)}
-			<span class="item">
-				<CharacterContainer
-					id={`${character.id}-${i}`}
-					nbStrokeDelay={character.nbStrokeDelay}
-					animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
-					animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
-					{character}
-				/>
-			</span>
-		{/each}
+		{#key forceRerenderKey}
+			{#each delayedChars as character, i (character.id + i)}
+				<span class="item">
+					<CharacterContainer
+						id={`${character.id}-${i}`}
+						nbStrokeDelay={character.nbStrokeDelay}
+						animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
+						animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
+						{character}
+					/>
+				</span>
+			{/each}
+		{/key}
 	</div>
 
 	<div>
@@ -81,6 +87,7 @@
 
 <style>
 	.container {
+		--size: 1em;
 		display: flex;
 		font-size: 20vw;
 		box-sizing: content-box;
@@ -89,8 +96,8 @@
 
 	.item {
 		display: inline-flex;
-		width: 0.5em;
-		height: 0.5em;
+		width: var(--size);
+		height: var(--size);
 		align-items: center;
 		justify-content: center;
 	}
@@ -98,6 +105,6 @@
 	.name {
 		display: inline-flex;
 		user-select: none;
-		font-size: 0.5em;
+		font-size: var(--size);
 	}
 </style>
