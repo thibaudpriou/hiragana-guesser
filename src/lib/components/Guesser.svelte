@@ -89,6 +89,10 @@
 	.container {
 		--size: 1em;
 		display: flex;
+		width: 100%;
+		height: 100%;
+		align-items: center;
+		justify-content: start;
 		font-size: 10vw;
 		box-sizing: content-box;
 		flex-direction: column;

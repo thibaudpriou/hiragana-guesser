@@ -11,7 +11,7 @@
 </svelte:head>
 
 <div class="container">
-	<div>
+	<div class="content">
 		{@render children()}
 	</div>
 	<Toolbar />
@@ -24,5 +24,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+	}
+
+	.content {
+		width: 100%;
+		height: 100%;
 	}
 </style>
