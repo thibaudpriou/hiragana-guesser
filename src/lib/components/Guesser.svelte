@@ -3,6 +3,9 @@
 	import CharacterContainer from './CharacterContainer.svelte';
 	import type { Character } from '../../types';
 
+	const DEFAULT_ANIMATION_DELAY_MS = 300;
+	const DEFAULT_ANIMATION_SPACING_MS = 100;
+
 	type Props = {
 		characters: Character[];
 		length: number;
@@ -53,25 +56,31 @@
 </script>
 
 <div class="container" onclick={handleClick} onkeydown={handleClick} tabindex="0" role="button">
-	{#each delayedChars as char, i (char.name + i)}
-		{@const uniqueId = '' + i}
-		<span class="item">
-			{#if displayName}
-				<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
-			{:else}
+	<div>
+		{#each delayedChars as char, i (char.name + i)}
+			{@const uniqueId = '' + i}
+			<span class="item">
 				<CharacterContainer
 					id={char.name}
 					strokeDelayMs={char.strokeDelay}
-					animationDurationMs={300}
-					animationSpacingMs={100}
+					animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
+					animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
 				>
 					{#snippet svgContent()}
 						<char.component id={uniqueId} />
 					{/snippet}
 				</CharacterContainer>
+			</span>
+		{/each}
+	</div>
+
+	<div>
+		{#each delayedChars as char, i (char.name + i)}
+			{#if displayName}
+				<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
 			{/if}
-		</span>
-	{/each}
+		{/each}
+	</div>
 </div>
 
 <style>
@@ -79,17 +88,19 @@
 		display: flex;
 		font-size: 20vw;
 		box-sizing: content-box;
+		flex-direction: column;
 	}
 
 	.item {
 		display: inline-flex;
-		width: 1em;
-		height: 1em;
+		width: 0.5em;
+		height: 0.5em;
 		align-items: center;
 		justify-content: center;
 	}
 
 	.name {
+		display: inline-flex;
 		user-select: none;
 		font-size: 0.5em;
 	}
