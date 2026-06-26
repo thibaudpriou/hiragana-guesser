@@ -8,7 +8,7 @@
 </script>
 
 <section class="hiragana-group">
-	{#each characters as character (character.name)}
+	{#each characters as character (character.id)}
 		<CharacterContainerWithName {character} />
 	{/each}
 </section>

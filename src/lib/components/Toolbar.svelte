@@ -15,14 +15,10 @@
 				<!-- TODO @priou show every hiragana + user selection -->
 				<CharacterContainer
 					id="toolbar"
-					strokeDelayMs={0}
 					animationDurationMs={0}
 					animationSpacingMs={0}
-				>
-					{#snippet svgContent()}
-						<hiragana.A.component id="toolbar" />
-					{/snippet}
-				</CharacterContainer>
+					character={hiragana.A}
+				/>
 			</button>
 			<button type="button" class="btn-icon hover:preset-tonal">
 				<!-- TODO @priou allow changing mode or animation speeds -->

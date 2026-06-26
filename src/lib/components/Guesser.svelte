@@ -42,14 +42,14 @@
 		displayName = false;
 	};
 
-	type DelayedCharacter = Character & { strokeDelay: number };
+	type DelayedCharacter = Character & { nbStrokeDelay: number };
 
 	// TODO move to $lib/utils
 	const getDelayedChars = (arr: Character[]) =>
 		arr.reduce((delayed, el) => {
-			const strokeDelay = delayed.reduce((nb, el) => nb + el.nbStrokes, 0);
+			const nbStrokeDelay = delayed.reduce((nb, el) => nb + el.nbStrokes, 0);
 
-			return [...delayed, { ...el, strokeDelay }];
+			return [...delayed, { ...el, nbStrokeDelay }];
 		}, [] as DelayedCharacter[]);
 
 	let delayedChars = $derived.by(() => getDelayedChars(chars));
@@ -57,19 +57,15 @@
 
 <div class="container" onclick={handleClick} onkeydown={handleClick} tabindex="0" role="button">
 	<div>
-		{#each delayedChars as char, i (char.name + i)}
-			{@const uniqueId = '' + i}
+		{#each delayedChars as character, i (character.name + i)}
 			<span class="item">
 				<CharacterContainer
-					id={char.name}
-					strokeDelayMs={char.strokeDelay}
+					id={`${character.id}-${i}`}
+					nbStrokeDelay={character.nbStrokeDelay}
 					animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
 					animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
-				>
-					{#snippet svgContent()}
-						<char.component id={uniqueId} />
-					{/snippet}
-				</CharacterContainer>
+					{character}
+				/>
 			</span>
 		{/each}
 	</div>

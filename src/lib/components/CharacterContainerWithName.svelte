@@ -8,11 +8,12 @@
 </script>
 
 <div class="container">
-	<CharacterContainer strokeDelayMs={0} animationDurationMs={0} animationSpacingMs={0}>
-		{#snippet svgContent()}
-			<character.component id={character.name} />
-		{/snippet}
-	</CharacterContainer>
+	<CharacterContainer
+		id={character.id}
+		animationDurationMs={0}
+		animationSpacingMs={0}
+		{character}
+	/>
 	<p>{character.name}</p>
 </div>
 

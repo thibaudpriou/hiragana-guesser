@@ -1,34 +1,34 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type { Character } from '../../types';
 
 	let {
-		id,
 		viewBox = '0 0 1024 1024',
 		animationDurationMs = 500,
 		animationSpacingMs = 300,
-		strokeDelayMs = 0,
-		svgContent
+		nbStrokeDelay = 0,
+		character,
+		id
 	} = $props<{
-		id?: string;
+		id: string;
+		character: Character;
 		viewBox?: string;
-		animationDurationMs: number;
-		animationSpacingMs: number;
-		strokeDelayMs: number;
-		svgContent: Snippet;
+		animationDurationMs?: number;
+		animationSpacingMs?: number;
+		nbStrokeDelay?: number;
 	}>();
 </script>
 
 <svg
 	{viewBox}
-	{id}
+	id={character.id}
 	width="100%"
 	height="100%"
 	class="svg-container"
-	style:--anim-stroke-delay={strokeDelayMs}
+	style:--anim-stroke-delay={nbStrokeDelay}
 	style:--anim-dur={`${animationDurationMs}ms`}
 	style:--anim-spacing={`${animationSpacingMs}ms`}
 >
-	{@render svgContent()}
+	<character.component {id} />
 </svg>
 
 <style>
