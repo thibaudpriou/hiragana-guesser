@@ -26,7 +26,7 @@
 		return Array.from({ length: sentenceLength }, () => getRandomEl(characters));
 	};
 
-	let chars = getRandomChars();
+	let chars = $state(getRandomChars());
 	let displayName = $state(false);
 
 	const handleClick = () => {
