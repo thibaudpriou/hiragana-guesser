@@ -65,7 +65,6 @@
 					strokeDelayMs={char.strokeDelay}
 					animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
 					animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
-					strokeColor="white"
 				>
 					{#snippet svgContent()}
 						<char.component id={uniqueId} />
