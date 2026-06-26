@@ -47,7 +47,7 @@
 	// TODO move to $lib/utils
 	const getDelayedChars = (arr: Character[]) =>
 		arr.reduce((delayed, el) => {
-			const strokeDelay = delayed.reduce((nb, el) => nb + el.strokes, 0);
+			const strokeDelay = delayed.reduce((nb, el) => nb + el.nbStrokes, 0);
 
 			return [...delayed, { ...el, strokeDelay }];
 		}, [] as DelayedCharacter[]);

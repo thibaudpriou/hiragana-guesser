@@ -1,5 +1,5 @@
 <script module>
-	export const NAME = 'gi';
+	export const NAME = 'gu';
 	export const NB_STROKES = 3;
 </script>
 

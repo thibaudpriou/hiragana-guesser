@@ -1,40 +1,248 @@
-export * as A from './a.svelte';
-export * as CHI from './chi.svelte';
-export * as DA from './da.svelte';
-export * as DE from './de.svelte';
-export * as DO from './do.svelte';
-export * as E from './e.svelte';
-export * as GA from './ga.svelte';
-export * as GE from './ge.svelte';
-export * as GI from './gi.svelte';
-export * as GO from './go.svelte';
-export * as GU from './gu.svelte';
-export * as I from './i.svelte';
-export * as JI from './ji.svelte';
-export * as JI2 from './ji2.svelte';
-export * as KA from './ka.svelte';
-export * as KE from './ke.svelte';
-export * as KI from './ki.svelte';
-export * as KO from './ko.svelte';
-export * as KU from './ku.svelte';
-export * as NA from './na.svelte';
-export * as NE from './ne.svelte';
-export * as NI from './ni.svelte';
-export * as NO from './no.svelte';
-export * as NU from './nu.svelte';
-export * as O from './o.svelte';
-export * as SA from './sa.svelte';
-export * as SE from './se.svelte';
-export * as SHI from './shi.svelte';
-export * as SO from './so.svelte';
-export * as SU from './su.svelte';
-export * as TA from './ta.svelte';
-export * as TE from './te.svelte';
-export * as TO from './to.svelte';
-export * as TSU from './tsu.svelte';
-export * as U from './u.svelte';
-export * as ZA from './za.svelte';
-export * as ZE from './ze.svelte';
-export * as ZO from './zo.svelte';
-export * as ZU from './zu.svelte';
-export * as ZU2 from './zu2.svelte';
+import type { Character } from '../../../../types';
+import * as A from './a.svelte';
+import * as CHI from './chi.svelte';
+import * as DA from './da.svelte';
+import * as DE from './de.svelte';
+import * as DO from './do.svelte';
+import * as E from './e.svelte';
+import * as GA from './ga.svelte';
+import * as GE from './ge.svelte';
+import * as GI from './gi.svelte';
+import * as GO from './go.svelte';
+import * as GU from './gu.svelte';
+import * as I from './i.svelte';
+import * as JI from './ji.svelte';
+import * as JI2 from './ji2.svelte';
+import * as KA from './ka.svelte';
+import * as KE from './ke.svelte';
+import * as KI from './ki.svelte';
+import * as KO from './ko.svelte';
+import * as KU from './ku.svelte';
+import * as NA from './na.svelte';
+import * as NE from './ne.svelte';
+import * as NI from './ni.svelte';
+import * as NO from './no.svelte';
+import * as NU from './nu.svelte';
+import * as O from './o.svelte';
+import * as SA from './sa.svelte';
+import * as SE from './se.svelte';
+import * as SHI from './shi.svelte';
+import * as SO from './so.svelte';
+import * as SU from './su.svelte';
+import * as TA from './ta.svelte';
+import * as TE from './te.svelte';
+import * as TO from './to.svelte';
+import * as TSU from './tsu.svelte';
+import * as U from './u.svelte';
+import * as ZA from './za.svelte';
+import * as ZE from './ze.svelte';
+import * as ZO from './zo.svelte';
+import * as ZU from './zu.svelte';
+import * as ZU2 from './zu2.svelte';
+
+export const hiragana: Record<string, Character> = {
+	A: {
+		name: A.NAME,
+		nbStrokes: A.NB_STROKES,
+		component: A.default as Character['component']
+	},
+	CHI: {
+		name: CHI.NAME,
+		nbStrokes: CHI.NB_STROKES,
+		component: CHI.default as Character['component']
+	},
+	DA: {
+		name: DA.NAME,
+		nbStrokes: DA.NB_STROKES,
+		component: DA.default as Character['component']
+	},
+	DE: {
+		name: DE.NAME,
+		nbStrokes: DE.NB_STROKES,
+		component: DE.default as Character['component']
+	},
+	DO: {
+		name: DO.NAME,
+		nbStrokes: DO.NB_STROKES,
+		component: DO.default as Character['component']
+	},
+	E: {
+		name: E.NAME,
+		nbStrokes: E.NB_STROKES,
+		component: E.default as Character['component']
+	},
+	GA: {
+		name: GA.NAME,
+		nbStrokes: GA.NB_STROKES,
+		component: GA.default as Character['component']
+	},
+	GE: {
+		name: GE.NAME,
+		nbStrokes: GE.NB_STROKES,
+		component: GE.default as Character['component']
+	},
+	GI: {
+		name: GI.NAME,
+		nbStrokes: GI.NB_STROKES,
+		component: GI.default as Character['component']
+	},
+	GO: {
+		name: GO.NAME,
+		nbStrokes: GO.NB_STROKES,
+		component: GO.default as Character['component']
+	},
+	GU: {
+		name: GU.NAME,
+		nbStrokes: GU.NB_STROKES,
+		component: GU.default as Character['component']
+	},
+	I: {
+		name: I.NAME,
+		nbStrokes: I.NB_STROKES,
+		component: I.default as Character['component']
+	},
+	JI: {
+		name: JI.NAME,
+		nbStrokes: JI.NB_STROKES,
+		component: JI.default as Character['component']
+	},
+	JI2: {
+		name: JI2.NAME,
+
+		nbStrokes: JI2.NB_STROKES,
+		component: JI2.default as Character['component']
+	},
+	KA: {
+		name: KA.NAME,
+
+		nbStrokes: KA.NB_STROKES,
+		component: KA.default as Character['component']
+	},
+	KE: {
+		name: KE.NAME,
+		nbStrokes: KE.NB_STROKES,
+		component: KE.default as Character['component']
+	},
+	KI: {
+		name: KI.NAME,
+		nbStrokes: KI.NB_STROKES,
+		component: KI.default as Character['component']
+	},
+	KO: {
+		name: KO.NAME,
+		nbStrokes: KO.NB_STROKES,
+		component: KO.default as Character['component']
+	},
+	KU: {
+		name: KU.NAME,
+		nbStrokes: KU.NB_STROKES,
+		component: KU.default as Character['component']
+	},
+	NA: {
+		name: NA.NAME,
+		nbStrokes: NA.NB_STROKES,
+		component: NA.default as Character['component']
+	},
+	NE: {
+		name: NE.NAME,
+		nbStrokes: NE.NB_STROKES,
+		component: NE.default as Character['component']
+	},
+	NI: {
+		name: NI.NAME,
+		nbStrokes: NI.NB_STROKES,
+		component: NI.default as Character['component']
+	},
+	NO: {
+		name: NO.NAME,
+		nbStrokes: NO.NB_STROKES,
+		component: NO.default as Character['component']
+	},
+	NU: {
+		name: NU.NAME,
+		nbStrokes: NU.NB_STROKES,
+		component: NU.default as Character['component']
+	},
+	O: {
+		name: O.NAME,
+		nbStrokes: O.NB_STROKES,
+		component: O.default as Character['component']
+	},
+	SA: {
+		name: SA.NAME,
+		nbStrokes: SA.NB_STROKES,
+		component: SA.default as Character['component']
+	},
+	SE: {
+		name: SE.NAME,
+		nbStrokes: SE.NB_STROKES,
+		component: SE.default as Character['component']
+	},
+	SHI: {
+		name: SHI.NAME,
+
+		nbStrokes: SHI.NB_STROKES,
+		component: SHI.default as Character['component']
+	},
+	SO: {
+		name: SO.NAME,
+		nbStrokes: SO.NB_STROKES,
+		component: SO.default as Character['component']
+	},
+	SU: {
+		name: SU.NAME,
+		nbStrokes: SU.NB_STROKES,
+		component: SU.default as Character['component']
+	},
+	TA: {
+		name: TA.NAME,
+		nbStrokes: TA.NB_STROKES,
+		component: TA.default as Character['component']
+	},
+	TE: {
+		name: TE.NAME,
+		nbStrokes: TE.NB_STROKES,
+		component: TE.default as Character['component']
+	},
+	TO: {
+		name: TO.NAME,
+		nbStrokes: TO.NB_STROKES,
+		component: TO.default as Character['component']
+	},
+	TSU: {
+		name: TSU.NAME,
+
+		nbStrokes: TSU.NB_STROKES,
+		component: TSU.default as Character['component']
+	},
+	U: {
+		name: U.NAME,
+		nbStrokes: U.NB_STROKES,
+		component: U.default as Character['component']
+	},
+	ZA: {
+		name: ZA.NAME,
+		nbStrokes: ZA.NB_STROKES,
+		component: ZA.default as Character['component']
+	},
+	ZE: {
+		name: ZE.NAME,
+		nbStrokes: ZE.NB_STROKES,
+		component: ZE.default as Character['component']
+	},
+	ZO: {
+		name: ZO.NAME,
+		nbStrokes: ZO.NB_STROKES,
+		component: ZO.default as Character['component']
+	},
+	ZU: {
+		name: ZU.NAME,
+		nbStrokes: ZU.NB_STROKES,
+		component: ZU.default as Character['component']
+	},
+	ZU2: {
+		name: ZU2.NAME,
+		nbStrokes: ZU2.NB_STROKES,
+		component: ZU2.default as Character['component']
+	}
+};

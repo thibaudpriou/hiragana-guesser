@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
 	import { Settings } from '@lucide/svelte';
-	import { hiragana } from './syllabaries';
+	import { hiragana } from './syllabaries/hiragana';
 	import CharacterContainer from './CharacterContainer.svelte';
 </script>
 
@@ -20,7 +20,7 @@
 					animationSpacingMs={0}
 				>
 					{#snippet svgContent()}
-						<hiragana.A id="toolbar" />
+						<hiragana.A.component id="toolbar" />
 					{/snippet}
 				</CharacterContainer>
 			</button>
