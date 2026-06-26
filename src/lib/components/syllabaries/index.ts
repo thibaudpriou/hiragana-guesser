@@ -1,3 +1,4 @@
+import type { Character } from '../../../types';
 import {
 	A,
 	CHI,
@@ -41,8 +42,6 @@ import {
 	ZU2
 } from './hiragana';
 
-import type { Character } from '$types';
-
 export const hiraganaCharacters: Character[] = [
 	[A, I, U, E, O],
 	[KA, KI, KU, KE, KO],
@@ -53,9 +52,11 @@ export const hiraganaCharacters: Character[] = [
 	[DA, JI2, ZU2, DE, DO],
 	[NA, NE, NU, NI, NO]
 ].flatMap((mArr) =>
-	mArr.map((m) => ({
-		name: m.NAME,
-		component: m.default,
-		strokes: m.NB_STROKES
-	}))
+	mArr.map(
+		(m): Character => ({
+			name: m.NAME,
+			component: m.default as Character['component'],
+			strokes: m.NB_STROKES
+		})
+	)
 );
