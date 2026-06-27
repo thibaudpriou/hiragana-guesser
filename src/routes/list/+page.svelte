@@ -1,18 +1,19 @@
 <script lang="ts">
 	import CharacterContainerWithName from '$lib/components/CharacterContainerWithName.svelte';
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
+	import { SvelteSet } from 'svelte/reactivity';
 	import type { Character } from '../../types';
 
-	const everyHiraganaIds = Object.values(hiragana).map((character) => character.id);
-	let selectedCharactersIds = $state(everyHiraganaIds);
+	const everyHiraganaIds = new SvelteSet(Object.values(hiragana).map((character) => character.id));
+	let selected = $state(everyHiraganaIds);
 
-	const isActive = (id: Character['id']): boolean => selectedCharactersIds.includes(id);
+	const isActive = (id: Character['id']) => selected.has(id);
 	const handleCharacterClick = (id: Character['id']) => () => {
-		if (isActive(id)) {
-			selectedCharactersIds = selectedCharactersIds.filter((selected) => selected !== id);
+		if (selected.has(id)) {
+			selected.delete(id);
 			return;
 		}
-		selectedCharactersIds.push(id);
+		selected.add(id);
 	};
 </script>
 
@@ -26,7 +27,6 @@
 	{/each}
 {/snippet}
 
-<!-- TODO @tpriou continue work -->
 <div class="form-container">
 	<div class="form-row">
 		{@render ControlledCharacterGroup([hiragana.A, hiragana.I, hiragana.U, hiragana.E, hiragana.O])}
