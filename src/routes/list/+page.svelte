@@ -1,11 +1,10 @@
 <script lang="ts">
 	import CharacterContainerWithName from '$lib/components/CharacterContainerWithName.svelte';
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
-	import { SvelteSet } from 'svelte/reactivity';
 	import type { Character } from '../../types';
+	import { getSelectedHiraganaState } from '$lib/states/selectedHiragana.svelte';
 
-	const everyHiraganaIds = new SvelteSet(Object.values(hiragana).map((character) => character.id));
-	let selected = $state(everyHiraganaIds);
+	const selected = getSelectedHiraganaState();
 
 	const isActive = (id: Character['id']) => selected.has(id);
 	const handleCharacterClick = (id: Character['id']) => () => {
