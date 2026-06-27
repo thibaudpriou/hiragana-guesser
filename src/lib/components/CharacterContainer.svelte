@@ -7,7 +7,8 @@
 		animationSpacingMs = 300,
 		nbStrokeDelay = 0,
 		character,
-		id
+		id,
+		active = false
 	} = $props<{
 		id: string;
 		character: Character;
@@ -15,6 +16,7 @@
 		animationDurationMs?: number;
 		animationSpacingMs?: number;
 		nbStrokeDelay?: number;
+		active?: boolean;
 	}>();
 </script>
 
@@ -24,6 +26,7 @@
 	width="100%"
 	height="100%"
 	class="svg-container"
+	class:active
 	style:--anim-stroke-delay={nbStrokeDelay}
 	style:--anim-dur={`${animationDurationMs}ms`}
 	style:--anim-spacing={`${animationSpacingMs}ms`}
@@ -35,6 +38,10 @@
 	.svg-container {
 		flex-basis: 1em;
 		fill: light-dark(var(--color-surface-950), var(--color-surface-50));
+	}
+
+	.svg-container.active {
+		fill: light-dark(var(--color-surface-50), var(--color-surface-950));
 	}
 
 	.svg-container :global(mask > path) {
