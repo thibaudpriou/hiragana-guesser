@@ -1,35 +1,18 @@
 <script lang="ts">
-	import { AppBar } from '@skeletonlabs/skeleton-svelte';
-	import { Settings } from '@lucide/svelte';
-	import { hiragana } from './syllabaries/hiragana';
-	import CharacterContainer from './CharacterContainer.svelte';
+	import { Navigation } from '@skeletonlabs/skeleton-svelte';
+	import { Gamepad2 } from '@lucide/svelte';
+	import { ListCheck } from '@lucide/svelte';
 </script>
 
-<AppBar>
-	<AppBar.Toolbar class="grid-cols-[auto_1fr]">
-		<AppBar.Headline class="flex justify-center">
-			<p class="title">Hiragana guesser</p>
-		</AppBar.Headline>
-		<AppBar.Trail class="justify-end">
-			<button type="button" class="btn-icon hover:preset-tonal">
-				<!-- TODO @priou show every hiragana + user selection -->
-				<CharacterContainer
-					id="toolbar"
-					animationDurationMs={0}
-					animationSpacingMs={0}
-					character={hiragana.A}
-				/>
-			</button>
-			<button type="button" class="btn-icon hover:preset-tonal">
-				<!-- TODO @priou allow changing mode or animation speeds -->
-				<Settings class="size-6" />
-			</button>
-		</AppBar.Trail>
-	</AppBar.Toolbar>
-</AppBar>
-
-<style>
-	.title {
-		user-select: none;
-	}
-</style>
+<Navigation layout="bar">
+	<Navigation.Menu class="grid grid-cols-2 gap-2">
+		<Navigation.TriggerAnchor href="/#" aria-label="Train">
+			<Gamepad2 />
+			<Navigation.TriggerText>Train</Navigation.TriggerText>
+		</Navigation.TriggerAnchor>
+		<Navigation.TriggerAnchor href="/list" aria-label="View hiragana list">
+			<ListCheck />
+			<Navigation.TriggerText>Hiragana</Navigation.TriggerText>
+		</Navigation.TriggerAnchor>
+	</Navigation.Menu>
+</Navigation>
