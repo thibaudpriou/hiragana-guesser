@@ -17,7 +17,7 @@
 	};
 
 	const isGroupActive = (characters: Character[]) => {
-		return characters.every((character) => isActive(character.id));
+		return characters.every((character) => !character || isActive(character.id));
 	};
 	const handleCharacterGroupClick = (characters: Character[]) => () => {
 		if (isGroupActive(characters)) {
@@ -28,23 +28,33 @@
 	};
 </script>
 
-{#snippet ControlledCharacterGroup(characters: Character[])}
-	{@const active = isGroupActive(characters)}
+{#snippet ControlledCharacterGroup(characters: Array<null | Character>)}
+	{@const definedCharacters = characters.filter(Boolean) as Character[]}
+	{@const active = isGroupActive(definedCharacters)}
 	<section class="form-row">
-		<div>
-			{#each characters as character (character.id)}
-				<button type="button" class="btn" onclick={handleCharacterClick(character.id)}>
-					<CharacterContainerWithRomanji {character} active={isActive(character.id)} />
-				</button>
+		<div class="grid grid-cols-5 container-character-button">
+			{#each characters as character, idx (character?.id ?? idx)}
+				{#if character === null}
+					<!-- placeholder -->
+					<span></span>
+				{:else}
+					<button
+						type="button"
+						class="btn character-button"
+						onclick={handleCharacterClick(character.id)}
+					>
+						<CharacterContainerWithRomanji {character} active={isActive(character.id)} />
+					</button>
+				{/if}
 			{/each}
 		</div>
 
 		<button
 			type="button"
-			class="btn"
+			class="btn-icon"
 			class:preset-filled-secondary-500={active}
 			class:preset-outlined-secondary-500={!active}
-			onclick={handleCharacterGroupClick(characters)}
+			onclick={handleCharacterGroupClick(definedCharacters)}
 		>
 			<Group />
 		</button>
@@ -87,11 +97,29 @@
 	])}
 	<hr class="hr" />
 	{@render ControlledCharacterGroup([
+		hiragana.HA,
+		hiragana.HI,
+		hiragana.FU,
+		hiragana.HE,
+		hiragana.HO,
+	])}
+	<hr class="hr" />
+	{@render ControlledCharacterGroup([
 		hiragana.MA,
 		hiragana.ME,
 		hiragana.MU,
 		hiragana.MI,
 		hiragana.MO,
+	])}
+	<hr class="hr" />
+	{@render ControlledCharacterGroup([hiragana.YA, null, hiragana.YU, null, hiragana.YO])}
+	<hr class="hr" />
+	{@render ControlledCharacterGroup([
+		hiragana.RA,
+		hiragana.RE,
+		hiragana.RU,
+		hiragana.RI,
+		hiragana.RO,
 	])}
 	<!-- <hr class="hr" />
 	{@render ControlledCharacterGroup([
@@ -117,14 +145,6 @@
 		hiragana.DE,
 		hiragana.DO
 	])} -->
-	<hr class="hr" />
-	{@render ControlledCharacterGroup([
-		hiragana.HA,
-		hiragana.HI,
-		hiragana.FU,
-		hiragana.HE,
-		hiragana.HO,
-	])}
 </div>
 
 <style>
@@ -144,6 +164,14 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 3em;
-		margin-right: -6em;
+	}
+
+	.character-button {
+		font-size: 3vw;
+		padding: 0;
+	}
+
+	.container-character-button {
+		gap: 0.75em;
 	}
 </style>

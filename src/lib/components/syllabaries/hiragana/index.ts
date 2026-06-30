@@ -49,6 +49,14 @@ import * as MI from './mi.svelte';
 import * as MU from './mu.svelte';
 import * as ME from './me.svelte';
 import * as MO from './mo.svelte';
+import * as YA from './ya.svelte';
+import * as YU from './yu.svelte';
+import * as YO from './yo.svelte';
+import * as RA from './ra.svelte';
+import * as RI from './ri.svelte';
+import * as RU from './ru.svelte';
+import * as RE from './re.svelte';
+import * as RO from './ro.svelte';
 
 const formatCharacter = (raw: {
 	NAME: string;
@@ -238,7 +246,47 @@ export const hiragana: Record<string, Character> = {
 		id: 'MO',
 		ascii: 'も',
 	},
+	YA: {
+		...formatCharacter(YA),
+		id: 'YA',
+		ascii: 'や',
+	},
+	YU: {
+		...formatCharacter(YU),
+		id: 'YU',
+		ascii: 'ゆ',
+	},
+	YO: {
+		...formatCharacter(YO),
+		id: 'YO',
+		ascii: 'よ',
+	},
 
+	RA: {
+		...formatCharacter(RA),
+		id: 'RA',
+		ascii: 'ら',
+	},
+	RI: {
+		...formatCharacter(RI),
+		id: 'RI',
+		ascii: 'り',
+	},
+	RU: {
+		...formatCharacter(RU),
+		id: 'RU',
+		ascii: 'る',
+	},
+	RE: {
+		...formatCharacter(RE),
+		id: 'RE',
+		ascii: 'れ',
+	},
+	RO: {
+		...formatCharacter(RO),
+		id: 'RO',
+		ascii: 'ろ',
+	},
 	// with gokuen
 	DA: {
 		...formatCharacter(DA),
@@ -317,4 +365,4 @@ export const hiragana: Record<string, Character> = {
 		id: 'ZU2',
 		ascii: 'づ',
 	},
-};
+} as const;
