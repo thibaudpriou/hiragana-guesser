@@ -11,9 +11,9 @@
 </svelte:head>
 
 <div class="container">
-	<div class="content">
+	<main class="content">
 		{@render children()}
-	</div>
+	</main>
 	<Toolbar />
 </div>
 
