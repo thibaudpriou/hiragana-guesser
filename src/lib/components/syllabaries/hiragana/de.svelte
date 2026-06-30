@@ -4,7 +4,7 @@
 </script>
 
 <script lang="ts">
-	let { id }: { id: string } = $props();
+	let { id } = $props<{ id: string }>();
 </script>
 
 <path

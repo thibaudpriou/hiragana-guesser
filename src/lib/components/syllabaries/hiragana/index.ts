@@ -44,325 +44,277 @@ import * as HI from './hi.svelte';
 import * as FU from './fu.svelte';
 import * as HE from './he.svelte';
 import * as HO from './ho.svelte';
+import * as MA from './ma.svelte';
+import * as MI from './mi.svelte';
+import * as MU from './mu.svelte';
+import * as ME from './me.svelte';
+import * as MO from './mo.svelte';
+
+const formatCharacter = (raw: {
+	NAME: string;
+	NB_STROKES: number;
+	default: unknown;
+}): Pick<Character, 'nbStrokes' | 'component' | 'name'> => {
+	return {
+		name: raw.NAME,
+		nbStrokes: raw.NB_STROKES,
+		component: raw.default as Character['component'],
+	};
+};
 
 export const hiragana: Record<string, Character> = {
 	A: {
+		...formatCharacter(A),
 		id: 'A',
 		ascii: 'あ',
-		name: A.NAME,
-		nbStrokes: A.NB_STROKES,
-		component: A.default as Character['component']
 	},
 	I: {
+		...formatCharacter(I),
 		id: 'I',
 		ascii: 'い',
-		name: I.NAME,
-		nbStrokes: I.NB_STROKES,
-		component: I.default as Character['component']
 	},
 	U: {
+		...formatCharacter(U),
 		id: 'U',
 		ascii: 'う',
-		name: U.NAME,
-		nbStrokes: U.NB_STROKES,
-		component: U.default as Character['component']
 	},
 	E: {
+		...formatCharacter(E),
 		id: 'E',
 		ascii: 'え',
-		name: E.NAME,
-		nbStrokes: E.NB_STROKES,
-		component: E.default as Character['component']
 	},
 	O: {
+		...formatCharacter(O),
 		id: 'O',
 		ascii: 'お',
-		name: O.NAME,
-		nbStrokes: O.NB_STROKES,
-		component: O.default as Character['component']
 	},
 	KA: {
+		...formatCharacter(KA),
 		id: 'KA',
 		ascii: 'か',
-		name: KA.NAME,
-		nbStrokes: KA.NB_STROKES,
-		component: KA.default as Character['component']
 	},
 	KI: {
+		...formatCharacter(KI),
 		id: 'KI',
 		ascii: 'き',
-		name: KI.NAME,
-		nbStrokes: KI.NB_STROKES,
-		component: KI.default as Character['component']
 	},
 	KU: {
+		...formatCharacter(KU),
 		id: 'KU',
 		ascii: 'く',
-		name: KU.NAME,
-		nbStrokes: KU.NB_STROKES,
-		component: KU.default as Character['component']
 	},
 	KE: {
+		...formatCharacter(KE),
 		id: 'KE',
 		ascii: 'け',
-		name: KE.NAME,
-		nbStrokes: KE.NB_STROKES,
-		component: KE.default as Character['component']
 	},
 	KO: {
+		...formatCharacter(KO),
 		id: 'KO',
 		ascii: 'こ',
-		name: KO.NAME,
-		nbStrokes: KO.NB_STROKES,
-		component: KO.default as Character['component']
 	},
 	SA: {
+		...formatCharacter(SA),
 		id: 'SA',
 		ascii: 'さ',
-		name: SA.NAME,
-		nbStrokes: SA.NB_STROKES,
-		component: SA.default as Character['component']
 	},
 	SHI: {
+		...formatCharacter(SHI),
 		id: 'SHI',
 		ascii: 'し',
-		name: SHI.NAME,
-		nbStrokes: SHI.NB_STROKES,
-		component: SHI.default as Character['component']
 	},
 	SU: {
+		...formatCharacter(SU),
 		id: 'SU',
 		ascii: 'す',
-		name: SU.NAME,
-		nbStrokes: SU.NB_STROKES,
-		component: SU.default as Character['component']
 	},
 	SE: {
+		...formatCharacter(SE),
 		id: 'SE',
 		ascii: 'せ',
-		name: SE.NAME,
-		nbStrokes: SE.NB_STROKES,
-		component: SE.default as Character['component']
 	},
 	SO: {
+		...formatCharacter(SO),
 		id: 'SO',
 		ascii: 'そ',
-		name: SO.NAME,
-		nbStrokes: SO.NB_STROKES,
-		component: SO.default as Character['component']
 	},
 	TA: {
+		...formatCharacter(TA),
 		id: 'TA',
 		ascii: 'た',
-		name: TA.NAME,
-		nbStrokes: TA.NB_STROKES,
-		component: TA.default as Character['component']
 	},
 	CHI: {
+		...formatCharacter(CHI),
 		id: 'CHI',
 		ascii: 'ち',
-		name: CHI.NAME,
-		nbStrokes: CHI.NB_STROKES,
-		component: CHI.default as Character['component']
 	},
 	TSU: {
+		...formatCharacter(SU),
 		id: 'TSU',
 		ascii: 'つ',
-		name: TSU.NAME,
-		nbStrokes: TSU.NB_STROKES,
-		component: TSU.default as Character['component']
 	},
 	TE: {
+		...formatCharacter(TE),
 		id: 'TE',
 		ascii: 'て',
-		name: TE.NAME,
-		nbStrokes: TE.NB_STROKES,
-		component: TE.default as Character['component']
 	},
 	TO: {
+		...formatCharacter(TO),
 		id: 'TO',
 		ascii: 'と',
-		name: TO.NAME,
-		nbStrokes: TO.NB_STROKES,
-		component: TO.default as Character['component']
 	},
 	NA: {
+		...formatCharacter(NA),
 		id: 'NA',
 		ascii: 'な',
-		name: NA.NAME,
-		nbStrokes: NA.NB_STROKES,
-		component: NA.default as Character['component']
 	},
 	NI: {
+		...formatCharacter(NI),
 		id: 'NI',
 		ascii: 'に',
-		name: NI.NAME,
-		nbStrokes: NI.NB_STROKES,
-		component: NI.default as Character['component']
 	},
 	NU: {
+		...formatCharacter(NU),
 		id: 'NU',
 		ascii: 'ぬ',
-		name: NU.NAME,
-		nbStrokes: NU.NB_STROKES,
-		component: NU.default as Character['component']
 	},
 	NE: {
+		...formatCharacter(NE),
 		id: 'NE',
 		ascii: 'ね',
-		name: NE.NAME,
-		nbStrokes: NE.NB_STROKES,
-		component: NE.default as Character['component']
 	},
 	NO: {
+		...formatCharacter(NO),
 		id: 'NO',
 		ascii: 'の',
-		name: NO.NAME,
-		nbStrokes: NO.NB_STROKES,
-		component: NO.default as Character['component']
 	},
 	HA: {
+		...formatCharacter(HA),
 		id: 'HA',
 		ascii: 'は',
-		name: HA.NAME,
-		nbStrokes: HA.NB_STROKES,
-		component: HA.default as Character['component']
 	},
 	HI: {
+		...formatCharacter(HI),
 		id: 'HI',
 		ascii: 'ひ',
-		name: HI.NAME,
-		nbStrokes: HI.NB_STROKES,
-		component: HI.default as Character['component']
 	},
 	FU: {
+		...formatCharacter(FU),
 		id: 'FU',
 		ascii: 'ふ',
-		name: FU.NAME,
-		nbStrokes: FU.NB_STROKES,
-		component: FU.default as Character['component']
 	},
 	HE: {
+		...formatCharacter(HE),
 		id: 'HE',
 		ascii: 'へ',
-		name: HE.NAME,
-		nbStrokes: HE.NB_STROKES,
-		component: HE.default as Character['component']
 	},
 	HO: {
+		...formatCharacter(HO),
 		id: 'HO',
 		ascii: 'ほ',
-		name: HO.NAME,
-		nbStrokes: HO.NB_STROKES,
-		component: HO.default as Character['component']
+	},
+	MA: {
+		...formatCharacter(MA),
+		id: 'MA',
+		ascii: 'ま',
+	},
+	MI: {
+		...formatCharacter(MI),
+		id: 'MI',
+		ascii: 'み',
+	},
+	MU: {
+		...formatCharacter(MU),
+		id: 'MU',
+		ascii: 'む',
+	},
+	ME: {
+		...formatCharacter(ME),
+		id: 'ME',
+		ascii: 'め',
+	},
+	MO: {
+		...formatCharacter(MO),
+		id: 'MO',
+		ascii: 'も',
 	},
 
 	// with gokuen
 	DA: {
+		...formatCharacter(DA),
 		id: 'DA',
 		ascii: 'だ',
-		name: DA.NAME,
-		nbStrokes: DA.NB_STROKES,
-		component: DA.default as Character['component']
 	},
 	JI2: {
 		// "DI"
+		...formatCharacter(JI2),
 		id: 'JI2',
 		ascii: 'ぢ',
-		name: JI2.NAME,
-		nbStrokes: JI2.NB_STROKES,
-		component: JI2.default as Character['component']
 	},
 	DE: {
+		...formatCharacter(DE),
 		id: 'DE',
 		ascii: 'で',
-		name: DE.NAME,
-		nbStrokes: DE.NB_STROKES,
-		component: DE.default as Character['component']
 	},
 	DO: {
+		...formatCharacter(DO),
 		id: 'DO',
 		ascii: 'ど',
-		name: DO.NAME,
-		nbStrokes: DO.NB_STROKES,
-		component: DO.default as Character['component']
 	},
 	GA: {
+		...formatCharacter(GA),
 		id: 'GA',
 		ascii: 'が',
-		name: GA.NAME,
-		nbStrokes: GA.NB_STROKES,
-		component: GA.default as Character['component']
 	},
 	GI: {
+		...formatCharacter(GI),
 		id: 'GI',
 		ascii: 'ぎ',
-		name: GI.NAME,
-		nbStrokes: GI.NB_STROKES,
-		component: GI.default as Character['component']
 	},
 	GU: {
+		...formatCharacter(GU),
 		id: 'GU',
 		ascii: 'ぐ',
-		name: GU.NAME,
-		nbStrokes: GU.NB_STROKES,
-		component: GU.default as Character['component']
 	},
 	GE: {
+		...formatCharacter(GE),
 		id: 'GE',
 		ascii: 'げ',
-		name: GE.NAME,
-		nbStrokes: GE.NB_STROKES,
-		component: GE.default as Character['component']
 	},
 	GO: {
+		...formatCharacter(GO),
 		id: 'GO',
 		ascii: 'ご',
-		name: GO.NAME,
-		nbStrokes: GO.NB_STROKES,
-		component: GO.default as Character['component']
 	},
 	JI: {
+		...formatCharacter(JI),
 		id: 'JI',
 		ascii: 'じ',
-		name: JI.NAME,
-		nbStrokes: JI.NB_STROKES,
-		component: JI.default as Character['component']
 	},
 	ZA: {
+		...formatCharacter(ZA),
 		id: 'ZA',
 		ascii: 'ざ',
-		name: ZA.NAME,
-		nbStrokes: ZA.NB_STROKES,
-		component: ZA.default as Character['component']
 	},
 	ZE: {
+		...formatCharacter(ZE),
 		id: 'ZE',
 		ascii: 'ぜ',
-		name: ZE.NAME,
-		nbStrokes: ZE.NB_STROKES,
-		component: ZE.default as Character['component']
 	},
 	ZO: {
+		...formatCharacter(ZO),
 		id: 'ZO',
 		ascii: 'ぞ',
-		name: ZO.NAME,
-		nbStrokes: ZO.NB_STROKES,
-		component: ZO.default as Character['component']
 	},
 	ZU: {
+		...formatCharacter(ZU),
 		id: 'ZU',
 		ascii: 'ず',
-		name: ZU.NAME,
-		nbStrokes: ZU.NB_STROKES,
-		component: ZU.default as Character['component']
 	},
 	ZU2: {
 		// tsu + gakuen
+		...formatCharacter(ZU2),
 		id: 'ZU2',
 		ascii: 'づ',
-		name: ZU2.NAME,
-		nbStrokes: ZU2.NB_STROKES,
-		component: ZU2.default as Character['component']
-	}
+	},
 };

@@ -85,6 +85,14 @@
 		hiragana.NI,
 		hiragana.NO,
 	])}
+	<hr class="hr" />
+	{@render ControlledCharacterGroup([
+		hiragana.MA,
+		hiragana.ME,
+		hiragana.MU,
+		hiragana.MI,
+		hiragana.MO,
+	])}
 	<!-- <hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.GA,
