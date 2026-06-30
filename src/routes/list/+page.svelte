@@ -59,7 +59,7 @@
 		hiragana.KI,
 		hiragana.KU,
 		hiragana.KE,
-		hiragana.KO
+		hiragana.KO,
 	])}
 	<hr class="hr" />
 	{@render ControlledCharacterGroup([
@@ -67,7 +67,7 @@
 		hiragana.SHI,
 		hiragana.SU,
 		hiragana.SE,
-		hiragana.SO
+		hiragana.SO,
 	])}
 	<hr class="hr" />
 	{@render ControlledCharacterGroup([
@@ -75,7 +75,7 @@
 		hiragana.CHI,
 		hiragana.TSU,
 		hiragana.TE,
-		hiragana.TO
+		hiragana.TO,
 	])}
 	<hr class="hr" />
 	{@render ControlledCharacterGroup([
@@ -83,7 +83,7 @@
 		hiragana.NE,
 		hiragana.NU,
 		hiragana.NI,
-		hiragana.NO
+		hiragana.NO,
 	])}
 	<!-- <hr class="hr" />
 	{@render ControlledCharacterGroup([
@@ -115,7 +115,7 @@
 		hiragana.HI,
 		hiragana.FU,
 		hiragana.HE,
-		hiragana.HO
+		hiragana.HO,
 	])}
 </div>
 
