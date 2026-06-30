@@ -5,4 +5,5 @@ export type Character = {
 	name: string;
 	nbStrokes: number;
 	component: Component;
+	ascii: string;
 };
