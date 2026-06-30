@@ -2,15 +2,17 @@ import adaptaterStatic from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
+import dsv from '@rollup/plugin-dsv';
 
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
+		dsv(),
 		sveltekit({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>
-					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
+					filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
 			},
 
 			// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
@@ -21,8 +23,8 @@ export default defineConfig({
 				assets: 'build',
 				fallback: undefined,
 				precompress: false,
-				strict: true
-			})
-		})
-	]
+				strict: true,
+			}),
+		}),
+	],
 });
