@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import CharacterContainer from './CharacterContainer.svelte';
 	import type { Character } from '../../types';
 	import type { WordEntry } from '../../types/wordEntry';
@@ -22,7 +22,7 @@
 	const randomInt = (max: number) => Math.floor(Math.random() * max);
 
 	const getRandomKey = () => `${Math.random()}`;
-	let forceRerenderKey = $state(getRandomKey());
+	let forceRerenderKey = $state(getRandomKey()); // is used to reset caligraphy animations
 
 	const getRandomEl = (arr: WordEntry[]) => {
 		const index = randomInt(arr.length);
@@ -94,6 +94,8 @@
 	let delayedChars = $derived(getDelayedChars(chars));
 
 	// TODO add Sokuon さって＝s
+
+	let clientWidth = $state(0);
 </script>
 
 <div
@@ -104,40 +106,47 @@
 	role="button"
 	ontouchstart={handleTouchStart}
 	ontouchend={handleTouchEnd}
+	bind:clientWidth
 >
 	<section class="container">
-		<div>
-			{#key forceRerenderKey}
-				{#each delayedChars as character, i (character.id + i)}
-					<span class="item">
-						<CharacterContainer
-							id={`${character.id}-${i}`}
-							nbStrokeDelay={character.nbStrokeDelay}
-							animationDurationMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_DELAY_MS}
-							animationSpacingMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_SPACING_MS}
-							{character}
-						/>
-					</span>
-				{/each}
-			{/key}
-		</div>
+		{#key forceRerenderKey}
+			<div
+				class="text-container"
+				out:fly={{ x: -clientWidth / 2, duration: 300, opacity: 0 }}
+				in:fade={{ delay: 300 }}
+			>
+				<div>
+					{#each delayedChars as character, i (character.id + i)}
+						<span class="item">
+							<CharacterContainer
+								id={`${character.id}-${i}`}
+								nbStrokeDelay={character.nbStrokeDelay}
+								animationDurationMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_DELAY_MS}
+								animationSpacingMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_SPACING_MS}
+								{character}
+							/>
+						</span>
+					{/each}
+				</div>
 
-		<p class:container-row-hidden={displayMode === 'guess'}>
-			{#each delayedChars as char, i (char.name + i)}
-				<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
-			{/each}
-		</p>
+				<p class:text-container-row-hidden={displayMode === 'guess'}>
+					{#each delayedChars as char, i (char.name + i)}
+						<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
+					{/each}
+				</p>
 
-		<p
-			class="translation text-sm"
-			class:container-row-hidden={displayMode === 'guess'}
-			in:fade={{ duration: 300 }}
-		>
-			{guess.meaning}
-		</p>
+				<p
+					class="translation text-sm"
+					class:text-container-row-hidden={displayMode === 'guess'}
+					in:fade={{ duration: 300 }}
+				>
+					{guess.meaning}
+				</p>
+			</div>
+		{/key}
 	</section>
 
-	<div class="controls" class:controls-hidden={!showControls}>
+	<section class="controls" class:controls-hidden={!showControls}>
 		<button
 			type="button"
 			class="btn btn-icon preset-tonal-error"
@@ -154,7 +163,7 @@
 		>
 			<CheckCheck />
 		</button>
-	</div>
+	</section>
 </div>
 
 <style>
@@ -170,6 +179,11 @@
 
 	.container {
 		display: flex;
+		flex-grow: 1;
+	}
+
+	.text-container {
+		display: flex;
 		width: 100%;
 		height: 100%;
 		align-items: center;
@@ -178,7 +192,7 @@
 		flex-direction: column;
 	}
 
-	.container-row-hidden {
+	.text-container-row-hidden {
 		opacity: 0;
 	}
 
