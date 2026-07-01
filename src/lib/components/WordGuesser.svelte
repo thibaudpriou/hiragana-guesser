@@ -9,8 +9,8 @@
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
 
-	const DEFAULT_ANIMATION_DELAY_MS = 300;
-	const DEFAULT_ANIMATION_SPACING_MS = 100;
+	const DEFAULT_ANIMATION_DURATION_MS = 150;
+	const DEFAULT_ANIMATION_SPACING_MS = 250;
 
 	type Props = {
 		characters: Character[];
@@ -112,8 +112,8 @@
 		{#key forceRerenderKey}
 			<div
 				class="text-container"
-				out:fly={{ x: -clientWidth / 2, duration: 300, opacity: 0 }}
-				in:fade={{ delay: 300 }}
+				out:fly={{ x: -clientWidth / 2, duration: 250, opacity: 0 }}
+				in:fade={{ delay: 250 }}
 			>
 				<div>
 					{#each delayedChars as character, i (character.id + i)}
@@ -121,7 +121,7 @@
 							<CharacterContainer
 								id={`${character.id}-${i}`}
 								nbStrokeDelay={character.nbStrokeDelay}
-								animationDurationMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_DELAY_MS}
+								animationDurationMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_DURATION_MS}
 								animationSpacingMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_SPACING_MS}
 								{character}
 							/>
