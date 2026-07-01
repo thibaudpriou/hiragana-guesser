@@ -96,8 +96,12 @@
 		{/each}
 	</p>
 
-	<p class="text-sm" class:container-row-hidden={!displayTranslation} in:fade={{ duration: 300 }}>
-		({guess.meaning})
+	<p
+		class="translation text-sm"
+		class:container-row-hidden={!displayTranslation}
+		in:fade={{ duration: 300 }}
+	>
+		{guess.meaning}
 	</p>
 </div>
 
@@ -130,5 +134,9 @@
 		display: inline-flex;
 		user-select: none;
 		font-size: var(--size);
+	}
+
+	.translation {
+		font-style: italic;
 	}
 </style>
