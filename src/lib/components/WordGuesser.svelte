@@ -2,9 +2,10 @@
 	import { fade } from 'svelte/transition';
 	import CharacterContainer from './CharacterContainer.svelte';
 	import type { Character } from '../../types';
-	import { SvelteMap } from 'svelte/reactivity';
 	import type { WordEntry } from '../../types/wordEntry';
 	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
+	import { charactersToMap } from '$lib/conversions/characters-to-map';
+	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 
 	const DEFAULT_ANIMATION_DELAY_MS = 300;
 	const DEFAULT_ANIMATION_SPACING_MS = 100;
@@ -27,31 +28,10 @@
 		return arr.at(index)!;
 	};
 
-	const charsToSet = (arr: Character[]): SvelteMap<string, Character> => {
-		const set = new SvelteMap<string, Character>();
-		for (const char of arr) {
-			set.set(char.ascii, char);
-		}
-		return set;
-	};
-
-	const charactersSet = $derived(charsToSet(characters));
-
-	/**
-	 * Converts ASCII string to array of characters
-	 */
-	const wordToCharacters = (str: string[]): Character[] => {
-		const converted = str.map((c) => {
-			return charactersSet.get(c);
-		});
-
-		const defined = converted.filter(Boolean) as Character[];
-		// TODO handle error / mismatch between length
-		return defined;
-	};
+	const charactersMap = $derived(charactersToMap(characters));
 
 	let guess = $derived(getRandomEl(words));
-	let chars = $derived(wordToCharacters(guess.reading));
+	let chars = $derived(asciiToCharacters(charactersMap, guess.reading));
 	let displayName = $state(false);
 	let displayTranslation = $state(false);
 
@@ -68,7 +48,7 @@
 		displayTranslation = false;
 	};
 
-	let delayedChars = $derived.by(() => getDelayedChars(chars));
+	let delayedChars = $derived(getDelayedChars(chars));
 
 	// TODO add Sokuon さって＝s
 </script>
