@@ -52,16 +52,19 @@
 	let guess = $derived(getRandomEl(words));
 	let chars = $derived(wordToCharacters(guess.reading));
 	let displayName = $state(false);
+	let displayTranslation = $state(false);
 
 	const handleClick = () => {
 		if (!displayName) {
 			displayName = true;
+			displayTranslation = true;
 			return;
 		}
 
 		guess = getRandomEl(words);
 		forceRerenderKey = getRandomKey();
 		displayName = false;
+		displayTranslation = false;
 	};
 
 	type DelayedCharacter = Character & { nbStrokeDelay: number };
@@ -75,6 +78,8 @@
 		}, [] as DelayedCharacter[]);
 
 	let delayedChars = $derived.by(() => getDelayedChars(chars));
+
+	// TODO add Sokuon さって＝s
 </script>
 
 <div class="container" onclick={handleClick} onkeydown={handleClick} tabindex="0" role="button">
@@ -94,14 +99,15 @@
 		{/key}
 	</div>
 
-	{#if displayName}
-		<p>
-			{#each delayedChars as char, i (char.name + i)}
-				<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
-			{/each}
-		</p>
-		<p class="text-sm">({guess.meaning})</p>
-	{/if}
+	<p class:container-row-hidden={!displayName}>
+		{#each delayedChars as char, i (char.name + i)}
+			<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
+		{/each}
+	</p>
+
+	<p class="text-sm" class:container-row-hidden={!displayTranslation} in:fade={{ duration: 300 }}>
+		({guess.meaning})
+	</p>
 </div>
 
 <style>
@@ -111,10 +117,14 @@
 		width: 100%;
 		height: 100%;
 		align-items: center;
-		justify-content: start;
+		justify-content: center;
 		font-size: 10vw;
 		box-sizing: content-box;
 		flex-direction: column;
+	}
+
+	.container-row-hidden {
+		opacity: 0;
 	}
 
 	.item {
