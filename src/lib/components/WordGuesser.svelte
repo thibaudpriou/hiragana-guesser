@@ -4,6 +4,7 @@
 	import type { Character } from '../../types';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { WordEntry } from '../../types/wordEntry';
+	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
 
 	const DEFAULT_ANIMATION_DELAY_MS = 300;
 	const DEFAULT_ANIMATION_SPACING_MS = 100;
@@ -66,16 +67,6 @@
 		displayName = false;
 		displayTranslation = false;
 	};
-
-	type DelayedCharacter = Character & { nbStrokeDelay: number };
-
-	// TODO move to $lib/utils
-	const getDelayedChars = (arr: Character[]) =>
-		arr.reduce((delayed, el) => {
-			const nbStrokeDelay = delayed.reduce((nb, el) => nb + el.nbStrokes, 0);
-
-			return [...delayed, { ...el, nbStrokeDelay }];
-		}, [] as DelayedCharacter[]);
 
 	let delayedChars = $derived.by(() => getDelayedChars(chars));
 
