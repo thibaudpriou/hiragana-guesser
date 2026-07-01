@@ -153,10 +153,10 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		height: 100%;
 		width: fit-content;
 		justify-self: center;
 		gap: 0.5em;
+		padding: 2em 0.5em;
 	}
 
 	.form-row {
