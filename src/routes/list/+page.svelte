@@ -3,7 +3,7 @@
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
 	import type { Character } from '../../types';
 	import { getSelectedHiraganaState } from '$lib/states/selectedHiragana.svelte';
-	import { Group } from '@lucide/svelte';
+	import { Group, ListPlus, ListX } from '@lucide/svelte';
 
 	const selected = getSelectedHiraganaState();
 
@@ -32,7 +32,7 @@
 	{@const definedCharacters = characters.filter(Boolean) as Character[]}
 	{@const active = isGroupActive(definedCharacters)}
 	<section class="form-row">
-		<div class="grid grid-cols-5 container-character-button">
+		<div class="grid grid-rows-5 container-character-button">
 			{#each characters as character, idx (character?.id ?? idx)}
 				{#if character === null}
 					<!-- placeholder -->
@@ -53,17 +53,19 @@
 			type="button"
 			class="btn-icon"
 			class:preset-filled-secondary-500={active}
-			class:preset-outlined-secondary-500={!active}
 			onclick={handleCharacterGroupClick(definedCharacters)}
 		>
-			<Group />
+			{#if active}
+				<ListPlus />
+			{:else}
+				<ListX />
+			{/if}
 		</button>
 	</section>
 {/snippet}
 
 <div class="form-container">
 	{@render ControlledCharacterGroup([hiragana.A, hiragana.I, hiragana.U, hiragana.E, hiragana.O])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.KA,
 		hiragana.KI,
@@ -71,7 +73,6 @@
 		hiragana.KE,
 		hiragana.KO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.SA,
 		hiragana.SHI,
@@ -79,7 +80,6 @@
 		hiragana.SE,
 		hiragana.SO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.TA,
 		hiragana.CHI,
@@ -87,7 +87,6 @@
 		hiragana.TE,
 		hiragana.TO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.NA,
 		hiragana.NE,
@@ -95,7 +94,6 @@
 		hiragana.NI,
 		hiragana.NO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.HA,
 		hiragana.HI,
@@ -103,7 +101,6 @@
 		hiragana.HE,
 		hiragana.HO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.MA,
 		hiragana.ME,
@@ -111,9 +108,7 @@
 		hiragana.MI,
 		hiragana.MO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([hiragana.YA, null, hiragana.YU, null, hiragana.YO])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.RA,
 		hiragana.RE,
@@ -121,7 +116,6 @@
 		hiragana.RI,
 		hiragana.RO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.GA,
 		hiragana.GI,
@@ -129,7 +123,6 @@
 		hiragana.GE,
 		hiragana.GO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.ZA,
 		hiragana.JI,
@@ -137,7 +130,6 @@
 		hiragana.ZE,
 		hiragana.ZO,
 	])}
-	<hr class="hr" />
 	{@render ControlledCharacterGroup([
 		hiragana.DA,
 		hiragana.JI2,
@@ -150,24 +142,24 @@
 <style>
 	.form-container {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		width: fit-content;
-		justify-self: center;
-		gap: 0.5em;
-		padding: 2em 0.5em;
+		justify-self: start;
+		font-size: 6vw;
+		gap: 0.75em;
+		padding: 2em 1em;
 	}
 
 	.form-row {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
 		gap: 3em;
 	}
 
 	.character-button {
-		font-size: 3vw;
 		padding: 0;
 	}
 
