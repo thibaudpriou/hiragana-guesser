@@ -157,7 +157,7 @@ export const hiragana: Record<string, Character> = {
 		ascii: 'ち',
 	},
 	TSU: {
-		...formatCharacter(SU),
+		...formatCharacter(TSU),
 		id: 'TSU',
 		ascii: 'つ',
 	},
