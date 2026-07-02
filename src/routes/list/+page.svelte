@@ -116,6 +116,9 @@
 		hiragana.RI,
 		hiragana.RO,
 	])}
+
+	<span class="vr"></span>
+
 	{@render ControlledCharacterGroup([
 		hiragana.GA,
 		hiragana.GI,
@@ -150,6 +153,7 @@
 		font-size: 6vw;
 		gap: 0.75em;
 		padding: 2em 1em;
+		height: 100%;
 	}
 
 	.form-row {
