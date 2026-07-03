@@ -3,12 +3,10 @@
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
 	import { getWordsN5 } from '$lib/jplt/jplt-word-series';
+	import { configStore } from '$lib/stores/config.svelte';
 
-	import { getSelectedHiraganaState } from '$lib/states/selectedHiragana.svelte';
-
-	const selected = getSelectedHiraganaState();
 	const selectedCharacters = $derived(
-		selected
+		$configStore.selectedHiragana
 			.keys()
 			.toArray()
 			.map((id) => hiragana[id])
@@ -18,4 +16,4 @@
 </script>
 
 <!-- <CharacterGuesser characters={selectedCharacters} length={4} /> -->
-<WordGuesser characters={selectedCharacters} {words} />
+<WordGuesser characters={selectedCharacters ?? []} {words} />

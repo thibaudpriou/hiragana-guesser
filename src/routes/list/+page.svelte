@@ -1,19 +1,19 @@
 <script lang="ts">
 	import CharacterContainerWithRomanji from '$lib/components/CharacterContainerWithRomanji.svelte';
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
+	import { configStore } from '$lib/stores/config.svelte';
 	import type { Character } from '../../types';
-	import { getSelectedHiraganaState } from '$lib/states/selectedHiragana.svelte';
-	import { Group, ListPlus, ListX } from '@lucide/svelte';
+	import { ListPlus, ListX } from '@lucide/svelte';
 
-	const selected = getSelectedHiraganaState();
+	const selected = $configStore.selectedHiragana;
 
 	const isActive = (id: Character['id']) => selected.has(id);
 	const handleCharacterClick = (id: Character['id']) => () => {
 		if (selected.has(id)) {
-			selected.delete(id);
+			configStore.selectedHiragana.delete(id);
 			return;
 		}
-		selected.add(id);
+		configStore.selectedHiragana.add(id);
 	};
 
 	const isGroupActive = (characters: Character[]) => {

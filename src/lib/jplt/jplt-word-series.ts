@@ -23,7 +23,7 @@ const n5Entries = wordListToSet(n5);
  * @returns every JPLT N5 word, excluding characters not in whitelist when provided
  */
 export const getWordsN5 = (whitelist: Character[] | null): WordEntry[] => {
-	if (!whitelist) {
+	if (!whitelist?.length) {
 		return n5Entries;
 	}
 
