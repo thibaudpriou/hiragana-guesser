@@ -2,37 +2,27 @@
 	import { fade } from 'svelte/transition';
 	import CharacterContainer from './CharacterContainer.svelte';
 	import type { Character } from '../../types';
+	import { pickRandomElement } from '$lib/math/pick-random-element';
 
 	const DEFAULT_ANIMATION_DELAY_MS = 300;
 	const DEFAULT_ANIMATION_SPACING_MS = 100;
 
+	// TODO @tpriou mutualize w/ word-guesser
+
 	type Props = {
 		characters: Character[];
-		length: number;
 	};
 
-	let { characters = [], length = 3 }: Props = $props();
-
-	const randomInt = (max: number) => Math.floor(Math.random() * max);
+	let { characters = [] }: Props = $props();
 
 	const getRandomKey = () => `${Math.random()}`;
 	let forceRerenderKey = $state(getRandomKey());
 
-	// TODO move to $lib/utils
-	const getRandomEl = (arr: Character[]) => {
-		const index = randomInt(arr.length);
-
-		return arr.at(index)!;
+	const getRandomChar = (): Character => {
+		return pickRandomElement(characters);
 	};
 
-	// TODO move to $lib/utils
-	const getRandomChars = (): Character[] => {
-		const sentenceLength = randomInt(length) + 1;
-
-		return Array.from({ length: sentenceLength }, () => getRandomEl(characters));
-	};
-
-	let chars = $state(getRandomChars());
+	let character = $state(getRandomChar());
 	let displayName = $state(false);
 
 	const handleClick = () => {
@@ -41,47 +31,30 @@
 			return;
 		}
 
-		chars = getRandomChars();
+		character = getRandomChar();
 		forceRerenderKey = getRandomKey();
 		displayName = false;
 	};
-
-	type DelayedCharacter = Character & { nbStrokeDelay: number };
-
-	// TODO move to $lib/utils
-	const getDelayedChars = (arr: Character[]) =>
-		arr.reduce((delayed, el) => {
-			const nbStrokeDelay = delayed.reduce((nb, el) => nb + el.nbStrokes, 0);
-
-			return [...delayed, { ...el, nbStrokeDelay }];
-		}, [] as DelayedCharacter[]);
-
-	let delayedChars = $derived.by(() => getDelayedChars(chars));
 </script>
 
 <div class="container" onclick={handleClick} onkeydown={handleClick} tabindex="0" role="button">
 	<div>
 		{#key forceRerenderKey}
-			{#each delayedChars as character, i (character.id + i)}
-				<span class="item">
-					<CharacterContainer
-						id={`${character.id}-${i}`}
-						nbStrokeDelay={character.nbStrokeDelay}
-						animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
-						animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
-						{character}
-					/>
-				</span>
-			{/each}
+			<span class="item">
+				<CharacterContainer
+					id={`${character.id}`}
+					animationDurationMs={displayName ? 0 : DEFAULT_ANIMATION_DELAY_MS}
+					animationSpacingMs={displayName ? 0 : DEFAULT_ANIMATION_SPACING_MS}
+					{character}
+				/>
+			</span>
 		{/key}
 	</div>
 
 	<div>
-		{#each delayedChars as char, i (char.name + i)}
-			{#if displayName}
-				<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
-			{/if}
-		{/each}
+		{#if displayName}
+			<span class="name" in:fade={{ duration: 300 }}>{character.name}</span>
+		{/if}
 	</div>
 </div>
 

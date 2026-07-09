@@ -8,6 +8,7 @@
 	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
+	import { pickRandomElement } from '$lib/math/pick-random-element';
 
 	const DEFAULT_ANIMATION_DURATION_MS = 150;
 	const DEFAULT_ANIMATION_SPACING_MS = 250;
@@ -19,20 +20,12 @@
 
 	let { words = [], characters = [] }: Props = $props();
 
-	const randomInt = (max: number) => Math.floor(Math.random() * max);
-
 	const getRandomKey = () => `${Math.random()}`;
 	let forceRerenderKey = $state(getRandomKey()); // is used to reset caligraphy animations
 
-	const getRandomEl = (arr: WordEntry[]) => {
-		const index = randomInt(arr.length);
-
-		return arr.at(index)!;
-	};
-
 	const charactersMap = $derived(charactersToMap(characters));
 
-	let guess = $derived(getRandomEl(words));
+	let guess = $derived(pickRandomElement(words));
 	let chars = $derived(asciiToCharacters(charactersMap, guess.reading));
 
 	type DisplayMode = 'guess' | 'show' | 'correct';
@@ -46,7 +39,7 @@
 	};
 
 	const handleSuccess = () => {
-		guess = getRandomEl(words);
+		guess = pickRandomElement(words);
 		forceRerenderKey = getRandomKey();
 
 		// TODO upsert spaced repetition config

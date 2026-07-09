@@ -5,10 +5,14 @@
 </script>
 
 <Navigation layout="bar">
-	<Navigation.Menu class="grid grid-cols-2 gap-2">
-		<Navigation.TriggerAnchor href="/#" aria-label="Train">
+	<Navigation.Menu class="grid grid-cols-3 gap-2">
+		<Navigation.TriggerAnchor href="/guess-character" aria-label="Train">
 			<Gamepad2 />
-			<Navigation.TriggerText>Train</Navigation.TriggerText>
+			<Navigation.TriggerText>Hiragana</Navigation.TriggerText>
+		</Navigation.TriggerAnchor>
+		<Navigation.TriggerAnchor href="/guess-word" aria-label="Train">
+			<Gamepad2 />
+			<Navigation.TriggerText>Words</Navigation.TriggerText>
 		</Navigation.TriggerAnchor>
 		<Navigation.TriggerAnchor href="/list" aria-label="View hiragana list">
 			<ListCheck />
