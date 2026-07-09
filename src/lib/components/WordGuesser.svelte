@@ -126,13 +126,15 @@
 					{/each}
 				</p>
 
-				<p
-					class="translation text-sm"
-					class:text-container-row-hidden={displayMode === 'guess'}
-					in:fade={{ duration: 300 }}
-				>
-					{wordToGuess.meaning}
-				</p>
+				{#if wordToGuess.meaning}
+					<p
+						class="translation text-sm"
+						class:text-container-row-hidden={displayMode === 'guess'}
+						in:fade={{ duration: 300 }}
+					>
+						{wordToGuess.meaning}
+					</p>
+				{/if}
 			</div>
 		{/key}
 	</section>
