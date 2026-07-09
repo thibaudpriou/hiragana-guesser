@@ -1,15 +1,7 @@
 <script lang="ts">
 	import type { Character } from '../../types';
 
-	let {
-		viewBox = '0 0 1024 1024',
-		animationDurationMs = 500,
-		animationSpacingMs = 300,
-		nbStrokeDelay = 0,
-		character,
-		id,
-		active = false
-	} = $props<{
+	type Props = {
 		id: string;
 		character: Character;
 		viewBox?: string;
@@ -17,7 +9,16 @@
 		animationSpacingMs?: number;
 		nbStrokeDelay?: number;
 		active?: boolean;
-	}>();
+	};
+	let {
+		viewBox = '0 0 1024 1024',
+		animationDurationMs = 500,
+		animationSpacingMs = 300,
+		nbStrokeDelay = 0,
+		character,
+		id,
+		active = false,
+	}: Props = $props();
 </script>
 
 <svg

@@ -24,7 +24,7 @@ const loadInitial = (): ConfigStore => {
 	const localValueStringify = localStorage?.getItem(LOCAL_STORAGE_KEY);
 	let localValue: LocalStorageConfig | undefined;
 	if (localValueStringify) {
-		const localValue: LocalStorageConfig = JSON.parse(localValueStringify);
+		localValue = JSON.parse(localValueStringify) as LocalStorageConfig;
 		return {
 			selectedHiragana: new SvelteSet(localValue.selectedHiraganaIds),
 		};

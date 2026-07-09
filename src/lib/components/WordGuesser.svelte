@@ -8,25 +8,24 @@
 	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
-	import { pickRandomElement } from '$lib/math/pick-random-element';
 
 	const DEFAULT_ANIMATION_DURATION_MS = 150;
 	const DEFAULT_ANIMATION_SPACING_MS = 250;
 
 	type Props = {
 		characters: Character[];
-		words: WordEntry[];
+		wordToGuess: WordEntry;
+		onSuccess: (wordtoGuess: WordEntry) => void;
+		// onError: (wordtoGuess: WordEntry) => void;
 	};
 
-	let { words = [], characters = [] }: Props = $props();
+	let { wordToGuess, characters = [], onSuccess }: Props = $props();
 
-	const getRandomKey = () => `${Math.random()}`;
-	let forceRerenderKey = $state(getRandomKey()); // is used to reset caligraphy animations
+	const renderKey = $derived(`${wordToGuess.reading}-${Math.random()}`); // is used to reset caligraphy animations
 
 	const charactersMap = $derived(charactersToMap(characters));
 
-	let guess = $derived(pickRandomElement(words));
-	let chars = $derived(asciiToCharacters(charactersMap, guess.reading));
+	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.reading));
 
 	type DisplayMode = 'guess' | 'show' | 'correct';
 	let displayMode = $state<DisplayMode>('guess');
@@ -39,8 +38,7 @@
 	};
 
 	const handleSuccess = () => {
-		guess = pickRandomElement(words);
-		forceRerenderKey = getRandomKey();
+		onSuccess(wordToGuess);
 
 		// TODO upsert spaced repetition config
 		displayMode = 'guess';
@@ -102,7 +100,7 @@
 	bind:clientWidth
 >
 	<section class="container">
-		{#key forceRerenderKey}
+		{#key renderKey}
 			<div
 				class="text-container"
 				out:fly={{ x: -clientWidth / 2, duration: 250, opacity: 0 }}
@@ -133,7 +131,7 @@
 					class:text-container-row-hidden={displayMode === 'guess'}
 					in:fade={{ duration: 300 }}
 				>
-					{guess.meaning}
+					{wordToGuess.meaning}
 				</p>
 			</div>
 		{/key}
