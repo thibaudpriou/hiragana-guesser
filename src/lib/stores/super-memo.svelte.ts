@@ -78,7 +78,10 @@ export const superMemo = {
 				.toArray()
 				.filter(([id]) => whitelist.includes(id))
 				.map(([id, scoreDetails]) => {
-					return { id, score: computeSuperMemoScore(scoreDetails) };
+					return {
+						id,
+						score: computeSuperMemoScore(scoreDetails),
+					};
 				});
 
 			let max = scores[0];

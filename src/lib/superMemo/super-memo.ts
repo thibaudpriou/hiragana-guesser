@@ -68,5 +68,6 @@ export const computeSuperMemoScore = (details: HiraganaScoreDetails): number => 
 		dateCoeff * getLastSeenScore(details.lastSeenAt);
 
 	// normalize
+	// TODO add a small random component? (fuzzy)
 	return score / total;
 };
