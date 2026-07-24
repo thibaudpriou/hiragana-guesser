@@ -16,16 +16,16 @@
 		characters: Character[];
 		wordToGuess: WordEntry;
 		onSuccess: (wordtoGuess: WordEntry) => void;
-		// onError: (wordtoGuess: WordEntry) => void;
+		onError: (wordtoGuess: WordEntry) => void;
 	};
 
-	let { wordToGuess, characters = [], onSuccess }: Props = $props();
+	let { wordToGuess, characters = [], onSuccess, onError }: Props = $props();
 
-	const renderKey = $derived(`${wordToGuess.reading}-${Math.random()}`); // is used to reset caligraphy animations
+	const renderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // is used to reset caligraphy animations
 
 	const charactersMap = $derived(charactersToMap(characters));
 
-	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.reading));
+	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.ascii));
 
 	type DisplayMode = 'guess' | 'show' | 'correct';
 	let displayMode = $state<DisplayMode>('guess');
@@ -40,12 +40,13 @@
 	const handleSuccess = () => {
 		onSuccess(wordToGuess);
 
-		// TODO upsert spaced repetition config
 		displayMode = 'guess';
 	};
 	const handleError = () => {
-		// TODO @tpriou display other controls to input errors
-		// TODO then update spaced repetition config
+		// TODO @tpriou display other controls to input errors?
+		onError(wordToGuess);
+
+		displayMode = 'guess';
 	};
 
 	const handleContainerClick = () => {

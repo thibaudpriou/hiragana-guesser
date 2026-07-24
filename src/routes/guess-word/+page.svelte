@@ -4,6 +4,7 @@
 	import { getWordsN5 } from '$lib/jplt/jplt-word-series';
 	import { pickRandomElement } from '$lib/math/pick-random-element';
 	import { configStore } from '$lib/stores/config.svelte';
+	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import type { WordEntry } from '../../types/wordEntry';
 
 	const selectedCharacters = $derived.by(() => {
@@ -19,11 +20,18 @@
 
 	let wordToGuess = $derived(pickRandomElement(words));
 	const onSuccess = (word: WordEntry) => {
-		wordToGuess = pickRandomElement(words);
+		superMemo.guess.success(word.characterIds);
 
-		// TODO @tpriou do something useful with guess (spaced repetition)
-		console.log('Success', word);
+		// TODO prioritize getMostForgettedCharacter
+		wordToGuess = pickRandomElement(words);
+	};
+
+	const onError = (word: WordEntry) => {
+		superMemo.guess.error(word.characterIds);
+
+		// TODO prioritize getMostForgettedCharacter
+		wordToGuess = pickRandomElement(words);
 	};
 </script>
 
-<WordGuesser characters={selectedCharacters ?? []} {wordToGuess} {onSuccess} />
+<WordGuesser characters={selectedCharacters ?? []} {wordToGuess} {onSuccess} {onError} />

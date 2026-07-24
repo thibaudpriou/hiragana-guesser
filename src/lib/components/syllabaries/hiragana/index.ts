@@ -57,6 +57,7 @@ import * as RI from './ri.svelte';
 import * as RU from './ru.svelte';
 import * as RE from './re.svelte';
 import * as RO from './ro.svelte';
+import { charactersToMap } from '$lib/conversions/characters-to-map';
 
 const formatCharacter = (raw: {
 	NAME: string;
@@ -366,3 +367,5 @@ export const hiragana: Record<string, Character> = {
 		ascii: 'づ',
 	},
 } as const;
+
+export const hiraganaByAscii = charactersToMap(Object.values(hiragana));

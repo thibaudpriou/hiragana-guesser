@@ -1,5 +1,5 @@
 import { SvelteMap } from 'svelte/reactivity';
-import { Character } from '../../types/character';
+import { type Character } from '../../types/character';
 
 export const charactersToMap = (arr: Character[]): SvelteMap<string, Character> => {
 	const set = new SvelteMap<string, Character>();
