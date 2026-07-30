@@ -74,7 +74,10 @@ export const superMemo = {
 		 * Compute score for each hiragana character then returns the element
 		 * with the maximum score (or a random one between elements that share the maximum score)
 		 */
-		getMostForgettedCharacter: <T extends object>(whitelist: SvelteMap<string, T>): T | null => {
+		getMostForgettedCharacter: (
+			whitelist: SvelteMap<Character['id'], Character>,
+			excludeCharacter?: Character['id']
+		): Character | null => {
 			const characterByScore = get(store).hiragana;
 			const scores: Array<{ id: Character['id']; score: number }> = characterByScore
 				.entries()
@@ -87,9 +90,17 @@ export const superMemo = {
 					};
 				});
 
-			const minIds = new SvelteSet<string>(scores[0].id);
-			let minScore = scores[0].score;
+			if (scores.length <= 1) {
+				return whitelist.get(scores[0].id) ?? null;
+			}
+
+			const minIds = new SvelteSet<string>();
+			let minScore = 1;
 			for (const entry of scores) {
+				if (excludeCharacter === entry.id) {
+					// skip this character to force a new guess each time
+					continue;
+				}
 				if (entry.score > minScore) {
 					continue;
 				}

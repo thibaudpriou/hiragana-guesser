@@ -19,11 +19,18 @@
 		return whitelist;
 	});
 
-	const getRandomWord = (whitelist: SvelteMap<string, Character>): WordEntry => {
-		const character = superMemo.guess.getMostForgettedCharacter(whitelist);
+	const getRandomCharacter = (
+		whitelist: SvelteMap<Character['id'], Character>,
+		excludeCharacter?: Character
+	): Character => {
+		const character = superMemo.guess.getMostForgettedCharacter(whitelist, excludeCharacter?.id);
 		if (!character) {
 			throw new Error('MostForgettedCharacter not found');
 		}
+		return character;
+	};
+
+	const characterToWordEntry = (character: Character): WordEntry => {
 		const ascii = [character.ascii]; // single-letter word
 		return {
 			ascii,
@@ -31,18 +38,19 @@
 		};
 	};
 
-	let wordToGuess = $derived(getRandomWord(charactersWhitelist));
+	let characterToGuess = $derived(getRandomCharacter(charactersWhitelist));
 
 	const onSuccess = (word: WordEntry) => {
 		superMemo.guess.success(word.characterIds);
-
-		wordToGuess = getRandomWord(charactersWhitelist);
+		characterToGuess = getRandomCharacter(charactersWhitelist, characterToGuess);
 	};
+
 	const onError = (word: WordEntry) => {
 		superMemo.guess.error(word.characterIds);
-
-		wordToGuess = getRandomWord(charactersWhitelist);
+		characterToGuess = getRandomCharacter(charactersWhitelist, characterToGuess);
 	};
+
+	let wordToGuess = $derived(characterToWordEntry(characterToGuess));
 </script>
 
 <WordGuesser characters={charactersWhitelist} {wordToGuess} {onSuccess} {onError} />
