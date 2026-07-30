@@ -1,10 +1,9 @@
 import { get, writable, type Updater } from 'svelte/store';
 import type { Character } from '../../types/character';
-import { SvelteDate, SvelteMap } from 'svelte/reactivity';
+import { SvelteDate, SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
 import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
 import { computeSuperMemoScore } from '$lib/superMemo/super-memo';
-import { id } from 'date-fns/locale';
 
 /**
  * This file contains a simplified custom version of SuperMemo to track
@@ -71,6 +70,10 @@ export const superMemo = {
 	subscribe: store.subscribe,
 	update,
 	guess: {
+		/**
+		 * Compute score for each hiragana character then returns the element
+		 * with the maximum score (or a random one between elements that share the maximum score)
+		 */
 		getMostForgettedCharacter: (whitelist: Array<string>): Character['id'] => {
 			const characterByScore = get(store).hiragana;
 			const scores: Array<{ id: Character['id']; score: number }> = characterByScore
@@ -84,14 +87,23 @@ export const superMemo = {
 					};
 				});
 
-			let max = scores[0];
+			const maxIds = new SvelteSet<string>(scores[0].id);
+			let maxScore = scores[0].score;
 			for (const entry of scores) {
-				if (max.score < entry.score) {
-					max = entry;
+				if (maxScore > entry.score) {
+					continue;
 				}
+
+				if (maxScore < entry.score) {
+					maxScore = entry.score;
+					maxIds.clear();
+				}
+				maxIds.add(entry.id);
 			}
 
-			return max.id;
+			const entries = maxIds.keys().toArray();
+			const randIndex = Math.floor(Math.random() * entries.length);
+			return entries[randIndex];
 		},
 		/**
 		 * Update score details of every character after a successful guess
