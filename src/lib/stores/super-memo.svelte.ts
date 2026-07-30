@@ -98,7 +98,6 @@ export const superMemo = {
 			let minScore = 1;
 			for (const entry of scores) {
 				if (excludeCharacterId === entry.id) {
-					console.log('DEBUG @tpriou excludeCharacter', excludeCharacterId);
 					// skip this character to force a new guess each time
 					continue;
 				}

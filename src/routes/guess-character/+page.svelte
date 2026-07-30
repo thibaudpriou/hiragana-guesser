@@ -1,28 +1,15 @@
 <script lang="ts">
-	import { hiragana } from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
-	import { configStore } from '$lib/stores/config.svelte';
+	import { charactersWhitelist } from '$lib/stores/characters-whistelist';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
-	import { SvelteMap } from 'svelte/reactivity';
 	import type { Character, CharacterWhitelist } from '../../types/character';
 	import type { WordEntry } from '../../types/wordEntry';
 
-	const charactersWhitelist = $derived.by(() => {
-		const charactersIds = $configStore.selectedHiragana.keys().toArray();
-
-		const whitelist = new SvelteMap<Character['id'], Character>();
-		for (const id of charactersIds) {
-			whitelist.set(id, hiragana[id]);
-		}
-
-		return whitelist;
-	});
-
-	const getRandomCharacter = (
-		whitelist: CharacterWhitelist,
-		excludeCharacterId?: Character['id']
-	): Character => {
-		const character = superMemo.guess.getMostForgettedCharacter(whitelist, excludeCharacterId);
+	const getRandomCharacter = (excludeCharacterId?: Character['id']): Character => {
+		const character = superMemo.guess.getMostForgettedCharacter(
+			$charactersWhitelist,
+			excludeCharacterId
+		);
 		if (!character) {
 			throw new Error('MostForgettedCharacter not found');
 		}
@@ -37,27 +24,27 @@
 		};
 	};
 
-	let characterToGuess = $derived(getRandomCharacter(charactersWhitelist));
+	let characterToGuess = $state(getRandomCharacter());
 
 	const onSuccess = $derived.by(() => {
 		const prev = characterToGuess.id;
 
-		return (whitelist: CharacterWhitelist, word: WordEntry) => {
+		return (word: WordEntry) => {
 			superMemo.guess.success(word.characterIds);
-			characterToGuess = getRandomCharacter(whitelist, prev);
+			characterToGuess = getRandomCharacter(prev);
 		};
 	});
 
 	const onError = $derived.by(() => {
 		const prev = characterToGuess.id;
 
-		return (whitelist: CharacterWhitelist, word: WordEntry) => {
+		return (word: WordEntry) => {
 			superMemo.guess.error(word.characterIds);
-			characterToGuess = getRandomCharacter(whitelist, prev);
+			characterToGuess = getRandomCharacter(prev);
 		};
 	});
 
 	let wordToGuess = $derived(characterToWordEntry(characterToGuess));
 </script>
 
-<WordGuesser characters={charactersWhitelist} {wordToGuess} {onSuccess} {onError} />
+<WordGuesser characters={$charactersWhitelist} {wordToGuess} {onSuccess} {onError} />

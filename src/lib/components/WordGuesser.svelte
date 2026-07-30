@@ -15,8 +15,8 @@
 	type Props = {
 		characters: CharacterWhitelist;
 		wordToGuess: WordEntry;
-		onSuccess: (whitelist: CharacterWhitelist, wordtoGuess: WordEntry) => void;
-		onError: (whitelist: CharacterWhitelist, wordtoGuess: WordEntry) => void;
+		onSuccess: (wordtoGuess: WordEntry) => void;
+		onError: (wordtoGuess: WordEntry) => void;
 	};
 
 	let { wordToGuess, characters, onSuccess, onError }: Props = $props();
@@ -38,13 +38,13 @@
 	};
 
 	const handleSuccess = () => {
-		onSuccess(characters, wordToGuess);
+		onSuccess(wordToGuess);
 
 		displayMode = 'guess';
 	};
 	const handleError = () => {
 		// TODO @tpriou display other controls to input errors?
-		onError(characters, wordToGuess);
+		onError(wordToGuess);
 
 		displayMode = 'guess';
 	};
