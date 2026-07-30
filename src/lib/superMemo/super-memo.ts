@@ -3,48 +3,22 @@ import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
 
 /**
  * Returns a normalized score representing how recent was the character seen.
- * note: arbitrary threshold and values
+ * note: Bezier score function
  */
 const getLastSeenScore = (lastSeenAt: string) => {
 	const nbDays = differenceInCalendarDays(lastSeenAt, Date.now());
 
-	if (nbDays <= 0) {
-		return 0;
-	} else if (nbDays < 1) {
-		return 0.1;
-	} else if (nbDays < 3) {
-		return 0.25;
-	} else if (nbDays < 5) {
-		return 0.4;
-	} else if (nbDays < 30) {
-		return 0.7;
-	} else if (nbDays < 90) {
-		return 0.9;
-	}
-
-	return 1;
+	const t = nbDays > 90 ? 1 : nbDays / 90;
+	return t * t * (3 - 2 * t);
 };
 
 /**
  * Returns a normalized score representing how known is a character.
- * note: arbitrary threshold and values
+ * note: Bezier score function
  */
 const getStreakScore = (successStreak: number) => {
-	if (successStreak <= 0) {
-		return 0;
-	} else if (successStreak < 1) {
-		return 0.1;
-	} else if (successStreak < 3) {
-		return 0.2;
-	} else if (successStreak < 5) {
-		return 0.4;
-	} else if (successStreak < 15) {
-		return 0.7;
-	} else if (successStreak < 45) {
-		return 0.9;
-	}
-
-	return 1;
+	const t = successStreak > 45 ? 1 : successStreak / 45;
+	return t * t * (3 - 2 * t);
 };
 
 /**
