@@ -66,7 +66,7 @@ export const configStore = {
 		},
 		delete: (id: string) => {
 			return update((storeValue) => {
-				storeValue.selectedHiragana.add(id);
+				storeValue.selectedHiragana.delete(id);
 				return storeValue;
 			});
 		},
