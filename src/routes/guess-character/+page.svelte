@@ -5,11 +5,11 @@
 	import type { Character, CharacterWhitelist } from '../../types/character';
 	import type { WordEntry } from '../../types/wordEntry';
 
-	const getRandomCharacter = (excludeCharacterId?: Character['id']): Character => {
-		const character = superMemo.guess.getMostForgettedCharacter(
-			$charactersWhitelist,
-			excludeCharacterId
-		);
+	const getRandomCharacter = (
+		whitelist: CharacterWhitelist,
+		excludeCharacterId?: Character['id']
+	): Character => {
+		const character = superMemo.guess.getMostForgettedCharacter(whitelist, excludeCharacterId);
 		if (!character) {
 			throw new Error('MostForgettedCharacter not found');
 		}
@@ -24,14 +24,15 @@
 		};
 	};
 
-	let characterToGuess = $state(getRandomCharacter());
+	let characterToGuess = $state(getRandomCharacter($charactersWhitelist));
 
+	// reactivity on: characterToGuess
 	const onSuccess = $derived.by(() => {
 		const prev = characterToGuess.id;
 
 		return (word: WordEntry) => {
 			superMemo.guess.success(word.characterIds);
-			characterToGuess = getRandomCharacter(prev);
+			characterToGuess = getRandomCharacter($charactersWhitelist, prev);
 		};
 	});
 
@@ -40,7 +41,7 @@
 
 		return (word: WordEntry) => {
 			superMemo.guess.error(word.characterIds);
-			characterToGuess = getRandomCharacter(prev);
+			characterToGuess = getRandomCharacter($charactersWhitelist, prev);
 		};
 	});
 

@@ -2,15 +2,23 @@
 	import { Menu, Navigation, Portal, Slider } from '@skeletonlabs/skeleton-svelte';
 	import { ChessPawn, ChessQueen, SettingsIcon } from '@lucide/svelte';
 	import { ListCheck } from '@lucide/svelte';
+	import { configStore } from '$lib/stores/config.svelte';
+	import { superMemo } from '$lib/stores/super-memo.svelte';
 
 	const onAnimationSpeedChange = () => {
 		// TODO @tpriou save config in store then use it everywhere
 		throw new Error('not yet implemented');
 	};
 
+	const wordList = $state(-5);
 	const onWordListChange = () => {
 		// TODO @tpriou save config in store then use it everywhere
 		throw new Error('not yet implemented');
+	};
+
+	const handleReset = () => {
+		configStore.selectedHiragana.reset();
+		superMemo.guess.reset();
 	};
 </script>
 
@@ -85,7 +93,7 @@
 								onValueChange={onWordListChange}
 								disabled
 							>
-								<Slider.Label>Word list</Slider.Label>
+								<Slider.Label>Word list: N{wordList * -1}</Slider.Label>
 								<Slider.Control>
 									<Slider.Track>
 										<Slider.Range />
@@ -94,12 +102,24 @@
 										<Slider.HiddenInput />
 									</Slider.Thumb>
 								</Slider.Control>
-								<Slider.MarkerGroup>
+								<!-- <Slider.MarkerGroup>
 									<Slider.Marker value={-5}>N5</Slider.Marker>
 									<Slider.Marker value={-3}>N3</Slider.Marker>
 									<Slider.Marker value={-1}>N1</Slider.Marker>
-								</Slider.MarkerGroup>
+								</Slider.MarkerGroup> -->
 							</Slider>
+						</Menu.Item>
+
+						<Menu.Separator />
+
+						<Menu.Item value="reset">
+							<Navigation.TriggerAnchor
+								dir="horizontal"
+								onclick={handleReset}
+								aria-label="View character selection"
+							>
+								<Navigation.TriggerText>Reset configuration</Navigation.TriggerText>
+							</Navigation.TriggerAnchor>
 						</Menu.Item>
 					</Menu.Content>
 				</Menu.Positioner>

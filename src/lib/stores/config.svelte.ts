@@ -20,6 +20,15 @@ const persistStoreValue = (value: ConfigStore) => {
 	localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localValue));
 };
 
+const reset = (): ConfigStore => {
+	const everyHiraganaIds = Object.values(hiragana).map((character) => character.id);
+	const value = {
+		selectedHiragana: new SvelteSet(everyHiraganaIds),
+	};
+	persistStoreValue(value);
+	return value;
+};
+
 const loadInitial = (): ConfigStore => {
 	const localValueStringify = localStorage?.getItem(LOCAL_STORAGE_KEY);
 	let localValue: LocalStorageConfig | undefined;
@@ -69,6 +78,9 @@ export const configStore = {
 				storeValue.selectedHiragana.delete(id);
 				return storeValue;
 			});
+		},
+		reset: () => {
+			return update(reset);
 		},
 	},
 };

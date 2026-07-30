@@ -29,6 +29,18 @@ const persistStoreValue = (value: SuperMemoStore) => {
 	localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localValue));
 };
 
+const reset = (): SuperMemoStore => {
+	const everyHiraganaIds: SuperMemoTuple[] = Object.values(hiragana).map((character) => [
+		character.id,
+		{ lastSeenAt: undefined, successStreak: 0 },
+	]);
+	const value = {
+		hiragana: new SvelteMap(everyHiraganaIds),
+	};
+	persistStoreValue(value);
+	return value;
+};
+
 const loadInitial = (): SuperMemoStore => {
 	const localValueStringify = localStorage?.getItem(LOCAL_STORAGE_KEY);
 	let localValue: LocalStorageSuperMemo | undefined;
@@ -147,6 +159,9 @@ export const superMemo = {
 
 				return storeValue;
 			});
+		},
+		reset: () => {
+			return update(reset);
 		},
 	},
 };
