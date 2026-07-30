@@ -30,6 +30,7 @@
 	type DisplayMode = 'guess' | 'show' | 'correct';
 	let displayMode = $state<DisplayMode>('guess');
 	let showControls = $derived(displayMode !== 'guess');
+	let isError = $state(false); // is used for out animation direction
 
 	const preventBubble = (cb: () => void) => (event: Event) => {
 		event.preventDefault();
@@ -38,14 +39,16 @@
 	};
 
 	const handleSuccess = () => {
-		onSuccess(wordToGuess);
+		isError = false;
 
+		onSuccess(wordToGuess);
 		displayMode = 'guess';
 	};
 	const handleError = () => {
+		isError = true;
+
 		// TODO @tpriou display other controls to input errors?
 		onError(wordToGuess);
-
 		displayMode = 'guess';
 	};
 
@@ -104,7 +107,7 @@
 		{#key renderKey}
 			<div
 				class="text-container"
-				out:fly={{ x: -clientWidth / 2, duration: 250, opacity: 0 }}
+				out:fly={{ x: isError ? clientWidth / 2 : -clientWidth / 2, duration: 250, opacity: 0 }}
 				in:fade={{ delay: 250 }}
 			>
 				<div>
@@ -174,11 +177,13 @@
 	.container {
 		display: flex;
 		flex-grow: 1;
+		position: relative;
 	}
 
 	.text-container {
 		display: flex;
 		width: 100%;
+		position: absolute;
 		height: 100%;
 		align-items: center;
 		justify-content: center;
