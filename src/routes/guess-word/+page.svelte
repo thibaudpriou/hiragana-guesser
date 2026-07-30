@@ -7,7 +7,7 @@
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { WordEntry } from '../../types/wordEntry';
-	import type { Character } from '../../types/character';
+	import type { Character, CharacterWhitelist } from '../../types/character';
 
 	const charactersWhitelist = $derived.by(() => {
 		const charactersIds = $configStore.selectedHiragana.keys().toArray();
@@ -23,14 +23,14 @@
 	const words = $derived(getWordsN5(charactersWhitelist));
 
 	let wordToGuess = $derived(pickRandomElement(words));
-	const onSuccess = (word: WordEntry) => {
+	const onSuccess = (_whitelist: CharacterWhitelist, word: WordEntry) => {
 		superMemo.guess.success(word.characterIds);
 
 		// TODO prioritize getMostForgettedCharacter
 		wordToGuess = pickRandomElement(words);
 	};
 
-	const onError = (word: WordEntry) => {
+	const onError = (_whitelist: CharacterWhitelist, word: WordEntry) => {
 		superMemo.guess.error(word.characterIds);
 
 		// TODO prioritize getMostForgettedCharacter

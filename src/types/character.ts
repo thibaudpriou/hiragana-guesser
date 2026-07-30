@@ -11,3 +11,5 @@ export type Character = {
 	component: Component<CharacterProps>;
 	ascii: string;
 };
+
+export type CharacterWhitelist = Map<Character['id'], Character>;

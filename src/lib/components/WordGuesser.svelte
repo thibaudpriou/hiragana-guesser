@@ -1,23 +1,22 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import CharacterContainer from './CharacterContainer.svelte';
-	import type { Character } from '../../types';
+	import type { CharacterWhitelist } from '../../types';
 	import type { WordEntry } from '../../types/wordEntry';
 	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
 	import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
-	import type { SvelteMap } from 'svelte/reactivity';
 
 	const DEFAULT_ANIMATION_DURATION_MS = 150;
 	const DEFAULT_ANIMATION_SPACING_MS = 250;
 
 	type Props = {
-		characters: SvelteMap<Character['id'], Character>;
+		characters: CharacterWhitelist;
 		wordToGuess: WordEntry;
-		onSuccess: (wordtoGuess: WordEntry) => void;
-		onError: (wordtoGuess: WordEntry) => void;
+		onSuccess: (whitelist: CharacterWhitelist, wordtoGuess: WordEntry) => void;
+		onError: (whitelist: CharacterWhitelist, wordtoGuess: WordEntry) => void;
 	};
 
 	let { wordToGuess, characters, onSuccess, onError }: Props = $props();
@@ -39,13 +38,13 @@
 	};
 
 	const handleSuccess = () => {
-		onSuccess(wordToGuess);
+		onSuccess(characters, wordToGuess);
 
 		displayMode = 'guess';
 	};
 	const handleError = () => {
 		// TODO @tpriou display other controls to input errors?
-		onError(wordToGuess);
+		onError(characters, wordToGuess);
 
 		displayMode = 'guess';
 	};

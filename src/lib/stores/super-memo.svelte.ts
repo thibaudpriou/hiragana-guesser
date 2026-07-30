@@ -1,5 +1,5 @@
 import { get, writable, type Updater } from 'svelte/store';
-import type { Character } from '../../types/character';
+import type { Character, CharacterWhitelist } from '../../types/character';
 import { SvelteDate, SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
 import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
@@ -75,8 +75,8 @@ export const superMemo = {
 		 * with the maximum score (or a random one between elements that share the maximum score)
 		 */
 		getMostForgettedCharacter: (
-			whitelist: SvelteMap<Character['id'], Character>,
-			excludeCharacter?: Character['id']
+			whitelist: CharacterWhitelist,
+			excludeCharacterId?: Character['id']
 		): Character | null => {
 			const characterByScore = get(store).hiragana;
 			const scores: Array<{ id: Character['id']; score: number }> = characterByScore
@@ -97,7 +97,8 @@ export const superMemo = {
 			const minIds = new SvelteSet<string>();
 			let minScore = 1;
 			for (const entry of scores) {
-				if (excludeCharacter === entry.id) {
+				if (excludeCharacterId === entry.id) {
+					console.log('DEBUG @tpriou excludeCharacter', excludeCharacterId);
 					// skip this character to force a new guess each time
 					continue;
 				}

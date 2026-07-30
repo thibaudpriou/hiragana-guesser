@@ -4,7 +4,7 @@
 	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
-	import type { Character } from '../../types/character';
+	import type { Character, CharacterWhitelist } from '../../types/character';
 	import type { WordEntry } from '../../types/wordEntry';
 
 	const charactersWhitelist = $derived.by(() => {
@@ -19,14 +19,14 @@
 	});
 
 	const getRandomCharacter = (
-		whitelist: SvelteMap<Character['id'], Character>,
-		excludeCharacter?: Character
+		whitelist: CharacterWhitelist,
+		excludeCharacterId?: Character['id']
 	): Character => {
-		const character = superMemo.guess.getMostForgettedCharacter(whitelist, excludeCharacter?.id);
+		const character = superMemo.guess.getMostForgettedCharacter(whitelist, excludeCharacterId);
 		if (!character) {
 			throw new Error('MostForgettedCharacter not found');
 		}
-		return character;
+		return { ...character }; // clone for reactivity
 	};
 
 	const characterToWordEntry = (character: Character): WordEntry => {
@@ -39,15 +39,23 @@
 
 	let characterToGuess = $derived(getRandomCharacter(charactersWhitelist));
 
-	const onSuccess = (word: WordEntry) => {
-		superMemo.guess.success(word.characterIds);
-		characterToGuess = getRandomCharacter(charactersWhitelist, characterToGuess);
-	};
+	const onSuccess = $derived.by(() => {
+		const prev = characterToGuess.id;
 
-	const onError = (word: WordEntry) => {
-		superMemo.guess.error(word.characterIds);
-		characterToGuess = getRandomCharacter(charactersWhitelist, characterToGuess);
-	};
+		return (whitelist: CharacterWhitelist, word: WordEntry) => {
+			superMemo.guess.success(word.characterIds);
+			characterToGuess = getRandomCharacter(whitelist, prev);
+		};
+	});
+
+	const onError = $derived.by(() => {
+		const prev = characterToGuess.id;
+
+		return (whitelist: CharacterWhitelist, word: WordEntry) => {
+			superMemo.guess.error(word.characterIds);
+			characterToGuess = getRandomCharacter(whitelist, prev);
+		};
+	});
 
 	let wordToGuess = $derived(characterToWordEntry(characterToGuess));
 </script>
