@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { hiragana, hiraganaByAscii } from '$lib/components/syllabaries/hiragana';
+	import { hiragana } from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
-	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
@@ -31,10 +30,10 @@
 	};
 
 	const characterToWordEntry = (character: Character): WordEntry => {
-		const ascii = [character.ascii]; // single-letter word
+		// single-letter word
 		return {
-			ascii,
-			characterIds: asciiToCharacters(hiraganaByAscii, ascii).map((c) => c.id),
+			ascii: [character.ascii],
+			characterIds: [character.id],
 		};
 	};
 
