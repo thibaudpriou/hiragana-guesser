@@ -1,8 +1,3 @@
-<script module>
-	export const NAME = 'fu';
-	export const NB_STROKES = 4;
-</script>
-
 <script lang="ts">
 	let { id } = $props<{ id: string }>();
 </script>

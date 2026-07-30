@@ -1,8 +1,3 @@
-<script module>
-	export const NAME = 'ga';
-	export const NB_STROKES = 5;
-</script>
-
 <script lang="ts">
 	let { id }: { id: string } = $props();
 </script>
