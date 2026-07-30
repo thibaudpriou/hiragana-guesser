@@ -74,12 +74,12 @@ export const superMemo = {
 		 * Compute score for each hiragana character then returns the element
 		 * with the maximum score (or a random one between elements that share the maximum score)
 		 */
-		getMostForgettedCharacter: (whitelist: Array<string>): Character['id'] => {
+		getMostForgettedCharacter: <T extends object>(whitelist: SvelteMap<string, T>): T | null => {
 			const characterByScore = get(store).hiragana;
 			const scores: Array<{ id: Character['id']; score: number }> = characterByScore
 				.entries()
 				.toArray()
-				.filter(([id]) => whitelist.includes(id))
+				.filter(([id]) => whitelist.has(id))
 				.map(([id, scoreDetails]) => {
 					return {
 						id,
@@ -87,23 +87,23 @@ export const superMemo = {
 					};
 				});
 
-			const maxIds = new SvelteSet<string>(scores[0].id);
-			let maxScore = scores[0].score;
+			const minIds = new SvelteSet<string>(scores[0].id);
+			let minScore = scores[0].score;
 			for (const entry of scores) {
-				if (maxScore > entry.score) {
+				if (entry.score > minScore) {
 					continue;
 				}
 
-				if (maxScore < entry.score) {
-					maxScore = entry.score;
-					maxIds.clear();
+				if (entry.score < minScore) {
+					minScore = entry.score;
+					minIds.clear();
 				}
-				maxIds.add(entry.id);
+				minIds.add(entry.id);
 			}
 
-			const entries = maxIds.keys().toArray();
-			const randIndex = Math.floor(Math.random() * entries.length);
-			return entries[randIndex];
+			const ids = minIds.keys().toArray();
+			const randIndex = Math.floor(Math.random() * ids.length);
+			return whitelist.get(ids[randIndex]) ?? null;
 		},
 		/**
 		 * Update score details of every character after a successful guess

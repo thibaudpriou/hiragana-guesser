@@ -29,12 +29,12 @@ const n5Entries = wordListToSet(n5);
 /**
  * @returns every JPLT N5 word, excluding characters not in whitelist when provided
  */
-export const getWordsN5 = (whitelist: Character[] | null): WordEntry[] => {
-	if (!whitelist?.length) {
+export const getWordsN5 = (whitelist: Map<Character['id'], Character>): WordEntry[] => {
+	if (!whitelist.size) {
 		return n5Entries;
 	}
 
-	const whitelistSet = new Set(whitelist.map((char) => char.ascii));
+	const whitelistSet = new Set(whitelist.values().map((char) => char.ascii));
 
 	return n5Entries.filter((entry) => {
 		return entry.ascii.every((str) => whitelistSet.has(str));

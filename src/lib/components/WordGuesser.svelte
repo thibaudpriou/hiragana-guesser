@@ -4,26 +4,27 @@
 	import type { Character } from '../../types';
 	import type { WordEntry } from '../../types/wordEntry';
 	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
-	import { charactersToMap } from '$lib/conversions/characters-to-map';
+	import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
+	import type { SvelteMap } from 'svelte/reactivity';
 
 	const DEFAULT_ANIMATION_DURATION_MS = 150;
 	const DEFAULT_ANIMATION_SPACING_MS = 250;
 
 	type Props = {
-		characters: Character[];
+		characters: SvelteMap<Character['id'], Character>;
 		wordToGuess: WordEntry;
 		onSuccess: (wordtoGuess: WordEntry) => void;
 		onError: (wordtoGuess: WordEntry) => void;
 	};
 
-	let { wordToGuess, characters = [], onSuccess, onError }: Props = $props();
+	let { wordToGuess, characters, onSuccess, onError }: Props = $props();
 
 	const renderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // is used to reset caligraphy animations
 
-	const charactersMap = $derived(charactersToMap(characters));
+	const charactersMap = $derived(charactersToAsciiMap(characters));
 
 	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.ascii));
 

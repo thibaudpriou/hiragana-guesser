@@ -57,7 +57,8 @@ import * as RI from './ri.svelte';
 import * as RU from './ru.svelte';
 import * as RE from './re.svelte';
 import * as RO from './ro.svelte';
-import { charactersToMap } from '$lib/conversions/characters-to-map';
+import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
+import { SvelteMap } from 'svelte/reactivity';
 
 const formatCharacter = (raw: {
 	NAME: string;
@@ -368,4 +369,5 @@ export const hiragana: Record<string, Character> = {
 	},
 } as const;
 
-export const hiraganaByAscii = charactersToMap(Object.values(hiragana));
+const hiraganaById = new SvelteMap(Object.entries(hiragana));
+export const hiraganaByAscii = charactersToAsciiMap(hiraganaById);

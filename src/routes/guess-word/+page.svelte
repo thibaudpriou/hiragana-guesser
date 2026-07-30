@@ -5,18 +5,22 @@
 	import { pickRandomElement } from '$lib/math/pick-random-element';
 	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 	import type { WordEntry } from '../../types/wordEntry';
+	import type { Character } from '../../types/character';
 
-	const selectedCharacters = $derived.by(() => {
-		const selected = $configStore.selectedHiragana
-			.keys()
-			.toArray()
-			.map((id) => hiragana[id]);
+	const charactersWhitelist = $derived.by(() => {
+		const charactersIds = $configStore.selectedHiragana.keys().toArray();
 
-		return selected.length ? selected : Object.values(hiragana);
+		const whitelist = new SvelteMap<Character['id'], Character>();
+		for (const id of charactersIds) {
+			whitelist.set(id, hiragana[id]);
+		}
+
+		return whitelist;
 	});
 
-	const words = $derived(getWordsN5(selectedCharacters));
+	const words = $derived(getWordsN5(charactersWhitelist));
 
 	let wordToGuess = $derived(pickRandomElement(words));
 	const onSuccess = (word: WordEntry) => {
@@ -34,4 +38,4 @@
 	};
 </script>
 
-<WordGuesser characters={selectedCharacters ?? []} {wordToGuess} {onSuccess} {onError} />
+<WordGuesser characters={charactersWhitelist} {wordToGuess} {onSuccess} {onError} />
