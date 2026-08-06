@@ -7,7 +7,7 @@
 	import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
-	import { onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
+	import { onToucheMove, onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
 
 	const DEFAULT_ANIMATION_DURATION_MS = 150;
 	const DEFAULT_ANIMATION_SPACING_MS = 250;
@@ -31,6 +31,7 @@
 	let displayMode = $state<DisplayMode>('guess');
 	let showControls = $derived(displayMode !== 'guess');
 	let isError = $state(false); // is used for out animation direction
+	let currentSwipe = $state<'right' | 'left' | null>(null);
 
 	const preventBubble = (cb: () => void) => (event: Event) => {
 		event.preventDefault();
@@ -70,20 +71,26 @@
 			return;
 		}
 
+		currentSwipe = null;
+
 		switch (swipe) {
 			case null: {
 				// TODO @tpriou show error in console?
 				break;
 			}
-			case 'left': {
+			case 'right': {
 				handleSuccess();
 				break;
 			}
-			case 'right': {
+			case 'left': {
 				handleError();
 				break;
 			}
 		}
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		currentSwipe = onToucheMove(event);
 	};
 
 	let delayedChars = $derived(getDelayedChars(chars));
@@ -101,13 +108,14 @@
 	role="button"
 	ontouchstart={handleTouchStart}
 	ontouchend={handleTouchEnd}
+	ontouchmove={handleTouchMove}
 	bind:clientWidth
 >
 	<section class="container">
 		{#key renderKey}
 			<div
 				class="text-container"
-				out:fly={{ x: isError ? clientWidth / 2 : -clientWidth / 2, duration: 250, opacity: 0 }}
+				out:fly={{ x: isError ? -clientWidth / 2 : clientWidth / 2, duration: 250, opacity: 0 }}
 				in:fade={{ delay: 250 }}
 			>
 				<div>
@@ -143,7 +151,12 @@
 		{/key}
 	</section>
 
-	<section class="controls" class:controls-hidden={!showControls}>
+	<section
+		class="controls"
+		class:controls-hidden={!showControls}
+		class:preset-tonal-error={currentSwipe === 'left'}
+		class:preset-filled-success-500={currentSwipe === 'right'}
+	>
 		<button
 			type="button"
 			class="btn btn-icon preset-tonal-error"
