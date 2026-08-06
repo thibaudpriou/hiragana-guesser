@@ -151,12 +151,7 @@
 		{/key}
 	</section>
 
-	<section
-		class="controls"
-		class:controls-hidden={!showControls}
-		class:preset-tonal-error={currentSwipe === 'left'}
-		class:preset-filled-success-500={currentSwipe === 'right'}
-	>
+	<section class="controls" class:controls-hidden={!showControls}>
 		<button
 			type="button"
 			class="btn btn-icon preset-tonal-error"
@@ -165,6 +160,12 @@
 		>
 			<X />
 		</button>
+		<hr
+			class="hr control-divider"
+			class:swiping={!!currentSwipe}
+			class:preset-tonal-error={currentSwipe === 'left'}
+			class:preset-filled-success-500={currentSwipe === 'right'}
+		/>
 		<button
 			type="button"
 			class="btn btn-icon preset-filled-success-500"
@@ -230,9 +231,19 @@
 		display: flex;
 		justify-content: space-between;
 		margin: 0.5em 0;
+		align-items: center;
 	}
 
 	.controls-hidden {
 		opacity: 0;
+	}
+
+	.control-divider {
+		height: 0;
+		border-width: 0;
+	}
+	.control-divider.swiping {
+		height: 0.1em;
+		margin: 0 0.1em;
 	}
 </style>
