@@ -164,11 +164,11 @@
 			class="hr control-divider"
 			class:swiping={!!currentSwipe}
 			class:preset-tonal-error={currentSwipe === 'left'}
-			class:preset-filled-success-500={currentSwipe === 'right'}
+			class:preset-tonal-success={currentSwipe === 'right'}
 		/>
 		<button
 			type="button"
-			class="btn btn-icon preset-filled-success-500"
+			class="btn btn-icon preset-tonal-success"
 			onclick={showControls ? preventBubble(handleSuccess) : undefined}
 			onkeydown={showControls ? preventBubble(handleSuccess) : undefined}
 		>
