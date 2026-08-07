@@ -13,11 +13,11 @@
 
 <defs>
 	<mask id={`${id}-mask-1`}>
-		<path style:--d="0" pathLength="2000" d="M 400,113 654,205" />
+		<path style:--stroke-idx="0" pathLength="2000" d="M 400,113 654,205" />
 	</mask>
 	<mask id={`${id}-mask-2`}>
 		<path
-			style:--d="1"
+			style:--stroke-idx="1"
 			pathLength="2000"
 			d="M 213,423 286,450 494,372 610,360 684,394 718,462 672,690 492,911"
 		/>

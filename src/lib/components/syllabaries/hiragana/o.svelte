@@ -22,26 +22,26 @@
 <defs>
 	<mask id={`${id}-mask-1`}
 		><path
-			style:--d="0"
+			style:--stroke-idx="0"
 			pathLength="2000"
 			d="M 111.6,323.2 174,363.7 327,362.1 535.2,309.4"
 		/></mask
 	>
 	<mask id={`${id}-mask-2`}
 		><path
-			style:--d="1"
+			style:--stroke-idx="1"
 			pathLength="2000"
 			d="M 287,100 338,140 311,847 282,898 234,906 218,900 165,836 158,764 243,671 525,536 748,543 835,691 763,820 588,917"
 		/></mask
 	>
 	<mask id={`${id}-mask-3`}
 		><path
-			style:--d="1"
+			style:--stroke-idx="1"
 			pathLength="2000"
 			d="M 287,1712 338,1672 311,965 282,914 234,906 218,900 165,836 158,764 243,671 525,536 748,543 835,691 763,820 588,917"
 		/></mask
 	>
 	<mask id={`${id}-mask-4`}
-		><path style:--d="2" pathLength="2000" d="M 710,189 794,229 868,350" /></mask
+		><path style:--stroke-idx="2" pathLength="2000" d="M 710,189 794,229 868,350" /></mask
 	>
 </defs>

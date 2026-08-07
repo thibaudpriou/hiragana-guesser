@@ -10,7 +10,7 @@
 <defs>
 	<mask id={`${id}-mask-1`}
 		><path
-			style:--d="0"
+			style:--stroke-idx="0"
 			pathLength="2000"
 			d="M 107,418 161,448 547,300 791,304 891,398 878,550 683,707 508,769"
 		/></mask

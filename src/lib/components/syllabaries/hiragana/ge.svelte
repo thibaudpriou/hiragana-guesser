@@ -26,21 +26,25 @@
 <defs>
 	<mask id={`${id}-mask-1`}
 		><path
-			style:--d="0"
+			style:--stroke-idx="0"
 			pathLength="2000"
 			d="M 195,157 234,202 157,716 199,842 217,847 266,637"
 		/></mask
 	>
 	<mask id={`${id}-mask-2`}
-		><path style:--d="1" pathLength="2000" d="M 397,399 766,347 845,357" /></mask
+		><path style:--stroke-idx="1" pathLength="2000" d="M 397,399 766,347 845,357" /></mask
 	>
 	<mask id={`${id}-mask-3`}
-		><path style:--d="2" pathLength="2000" d="M 617,120 687,152 673,621 639,790 543,918" /></mask
+		><path
+			style:--stroke-idx="2"
+			pathLength="2000"
+			d="M 617,120 687,152 673,621 639,790 543,918"
+		/></mask
 	>
 	<mask id={`${id}-mask-4`}
-		><path style:--d="3" pathLength="2000" d="M 794,134 883,178 899,242" /></mask
+		><path style:--stroke-idx="3" pathLength="2000" d="M 794,134 883,178 899,242" /></mask
 	>
 	<mask id={`${id}-mask-5`}
-		><path style:--d="4" pathLength="2000" d="M 863,64 947,110 969,172" /></mask
+		><path style:--stroke-idx="4" pathLength="2000" d="M 863,64 947,110 969,172" /></mask
 	>
 </defs>

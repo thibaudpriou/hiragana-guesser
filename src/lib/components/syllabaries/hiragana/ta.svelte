@@ -21,15 +21,15 @@
 
 <defs>
 	<mask id={`${id}-mask-1`}
-		><path style:--d="0" pathLength="2000" d="M 194,339 330,372 676,290" /></mask
+		><path style:--stroke-idx="0" pathLength="2000" d="M 194,339 330,372 676,290" /></mask
 	>
 	<mask id={`${id}-mask-2`}
-		><path style:--d="1" pathLength="2000" d="M 424,116 464,176 172,916" /></mask
+		><path style:--stroke-idx="1" pathLength="2000" d="M 424,116 464,176 172,916" /></mask
 	>
 	<mask id={`${id}-mask-3`}
-		><path style:--d="2" pathLength="2000" d="M 516,563 730,514 811,533" /></mask
+		><path style:--stroke-idx="2" pathLength="2000" d="M 516,563 730,514 811,533" /></mask
 	>
 	<mask id={`${id}-mask-4`}
-		><path style:--d="3" pathLength="2000" d="M 505,776 549,841 858,868" /></mask
+		><path style:--stroke-idx="3" pathLength="2000" d="M 505,776 549,841 858,868" /></mask
 	>
 </defs>

@@ -19,16 +19,16 @@
 	d="M 737,573 C 753,588 770,602 784,620 808,650 823,687 834,724 840,745 847,767 862,785 874,798 897,805 913,793 944,765 915,707 900,679 874,630 818,586 783,568 764,558 709,546 737,573 Z"
 />
 <defs>
-	<mask id={`${id}-mask-1`} style:--d="0">
+	<mask id={`${id}-mask-1`} style:--stroke-idx="0">
 		<path pathLength="2000" d="M 440,147 558,213 573,259 451,306" />
 	</mask>
-	<mask id={`${id}-mask-2`} style:--d="1">
+	<mask id={`${id}-mask-2`} style:--stroke-idx="1">
 		<path pathLength="2000" d="M 403,387 403,466 506,564 571,746 525,831 412,840 342,785" />
 	</mask>
-	<mask id={`${id}-mask-3`} style:--d="2">
+	<mask id={`${id}-mask-3`} style:--stroke-idx="2">
 		<path pathLength="2000" d="M 106,684 110,742 181,847 224,767" />
 	</mask>
-	<mask id={`${id}-mask-4`} style:--d="3">
+	<mask id={`${id}-mask-4`} style:--stroke-idx="3">
 		<path pathLength="2000" d="M 750,565 865,673 905,781" />
 	</mask>
 </defs>

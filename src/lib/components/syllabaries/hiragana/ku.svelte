@@ -9,6 +9,10 @@
 
 <defs>
 	<mask id={`${id}-mask-1`}
-		><path style:--d="0" pathLength="2000" d="M 561,111 605,180 337,479 346,523 625,884.9" /></mask
+		><path
+			style:--stroke-idx="0"
+			pathLength="2000"
+			d="M 561,111 605,180 337,479 346,523 625,884.9"
+		/></mask
 	>
 </defs>

@@ -18,15 +18,15 @@
 <defs>
 	<mask id={`${id}-mask-1`}
 		><path
-			style:--d="0"
+			style:--stroke-idx="0"
 			pathLength="2000"
 			d="M 142,378 222,420 756,207 786,232 678,285 518,461 482,601 531,754 759,888"
 		/>
 	</mask>
 	<mask id={`${id}-mask-2`}
-		><path style:--d="1" pathLength="2000" d="M 799,124 883,178 899,242" /></mask
+		><path style:--stroke-idx="1" pathLength="2000" d="M 799,124 883,178 899,242" /></mask
 	>
 	<mask id={`${id}-mask-3`}
-		><path style:--d="2" pathLength="2000" d="M 868,54 947,110 969,172" /></mask
+		><path style:--stroke-idx="2" pathLength="2000" d="M 868,54 947,110 969,172" /></mask
 	>
 </defs>

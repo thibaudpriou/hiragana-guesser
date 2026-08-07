@@ -25,18 +25,30 @@
 
 <defs>
 	<mask id={`${id}-mask-1`}
-		><path style:--d="0" pathLength="2000" d="M 98,575 146,578 409,491 824,412 935,441" /></mask
+		><path
+			style:--stroke-idx="0"
+			pathLength="2000"
+			d="M 98,575 146,578 409,491 824,412 935,441"
+		/></mask
 	>
 	<mask id={`${id}-mask-2`}
-		><path style:--d="1" pathLength="2000" d="M 637,121 696,174 635,665 607,722 545,686" /></mask
+		><path
+			style:--stroke-idx="1"
+			pathLength="2000"
+			d="M 637,121 696,174 635,665 607,722 545,686"
+		/></mask
 	>
 	<mask id={`${id}-mask-3`}
-		><path style:--d="2" pathLength="2000" d="M 313,199 368,260 369,785 434,860 792,879" /></mask
+		><path
+			style:--stroke-idx="2"
+			pathLength="2000"
+			d="M 313,199 368,260 369,785 434,860 792,879"
+		/></mask
 	>
 	<mask id={`${id}-mask-4`}
-		><path style:--d="3" pathLength="2000" d="M 794,154 883,198 899,262" /></mask
+		><path style:--stroke-idx="3" pathLength="2000" d="M 794,154 883,198 899,262" /></mask
 	>
 	<mask id={`${id}-mask-5`}
-		><path style:--d="4" pathLength="2000" d="M 863,84 947,130 969,192" /></mask
+		><path style:--stroke-idx="4" pathLength="2000" d="M 863,84 947,130 969,192" /></mask
 	>
 </defs>

@@ -21,19 +21,19 @@
 
 <defs>
 	<mask id={`${id}-mask-1`}
-		><path style:--d="0" pathLength="2000" d="M 294,332 433,342 677,253" /></mask
+		><path style:--stroke-idx="0" pathLength="2000" d="M 294,332 433,342 677,253" /></mask
 	>
 	<mask id={`${id}-mask-2`}
-		><path style:--d="1" pathLength="2000" d="M 376,512 526,520 777,426" /></mask
+		><path style:--stroke-idx="1" pathLength="2000" d="M 376,512 526,520 777,426" /></mask
 	>
 	<mask id={`${id}-mask-3`}
 		><path
-			style:--d="2"
+			style:--stroke-idx="2"
 			pathLength="2000"
 			d="M 367,135 414,140 688,620 688,693 636,653 572,642"
 		/></mask
 	>
 	<mask id={`${id}-mask-4`}
-		><path style:--d="3" pathLength="2000" d="M 299,734 273,794 322,870 628,903" /></mask
+		><path style:--stroke-idx="3" pathLength="2000" d="M 299,734 273,794 322,870 628,903" /></mask
 	>
 </defs>

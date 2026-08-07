@@ -20,21 +20,21 @@
 />
 <defs>
 	<mask id={`${id}-mask-1`}>
-		<path style:--d="0" pathLength="2000" d="M255 273L379 301L699 233L769 238" />
+		<path style:--stroke-idx="0" pathLength="2000" d="M255 273L379 301L699 233L769 238" />
 	</mask>
 	<mask id={`${id}-mask-2`}>
-		<path style:--d="1" pathLength="2000" d="M258 513L391 542L770 479" />
+		<path style:--stroke-idx="1" pathLength="2000" d="M258 513L391 542L770 479" />
 	</mask>
 	<mask id={`${id}-mask-3`}>
 		<path
-			style:--d="2"
+			style:--stroke-idx="2"
 			pathLength="2000"
 			d="M477 88L530 130L530 830L480 880L390 910L305 894L280 834L310 775L400 763L759 885L792 929"
 		/>
 	</mask>
 	<mask id={`${id}-mask-4`}>
 		<path
-			style:--d="2"
+			style:--stroke-idx="2"
 			pathLength="2000"
 			d="M197 1543L250 1690L250 990L300 940L390 910L305 894L280 834L310 775L400 763L759 885L792 929"
 		/>

@@ -9,13 +9,7 @@
 </script>
 
 <span class="container" class:active>
-	<CharacterContainer
-		id={character.id}
-		animationDurationMs={0}
-		animationSpacingMs={0}
-		{character}
-		{active}
-	/>
+	<CharacterContainer id={character.id} strokeDurationMs={0} {character} {active} />
 	<p class="romanji">{character.name}</p>
 </span>
 

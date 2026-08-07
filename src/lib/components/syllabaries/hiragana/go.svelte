@@ -22,22 +22,22 @@
 <defs>
 	<mask id={`${id}-mask-1`}
 		><path
-			style:--d="0"
+			style:--stroke-idx="0"
 			pathLength="2000"
 			d="M 288,222 318,227 536,214 678,254 715,283 630,280 518,327"
 		/></mask
 	>
 	<mask id={`${id}-mask-2`}
 		><path
-			style:--d="1"
+			style:--stroke-idx="1"
 			pathLength="2000"
 			d="M 248,635 245,714 312,792 511,840 704,838 783,851"
 		/></mask
 	>
 	<mask id={`${id}-mask-3`}
-		><path style:--d="2" pathLength="2000" d="M 774,174 863,218 879,282" /></mask
+		><path style:--stroke-idx="2" pathLength="2000" d="M 774,174 863,218 879,282" /></mask
 	>
 	<mask id={`${id}-mask-4`}
-		><path style:--d="3" pathLength="2000" d="M 843,104 927,150 949,212" /></mask
+		><path style:--stroke-idx="3" pathLength="2000" d="M 843,104 927,150 949,212" /></mask
 	>
 </defs>

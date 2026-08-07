@@ -1,22 +1,19 @@
 <script lang="ts">
 	import type { Character } from '../../types';
 
-	const DEFAULT_ANIMATION_DURATION_MS = 150;
-	const DEFAULT_ANIMATION_SPACING_MS = 250;
+	const DEFAULT_STROKE_DURATION_MS = 150;
 
 	type Props = {
 		id: string;
 		character: Character;
 		viewBox?: string;
-		animationDurationMs?: number;
-		animationSpacingMs?: number;
+		strokeDurationMs?: number;
 		nbStrokeDelay?: number;
 		active?: boolean;
 	};
 	let {
 		viewBox = '0 0 1024 1024',
-		animationDurationMs = DEFAULT_ANIMATION_DURATION_MS,
-		animationSpacingMs = DEFAULT_ANIMATION_SPACING_MS,
+		strokeDurationMs = DEFAULT_STROKE_DURATION_MS,
 		nbStrokeDelay = 0,
 		character,
 		id,
@@ -31,9 +28,8 @@
 	height="100%"
 	class="svg-container"
 	class:active
-	style:--anim-stroke-delay={nbStrokeDelay}
-	style:--anim-dur={`${animationDurationMs}ms`}
-	style:--anim-spacing={`${animationSpacingMs}ms`}
+	style:--nb-stroke-delay={nbStrokeDelay}
+	style:--stroke-duration-ms={`${strokeDurationMs}ms`}
 >
 	<character.component {id} />
 </svg>
@@ -42,6 +38,8 @@
 	.svg-container {
 		flex-basis: 1em;
 		fill: light-dark(var(--color-surface-950), var(--color-surface-50));
+
+		--character-delay: calc(var(--nb-stroke-delay) * var(--stroke-duration-ms));
 	}
 
 	.svg-container.active {
@@ -52,10 +50,8 @@
 		fill: none;
 		stroke: #fff;
 
-		--initial-delay: calc(var(--anim-stroke-delay) * var(--anim-dur));
-		--intra-delay: calc(var(--d) * var(--anim-dur) + var(--anim-spacing));
-		--anim-delay: calc(var(--initial-delay) + var(--intra-delay));
-		animation: strokeOffset var(--anim-dur) linear forwards var(--anim-delay);
+		--nb-stroke-delay: calc(var(--character-delay) + var(--stroke-idx) * var(--stroke-duration-ms));
+		animation: strokeOffset var(--stroke-duration-ms) linear forwards var(--nb-stroke-delay);
 
 		stroke-dasharray: 3010;
 		stroke-dashoffset: 3020;

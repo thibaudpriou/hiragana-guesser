@@ -23,22 +23,22 @@
 	d="M509 703C478 703 446 719 433 748C429 758 426 774 427 785C427 799 469 799 469 785C467 772 473 758 485 753C500 744 518 748 534 750C575 756 613 772 650 789C717 823 783 857 848 894C861 901 878 907 893 900C903 895 903 882 902 872C899 849 880 833 862 822C835 807 806 795 777 783C728 763 603 703 509 703Z"
 />
 <defs>
-	<mask id={`${id}-mask-1`} style:--d="0">
+	<mask id={`${id}-mask-1`} style:--stroke-idx="0">
 		<path pathLength="2000" d="M 179,146 207,224 138,713 180,871 252,720" />
 	</mask>
-	<mask id={`${id}-mask-2`} style:--d="1">
+	<mask id={`${id}-mask-2`} style:--stroke-idx="1">
 		<path pathLength="2000" d="M 487,182 562,205 818,158" />
 	</mask>
-	<mask id={`${id}-mask-3`} style:--d="2">
+	<mask id={`${id}-mask-3`} style:--stroke-idx="2">
 		<path pathLength="2000" d="M 440,442 508,470 875,403" />
 	</mask>
-	<mask id={`${id}-mask-4`} style:--d="3">
+	<mask id={`${id}-mask-4`} style:--stroke-idx="3">
 		<path
 			pathLength="2000"
 			d="M 655,219 708,252 694,815 500,859 451,818 447,777 473,742 524,717 644,748 894,884"
 		/>
 	</mask>
-	<mask id={`${id}-mask-5`} style:--d="4">
+	<mask id={`${id}-mask-5`} style:--stroke-idx="4">
 		<path
 			pathLength="2000"
 			d="M 345,1499 292,1466 306,903 500,859 451,818 447,777 473,742 524,717 644,748 894,884"

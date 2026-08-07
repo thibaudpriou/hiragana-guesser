@@ -17,12 +17,16 @@
 
 <defs>
 	<mask id={`${id}-mask-1`}
-		><path style:--d="0" pathLength="2000" d="M 566,111 605,180 337,479 346,523 625,884.9" /></mask
+		><path
+			style:--stroke-idx="0"
+			pathLength="2000"
+			d="M 566,111 605,180 337,479 346,523 625,884.9"
+		/></mask
 	>
 	<mask id={`${id}-mask-2`}
-		><path style:--d="1" pathLength="2000" d="M 744,184 833,218 849,282" /></mask
+		><path style:--stroke-idx="1" pathLength="2000" d="M 744,184 833,218 849,282" /></mask
 	>
 	<mask id={`${id}-mask-3`}
-		><path style:--d="2" pathLength="2000" d="M 813,114 897,150 919,212" /></mask
+		><path style:--stroke-idx="2" pathLength="2000" d="M 813,114 897,150 919,212" /></mask
 	>
 </defs>

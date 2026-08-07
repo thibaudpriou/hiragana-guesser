@@ -12,10 +12,12 @@
 />
 
 <defs>
-	<mask id={`${id}-mask-1`}><path style:--d="0" pathLength="2000" d="M 400,113 654,205" /></mask>
+	<mask id={`${id}-mask-1`}
+		><path style:--stroke-idx="0" pathLength="2000" d="M 400,113 654,205" /></mask
+	>
 	<mask id={`${id}-mask-2`}>
 		<path
-			style:--d="1"
+			style:--stroke-idx="1"
 			pathLength="2000"
 			d="M 197,436 277,460 618,334 654,363 608,380 203,762 204,804 333,709 407,692 482,722 596,836 793,835 855,853"
 		/>
