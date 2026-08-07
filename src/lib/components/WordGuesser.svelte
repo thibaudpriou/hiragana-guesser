@@ -92,6 +92,9 @@
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
+		if (displayMode !== 'SOLUTION') {
+			return;
+		}
 		currentSwipe = onToucheMove(event);
 	};
 
@@ -126,6 +129,8 @@
 					opacity: 0,
 				}}
 				in:fade={{ delay: outDuration, duration: inDuration }}
+				class:swiping-left={currentSwipe === 'LEFT'}
+				class:swiping-right={currentSwipe === 'RIGHT'}
 			>
 				<div>
 					{#key caligraphyRedrawKey ?? `initial`}
@@ -213,6 +218,17 @@
 		justify-content: center;
 		box-sizing: content-box;
 		flex-direction: column;
+
+		--tranform-rotate: 0;
+		transform: rotateZ(var(--tranform-rotate));
+		transform-origin: bottom;
+	}
+
+	.text-container.swiping-left {
+		--tranform-rotate: -5deg;
+	}
+	.text-container.swiping-right {
+		--tranform-rotate: 5deg;
 	}
 
 	.text-container-row-hidden {
