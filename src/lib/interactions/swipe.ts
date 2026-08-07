@@ -2,6 +2,8 @@ let initialTouchX: null | number = null;
 
 const SWIPE_MIN_DETECTION = 50;
 
+type SWIPE_DIRECTION = 'RIGHT' | 'LEFT';
+
 export const onTouchStart = (event: TouchEvent) => {
 	if (!event.touches[0]) {
 		initialTouchX = null;
@@ -10,7 +12,7 @@ export const onTouchStart = (event: TouchEvent) => {
 	initialTouchX = event.touches[0]?.clientX ?? null;
 };
 
-export const onToucheMove = (event: TouchEvent): 'right' | 'left' | null => {
+export const onToucheMove = (event: TouchEvent): SWIPE_DIRECTION | null => {
 	if (initialTouchX === null || !event.changedTouches[0]) {
 		return null;
 	}
@@ -22,13 +24,13 @@ export const onToucheMove = (event: TouchEvent): 'right' | 'left' | null => {
 	}
 
 	if (diff > 0) {
-		return 'right';
+		return 'RIGHT';
 	} else {
-		return 'left';
+		return 'LEFT';
 	}
 };
 
-export const onTouchEnd = (event: TouchEvent): 'right' | 'left' | null => {
+export const onTouchEnd = (event: TouchEvent): SWIPE_DIRECTION | null => {
 	const res = onToucheMove(event);
 
 	// reset

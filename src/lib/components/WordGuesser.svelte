@@ -31,7 +31,7 @@
 	let displayMode = $state<DisplayMode>('guess');
 	let showControls = $derived(displayMode !== 'guess');
 	let isError = $state(false); // is used for out animation direction
-	let currentSwipe = $state<'right' | 'left' | null>(null);
+	let currentSwipe = $state<'RIGHT' | 'LEFT' | null>(null);
 
 	const preventBubble = (cb: () => void) => (event: Event) => {
 		event.preventDefault();
@@ -78,11 +78,11 @@
 				// TODO @tpriou show error in console?
 				break;
 			}
-			case 'right': {
+			case 'RIGHT': {
 				handleSuccess();
 				break;
 			}
-			case 'left': {
+			case 'LEFT': {
 				handleError();
 				break;
 			}
@@ -163,8 +163,8 @@
 		<hr
 			class="hr control-divider"
 			class:swiping={!!currentSwipe}
-			class:preset-tonal-error={currentSwipe === 'left'}
-			class:preset-tonal-success={currentSwipe === 'right'}
+			class:preset-tonal-error={currentSwipe === 'LEFT'}
+			class:preset-tonal-success={currentSwipe === 'RIGHT'}
 		/>
 		<button
 			type="button"
