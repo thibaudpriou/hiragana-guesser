@@ -5,11 +5,9 @@
 	import type { Character } from '../../types';
 	import { ListPlus, ListX } from '@lucide/svelte';
 
-	const selected = $configStore.selectedHiragana;
-
-	const isActive = (id: Character['id']) => selected.has(id);
+	const isActive = (id: Character['id']) => $configStore.selectedHiragana.has(id);
 	const handleCharacterClick = (id: Character['id']) => () => {
-		if (selected.has(id)) {
+		if ($configStore.selectedHiragana.has(id)) {
 			configStore.selectedHiragana.delete(id);
 			return;
 		}
@@ -21,10 +19,10 @@
 	};
 	const handleCharacterGroupClick = (characters: Character[]) => () => {
 		if (isGroupActive(characters)) {
-			characters.forEach((item) => selected.delete(item.id));
+			characters.forEach((item) => $configStore.selectedHiragana.delete(item.id));
 			return;
 		}
-		characters.forEach((item) => selected.add(item.id));
+		characters.forEach((item) => $configStore.selectedHiragana.add(item.id));
 	};
 </script>
 
