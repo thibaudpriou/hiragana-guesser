@@ -20,6 +20,11 @@
 
 	const transitionRenderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // also resets caligraphy animations
 
+	let caligraphyRedrawKey = $state(Math.random());
+	const caligraphyRenderKey = $derived(
+		`${wordToGuess.ascii.join('')}-${caligraphyRedrawKey}-${Math.random()}`
+	);
+
 	const charactersMap = $derived(charactersToAsciiMap(characters));
 
 	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.ascii));
@@ -56,7 +61,7 @@
 			return;
 		}
 		if (displayMode === 'SOLUTION') {
-			// TODO redraw caligraphy
+			caligraphyRedrawKey = Math.random();
 			return;
 		}
 	};
@@ -113,21 +118,24 @@
 >
 	<section class="container">
 		{#key transitionRenderKey}
+			<!-- TODO in/out animation may not be relevant in this component  -->
 			<div
 				class="text-container"
 				out:fly={{ x: isError ? -clientWidth / 2 : clientWidth / 2, duration: 250, opacity: 0 }}
 				in:fade={{ delay: 250 }}
 			>
 				<div>
-					{#each delayedChars as character, i (character.id + i)}
-						<span class="item">
-							<CharacterContainer
-								id={`${character.id}-${i}`}
-								nbStrokeDelay={character.nbStrokeDelay}
-								{character}
-							/>
-						</span>
-					{/each}
+					{#key caligraphyRenderKey}
+						{#each delayedChars as character, i (character.id + i)}
+							<span class="item">
+								<CharacterContainer
+									id={`${character.id}-${i}`}
+									nbStrokeDelay={character.nbStrokeDelay}
+									{character}
+								/>
+							</span>
+						{/each}
+					{/key}
 				</div>
 
 				<p class:text-container-row-hidden={displayMode === 'GUESS'}>
