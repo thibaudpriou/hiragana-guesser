@@ -1,6 +1,13 @@
 <script lang="ts">
 	import type { Character } from '../../types';
 
+	/*
+	 * Caligraphy handwriting animation: each stroke has a mask that we animate
+	 *
+	 * Note: to ease calculations, each stroke has the same animation duration.
+	 * This causes some characters with long strokes do not render well (e.g hiragana NO) but won't fix
+	 */
+
 	const DEFAULT_STROKE_DURATION_MS = 150;
 	const DEFAULT_CHARACTER_SPACING_MS = 50;
 	const DEFAULT_STROKE_SPACING_MS = 20;
@@ -71,7 +78,6 @@
 	}
 
 	.svg-container :global(mask > path) {
-		/* caligraphy handwriting animation: each stroke has a mask that we animate */
 		fill: none;
 		stroke: #fff;
 
