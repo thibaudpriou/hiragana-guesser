@@ -2,7 +2,8 @@
 	import type { Character } from '../../types';
 
 	const DEFAULT_STROKE_DURATION_MS = 150;
-	const DEFAULT_CHARACTER_SPACING_MS = 0;
+	const DEFAULT_CHARACTER_SPACING_MS = 50;
+	const DEFAULT_STROKE_SPACING_MS = 20;
 
 	type Props = {
 		id: string;
@@ -10,6 +11,7 @@
 		viewBox?: string;
 		strokeDurationMs?: number;
 		characterSpacingMs?: number;
+		strokeSpacingMs?: number;
 		delay?: {
 			nbStrokes: number;
 			nbCharacters: number;
@@ -20,11 +22,28 @@
 		viewBox = '0 0 1024 1024',
 		strokeDurationMs = DEFAULT_STROKE_DURATION_MS,
 		characterSpacingMs = DEFAULT_CHARACTER_SPACING_MS,
+		strokeSpacingMs = DEFAULT_STROKE_SPACING_MS,
 		delay,
 		character,
 		id,
 		active = false,
 	}: Props = $props();
+
+	const delayNbCharacterSpacing = $derived(delay?.nbCharacters ?? 0);
+	const delayNbStrokes = $derived(delay?.nbStrokes ?? 0);
+	const delayNbStrokesSpacing = $derived.by(() => {
+		if (!delayNbStrokes) {
+			return 0;
+		}
+
+		return delayNbStrokes - 1 - (delayNbCharacterSpacing - 1);
+	});
+
+	const delayMs = $derived(
+		delayNbCharacterSpacing * characterSpacingMs +
+			delayNbStrokes * strokeDurationMs +
+			delayNbStrokesSpacing * strokeSpacingMs
+	);
 </script>
 
 <svg
@@ -34,10 +53,9 @@
 	height="100%"
 	class="svg-container"
 	class:active
-	style:--nb-stroke-delay={delay?.nbStrokes ?? 0}
-	style:--nb-character-delay={delay?.nbCharacters ?? 0}
+	style:--character-delay-ms={`${delayMs}ms`}
 	style:--stroke-duration-ms={`${strokeDurationMs}ms`}
-	style:--character-spacing-ms={`${characterSpacingMs}ms`}
+	style:--stroke-spacing-ms={`${strokeSpacingMs}ms`}
 >
 	<character.component {id} />
 </svg>
@@ -46,10 +64,6 @@
 	.svg-container {
 		flex-basis: 1em;
 		fill: light-dark(var(--color-surface-950), var(--color-surface-50));
-
-		--character-delay-strokes: calc(var(--nb-stroke-delay) * var(--stroke-duration-ms));
-		--character-delay-spacing: calc(var(--nb-character-delay) * var(--character-spacing-ms));
-		--character-delay: calc(var(--character-delay-strokes) + var(--character-delay-spacing));
 	}
 
 	.svg-container.active {
@@ -57,11 +71,15 @@
 	}
 
 	.svg-container :global(mask > path) {
+		/* caligraphy handwriting animation: each stroke has a mask that we animate */
 		fill: none;
 		stroke: #fff;
 
-		--nb-stroke-delay: calc(var(--character-delay) + var(--stroke-idx) * var(--stroke-duration-ms));
-		animation: strokeOffset var(--stroke-duration-ms) linear forwards var(--nb-stroke-delay);
+		animation: strokeOffset var(--stroke-duration-ms) linear forwards;
+		--stroke-delay-ms: calc(
+			var(--stroke-idx) * var(--stroke-duration-ms) + var(--stroke-idx) * var(--stroke-spacing-ms)
+		);
+		animation-delay: calc(var(--stroke-delay-ms) + var(--character-delay-ms));
 
 		stroke-dasharray: 3010;
 		stroke-dashoffset: 3020;
