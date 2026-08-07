@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { Character } from '../../types';
 
+	const DEFAULT_ANIMATION_DURATION_MS = 150;
+	const DEFAULT_ANIMATION_SPACING_MS = 250;
+
 	type Props = {
 		id: string;
 		character: Character;
@@ -12,8 +15,8 @@
 	};
 	let {
 		viewBox = '0 0 1024 1024',
-		animationDurationMs = 500,
-		animationSpacingMs = 300,
+		animationDurationMs = DEFAULT_ANIMATION_DURATION_MS,
+		animationSpacingMs = DEFAULT_ANIMATION_SPACING_MS,
 		nbStrokeDelay = 0,
 		character,
 		id,

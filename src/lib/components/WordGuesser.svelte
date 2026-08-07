@@ -9,9 +9,6 @@
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onToucheMove, onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
 
-	const DEFAULT_ANIMATION_DURATION_MS = 150;
-	const DEFAULT_ANIMATION_SPACING_MS = 250;
-
 	type Props = {
 		characters: CharacterWhitelist;
 		wordToGuess: WordEntry;
@@ -21,15 +18,15 @@
 
 	let { wordToGuess, characters, onSuccess, onError }: Props = $props();
 
-	const renderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // is used to reset caligraphy animations
+	const transitionRenderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // also resets caligraphy animations
 
 	const charactersMap = $derived(charactersToAsciiMap(characters));
 
 	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.ascii));
 
-	type DisplayMode = 'guess' | 'show' | 'correct';
-	let displayMode = $state<DisplayMode>('guess');
-	let showControls = $derived(displayMode !== 'guess');
+	type DisplayMode = 'GUESS' | 'SOLUTION';
+	let displayMode = $state<DisplayMode>('GUESS');
+	let showControls = $derived(displayMode !== 'GUESS');
 	let isError = $state(false); // is used for out animation direction
 	let currentSwipe = $state<'RIGHT' | 'LEFT' | null>(null);
 
@@ -43,22 +40,25 @@
 		isError = false;
 
 		onSuccess(wordToGuess);
-		displayMode = 'guess';
+		displayMode = 'GUESS';
 	};
 	const handleError = () => {
 		isError = true;
 
 		// TODO @tpriou display other controls to input errors?
 		onError(wordToGuess);
-		displayMode = 'guess';
+		displayMode = 'GUESS';
 	};
 
 	const handleContainerClick = () => {
-		if (displayMode !== 'guess') {
+		if (displayMode === 'GUESS') {
+			displayMode = 'SOLUTION';
 			return;
 		}
-
-		displayMode = 'show';
+		if (displayMode === 'SOLUTION') {
+			// TODO redraw caligraphy
+			return;
+		}
 	};
 
 	const handleTouchStart = (event: TouchEvent) => {
@@ -67,7 +67,7 @@
 	const handleTouchEnd = (event: TouchEvent) => {
 		const swipe = onTouchEnd(event);
 
-		if (displayMode !== 'show') {
+		if (displayMode !== 'SOLUTION') {
 			return;
 		}
 
@@ -112,7 +112,7 @@
 	bind:clientWidth
 >
 	<section class="container">
-		{#key renderKey}
+		{#key transitionRenderKey}
 			<div
 				class="text-container"
 				out:fly={{ x: isError ? -clientWidth / 2 : clientWidth / 2, duration: 250, opacity: 0 }}
@@ -124,15 +124,13 @@
 							<CharacterContainer
 								id={`${character.id}-${i}`}
 								nbStrokeDelay={character.nbStrokeDelay}
-								animationDurationMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_DURATION_MS}
-								animationSpacingMs={displayMode !== 'guess' ? 0 : DEFAULT_ANIMATION_SPACING_MS}
 								{character}
 							/>
 						</span>
 					{/each}
 				</div>
 
-				<p class:text-container-row-hidden={displayMode === 'guess'}>
+				<p class:text-container-row-hidden={displayMode === 'GUESS'}>
 					{#each delayedChars as char, i (char.name + i)}
 						<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
 					{/each}
@@ -141,7 +139,7 @@
 				{#if wordToGuess.meaning}
 					<p
 						class="translation text-sm"
-						class:text-container-row-hidden={displayMode === 'guess'}
+						class:text-container-row-hidden={displayMode === 'GUESS'}
 						in:fade={{ duration: 300 }}
 					>
 						{wordToGuess.meaning}
