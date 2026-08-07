@@ -201,6 +201,7 @@
 		font-size: 10vw;
 		flex-direction: column;
 		padding: 0 1em;
+		user-select: none;
 	}
 
 	.container {
