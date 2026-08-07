@@ -20,10 +20,7 @@
 
 	const transitionRenderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // also resets caligraphy animations
 
-	let caligraphyRedrawKey = $state(Math.random());
-	const caligraphyRenderKey = $derived(
-		`${wordToGuess.ascii.join('')}-${caligraphyRedrawKey}-${Math.random()}`
-	);
+	let caligraphyRedrawKey = $state<string | undefined>();
 
 	const charactersMap = $derived(charactersToAsciiMap(characters));
 
@@ -61,7 +58,7 @@
 			return;
 		}
 		if (displayMode === 'SOLUTION') {
-			caligraphyRedrawKey = Math.random();
+			caligraphyRedrawKey = `${Math.random()}`;
 			return;
 		}
 	};
@@ -119,18 +116,25 @@
 	<section class="container">
 		{#key transitionRenderKey}
 			<!-- TODO in/out animation may not be relevant in this component  -->
+			{const outDuration = 250}
+			{const inDuration = 100}
 			<div
 				class="text-container"
-				out:fly={{ x: isError ? -clientWidth / 2 : clientWidth / 2, duration: 250, opacity: 0 }}
-				in:fade={{ delay: 250 }}
+				out:fly={{
+					x: isError ? -clientWidth / 2 : clientWidth / 2,
+					duration: outDuration,
+					opacity: 0,
+				}}
+				in:fade={{ delay: outDuration, duration: inDuration }}
 			>
 				<div>
-					{#key caligraphyRenderKey}
+					{#key caligraphyRedrawKey ?? `initial`}
 						{#each delayedChars as character, i (character.id + i)}
 							<span class="item">
 								<CharacterContainer
 									id={`${character.id}-${i}`}
 									delay={character.delay}
+									extraDelay={caligraphyRedrawKey ? 0 : outDuration + inDuration}
 									{character}
 								/>
 							</span>

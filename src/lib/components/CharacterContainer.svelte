@@ -23,6 +23,7 @@
 			nbStrokes: number;
 			nbCharacters: number;
 		};
+		extraDelay?: number;
 		active?: boolean;
 	};
 	let {
@@ -30,6 +31,7 @@
 		strokeDurationMs = DEFAULT_STROKE_DURATION_MS,
 		characterSpacingMs = DEFAULT_CHARACTER_SPACING_MS,
 		strokeSpacingMs = DEFAULT_STROKE_SPACING_MS,
+		extraDelay = 0,
 		delay,
 		character,
 		id,
@@ -49,7 +51,8 @@
 	const delayMs = $derived(
 		delayNbCharacterSpacing * characterSpacingMs +
 			delayNbStrokes * strokeDurationMs +
-			delayNbStrokesSpacing * strokeSpacingMs
+			delayNbStrokesSpacing * strokeSpacingMs +
+			extraDelay
 	);
 </script>
 
