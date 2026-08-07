@@ -130,7 +130,7 @@
 							<span class="item">
 								<CharacterContainer
 									id={`${character.id}-${i}`}
-									nbStrokeDelay={character.nbStrokeDelay}
+									delay={character.delay}
 									{character}
 								/>
 							</span>

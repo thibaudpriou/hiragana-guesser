@@ -1,5 +1,5 @@
 import type { Character } from '../../types';
-type DelayedCharacter = Character & { nbStrokeDelay: number };
+type DelayedCharacter = Character & { delay: { nbStrokes: number; nbCharacters: number } };
 
 /**
  * To correctly draw each character sequentially, we need to add
@@ -9,13 +9,16 @@ export const getDelayedChars = (arr: Character[]) => {
 	const delayed: DelayedCharacter[] = [];
 	let nbPrevStrokes = 0;
 
-	for (const el of arr) {
+	for (const [i, char] of arr.entries()) {
 		delayed.push({
-			...el,
-			nbStrokeDelay: nbPrevStrokes,
+			...char,
+			delay: {
+				nbStrokes: nbPrevStrokes,
+				nbCharacters: i,
+			},
 		});
 
-		nbPrevStrokes += el.nbStrokes;
+		nbPrevStrokes += char.nbStrokes;
 	}
 
 	return delayed;

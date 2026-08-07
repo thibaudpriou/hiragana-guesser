@@ -2,19 +2,25 @@
 	import type { Character } from '../../types';
 
 	const DEFAULT_STROKE_DURATION_MS = 150;
+	const DEFAULT_CHARACTER_SPACING_MS = 0;
 
 	type Props = {
 		id: string;
 		character: Character;
 		viewBox?: string;
 		strokeDurationMs?: number;
-		nbStrokeDelay?: number;
+		characterSpacingMs?: number;
+		delay?: {
+			nbStrokes: number;
+			nbCharacters: number;
+		};
 		active?: boolean;
 	};
 	let {
 		viewBox = '0 0 1024 1024',
 		strokeDurationMs = DEFAULT_STROKE_DURATION_MS,
-		nbStrokeDelay = 0,
+		characterSpacingMs = DEFAULT_CHARACTER_SPACING_MS,
+		delay,
 		character,
 		id,
 		active = false,
@@ -28,8 +34,10 @@
 	height="100%"
 	class="svg-container"
 	class:active
-	style:--nb-stroke-delay={nbStrokeDelay}
+	style:--nb-stroke-delay={delay?.nbStrokes ?? 0}
+	style:--nb-character-delay={delay?.nbCharacters ?? 0}
 	style:--stroke-duration-ms={`${strokeDurationMs}ms`}
+	style:--character-spacing-ms={`${characterSpacingMs}ms`}
 >
 	<character.component {id} />
 </svg>
@@ -39,7 +47,9 @@
 		flex-basis: 1em;
 		fill: light-dark(var(--color-surface-950), var(--color-surface-50));
 
-		--character-delay: calc(var(--nb-stroke-delay) * var(--stroke-duration-ms));
+		--character-delay-strokes: calc(var(--nb-stroke-delay) * var(--stroke-duration-ms));
+		--character-delay-spacing: calc(var(--nb-character-delay) * var(--character-spacing-ms));
+		--character-delay: calc(var(--character-delay-strokes) + var(--character-delay-spacing));
 	}
 
 	.svg-container.active {
