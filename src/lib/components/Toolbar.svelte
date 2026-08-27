@@ -9,13 +9,14 @@
 		minAnimationSpeedLevel,
 		type AnimationSpeedLevel,
 	} from '../../types/caligraphy';
+	import { animationSpeedStore } from '$lib/stores/animation-speed';
 
 	const onAnimationSpeedChange = (value: number[]) => {
 		const level = value[0];
 		if (level === undefined || level < minAnimationSpeedLevel || level > maxAnimationSpeedLevel) {
 			throw new Error(`onAnimationSpeedChange: unexpected level ${level}`);
 		}
-		configStore.animationSpeed.set(level as AnimationSpeedLevel);
+		animationSpeedStore.set(level as AnimationSpeedLevel);
 	};
 
 	const wordList = $state(-5);

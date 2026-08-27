@@ -22,7 +22,10 @@
 
 	const transitionRenderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // also resets caligraphy animations
 
-	let caligraphyRedrawKey = $state<string | undefined>();
+	let caligraphyForceRedrawKey = $state<string | undefined>();
+	const caligraphyRedrawKey = $derived(
+		`${caligraphyAnimationConfig.speedLevel}-${caligraphyForceRedrawKey}`
+	);
 
 	const charactersMap = $derived(charactersToAsciiMap(characters));
 
@@ -60,7 +63,7 @@
 			return;
 		}
 		if (displayMode === 'SOLUTION') {
-			caligraphyRedrawKey = `${Math.random()}`;
+			caligraphyForceRedrawKey = `${Math.random()}`;
 			return;
 		}
 	};
@@ -135,14 +138,14 @@
 				class:swiping-right={currentSwipe === 'RIGHT'}
 			>
 				<div>
-					{#key caligraphyRedrawKey ?? `initial`}
+					{#key caligraphyRedrawKey}
 						{#each delayedChars as character, i (character.id + i)}
 							<span class="item">
 								<CharacterContainer
 									id={`${character.id}-${i}`}
 									delay={character.delay}
 									{...caligraphyAnimationConfig}
-									extraDelay={caligraphyRedrawKey ? 0 : outDuration + inDuration}
+									extraDelay={caligraphyForceRedrawKey ? 0 : outDuration + inDuration}
 									{character}
 								/>
 							</span>

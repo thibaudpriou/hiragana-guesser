@@ -9,6 +9,7 @@
 	import type { WordEntry } from '../../types/wordEntry';
 	import type { Character } from '../../types/character';
 	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
+	import { animationSpeedStore } from '$lib/stores/animation-speed';
 
 	const charactersWhitelist = $derived.by(() => {
 		const charactersIds = $configStore.selectedHiragana.keys().toArray();
@@ -39,7 +40,7 @@
 	};
 
 	const caligraphyAnimationConfig = $derived.by(() => {
-		const level = $configStore.animationSpeedLevel;
+		const level = $animationSpeedStore;
 		return getCaligraphyAnimationConfig(level);
 	});
 </script>
