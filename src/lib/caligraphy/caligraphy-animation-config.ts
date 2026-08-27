@@ -29,5 +29,13 @@ export const getCaligraphyAnimationConfig = (
 				strokeSpacingMs: 30,
 			};
 		}
+		case 3: {
+			return {
+				speedLevel,
+				strokeDurationMs: 300,
+				characterSpacingMs: 100,
+				strokeSpacingMs: 40,
+			};
+		}
 	}
 };

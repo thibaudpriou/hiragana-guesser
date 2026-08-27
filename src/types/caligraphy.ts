@@ -1,5 +1,5 @@
-export type AnimationSpeedLevel = 0 | 1 | 2;
-export const maxAnimationSpeedLevel: AnimationSpeedLevel = 2;
+export type AnimationSpeedLevel = 0 | 1 | 2 | 3;
+export const maxAnimationSpeedLevel: AnimationSpeedLevel = 3;
 export const minAnimationSpeedLevel: AnimationSpeedLevel = 0;
 
 export type CaligraphyAnimationConfig = {
