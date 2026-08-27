@@ -4,10 +4,18 @@
 	import { ListCheck } from '@lucide/svelte';
 	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
+	import {
+		maxAnimationSpeedLevel,
+		minAnimationSpeedLevel,
+		type AnimationSpeedLevel,
+	} from '../../types/caligraphy';
 
-	const onAnimationSpeedChange = () => {
-		// TODO @tpriou save config in store then use it everywhere
-		throw new Error('not yet implemented');
+	const onAnimationSpeedChange = (value: number[]) => {
+		const level = value[0];
+		if (level === undefined || level < minAnimationSpeedLevel || level > maxAnimationSpeedLevel) {
+			throw new Error(`onAnimationSpeedChange: unexpected level ${level}`);
+		}
+		configStore.animationSpeed.set(level as AnimationSpeedLevel);
 	};
 
 	const wordList = $state(-5);
@@ -66,14 +74,12 @@
 							<Menu.Separator />
 
 							<Menu.Item value="animationSpeed">
-								<!-- TODO @tpriou remove disabled once implemented -->
 								<Slider
-									defaultValue={[3]}
-									min={0}
-									max={5}
+									defaultValue={[1]}
+									min={minAnimationSpeedLevel}
+									max={maxAnimationSpeedLevel}
 									step={1}
-									onValueChange={onAnimationSpeedChange}
-									disabled
+									onValueChange={(details) => onAnimationSpeedChange(details.value)}
 								>
 									<Slider.Label>Animation speed</Slider.Label>
 									<Slider.Control>

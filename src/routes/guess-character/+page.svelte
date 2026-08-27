@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
 	import { charactersWhitelist } from '$lib/stores/characters-whistelist';
+	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import type { Character, CharacterWhitelist } from '../../types/character';
 	import type { WordEntry } from '../../types/wordEntry';
@@ -46,6 +48,17 @@
 	});
 
 	let wordToGuess = $derived(characterToWordEntry(characterToGuess));
+
+	const caligraphyAnimationConfig = $derived.by(() => {
+		const level = $configStore.animationSpeedLevel;
+		return getCaligraphyAnimationConfig(level);
+	});
 </script>
 
-<WordGuesser characters={$charactersWhitelist} {wordToGuess} {onSuccess} {onError} />
+<WordGuesser
+	characters={$charactersWhitelist}
+	{wordToGuess}
+	{onSuccess}
+	{onError}
+	{caligraphyAnimationConfig}
+/>

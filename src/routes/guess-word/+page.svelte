@@ -8,6 +8,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { WordEntry } from '../../types/wordEntry';
 	import type { Character } from '../../types/character';
+	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
 
 	const charactersWhitelist = $derived.by(() => {
 		const charactersIds = $configStore.selectedHiragana.keys().toArray();
@@ -36,6 +37,17 @@
 		// TODO prioritize getMostForgettedCharacter
 		wordToGuess = pickRandomElement(words);
 	};
+
+	const caligraphyAnimationConfig = $derived.by(() => {
+		const level = $configStore.animationSpeedLevel;
+		return getCaligraphyAnimationConfig(level);
+	});
 </script>
 
-<WordGuesser characters={charactersWhitelist} {wordToGuess} {onSuccess} {onError} />
+<WordGuesser
+	characters={charactersWhitelist}
+	{wordToGuess}
+	{onSuccess}
+	{onError}
+	{caligraphyAnimationConfig}
+/>

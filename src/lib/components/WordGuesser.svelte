@@ -8,15 +8,17 @@
 	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onToucheMove, onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
+	import type { CaligraphyAnimationConfig } from '../../types/caligraphy';
 
 	type Props = {
 		characters: CharacterWhitelist;
 		wordToGuess: WordEntry;
 		onSuccess: (wordtoGuess: WordEntry) => void;
 		onError: (wordtoGuess: WordEntry) => void;
+		caligraphyAnimationConfig: CaligraphyAnimationConfig;
 	};
 
-	let { wordToGuess, characters, onSuccess, onError }: Props = $props();
+	let { wordToGuess, characters, onSuccess, onError, caligraphyAnimationConfig }: Props = $props();
 
 	const transitionRenderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // also resets caligraphy animations
 
@@ -139,6 +141,7 @@
 								<CharacterContainer
 									id={`${character.id}-${i}`}
 									delay={character.delay}
+									{...caligraphyAnimationConfig}
 									extraDelay={caligraphyRedrawKey ? 0 : outDuration + inDuration}
 									{character}
 								/>
