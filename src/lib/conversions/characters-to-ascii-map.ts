@@ -8,5 +8,6 @@ export const charactersToAsciiMap = (
 	for (const char of byId.values()) {
 		byAscii.set(char.ascii, char);
 	}
+
 	return byAscii;
 };

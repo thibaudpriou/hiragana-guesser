@@ -4,12 +4,23 @@ type CharacterProps = {
 	id: string;
 };
 
-export type Character = {
+type RegularCharacter = {
 	id: string;
-	name: string;
+	romanji: string;
 	nbStrokes: number;
 	component: Component<CharacterProps>;
 	ascii: string;
 };
+
+type SpecialCharacter = {
+	id: string;
+	romanji: null;
+	nbStrokes: number;
+	component: Component<CharacterProps>;
+	ascii: string;
+	type: 'sokuon'; // TODO handle other "changing sound" characters
+};
+
+export type Character = RegularCharacter | SpecialCharacter;
 
 export type CharacterWhitelist = Map<Character['id'], Character>;

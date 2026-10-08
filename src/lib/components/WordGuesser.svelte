@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import CharacterContainer from './CharacterContainer.svelte';
-	import type { CharacterWhitelist } from '../../types';
+	import type { Character, CharacterWhitelist } from '../../types';
 	import type { WordEntry } from '../../types/wordEntry';
 	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
 	import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
@@ -9,6 +9,7 @@
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onToucheMove, onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
 	import type { CaligraphyAnimationConfig } from '../../types/caligraphy';
+	import { charactersToRomanji } from '$lib/conversions/characters-to-romanji';
 
 	type Props = {
 		characters: CharacterWhitelist;
@@ -105,9 +106,9 @@
 
 	let delayedChars = $derived(getDelayedChars(chars));
 
-	// TODO add Sokuon さって＝s
-
 	let clientWidth = $state(0);
+
+	const romanji = $derived(charactersToRomanji(chars));
 </script>
 
 <div
@@ -154,8 +155,8 @@
 				</div>
 
 				<p class:text-container-row-hidden={displayMode === 'GUESS'}>
-					{#each delayedChars as char, i (char.name + i)}
-						<span class="name" in:fade={{ duration: 300 }}>{char.name}</span>
+					{#each romanji as romanjiItem, i (romanjiItem + i)}
+						<span class="name" in:fade={{ duration: 300 }}>{romanjiItem}</span>
 					{/each}
 				</p>
 

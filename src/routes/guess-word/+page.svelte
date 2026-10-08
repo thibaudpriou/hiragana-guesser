@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { hiragana } from '$lib/components/syllabaries/hiragana';
+	import { hiragana, hiraganaSokuon } from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
 	import { getWordsN5 } from '$lib/jplt/jplt-word-series';
 	import { pickRandomElement } from '$lib/math/pick-random-element';
@@ -18,6 +18,9 @@
 		for (const id of charactersIds) {
 			whitelist.set(id, hiragana[id]);
 		}
+
+		// TODO handle other "changing sounds" characters
+		whitelist.set(hiraganaSokuon['id'], hiraganaSokuon);
 
 		return whitelist;
 	});
