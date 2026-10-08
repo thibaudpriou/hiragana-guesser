@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import CharacterContainer from './CharacterContainer.svelte';
-	import type { Character, CharacterWhitelist } from '../../types';
+	import type { CharacterWhitelist } from '../../types';
 	import type { WordEntry } from '../../types/wordEntry';
 	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
 	import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';

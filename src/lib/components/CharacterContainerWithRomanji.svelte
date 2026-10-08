@@ -2,15 +2,16 @@
 	import type { Character } from '../../types';
 	import CharacterContainer from './CharacterContainer.svelte';
 
-	let { character, active = false } = $props<{
-		character: Character;
+	type Props = {
+		character: Extract<Character, { romanji: string }>;
 		active?: boolean;
-	}>();
+	};
+	let { character, active = false }: Props = $props();
 </script>
 
 <span class="container" class:active>
 	<CharacterContainer id={character.id} strokeDurationMs={0} {character} {active} />
-	<p class="romanji">{character.name}</p>
+	<p class="romanji">{character.romanji}</p>
 </span>
 
 <style>
