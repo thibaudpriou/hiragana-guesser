@@ -4,8 +4,11 @@
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
 	import { charactersWhitelist } from '$lib/stores/characters-whistelist';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
+	import { toaster } from '$lib/toaster/toaster';
 	import type { Character, CharacterWhitelist } from '../../types/character';
 	import type { WordEntry } from '../../types/wordEntry';
+
+	const SUCCESS_STREAK_TOAST_THRESHOLD = 5;
 
 	const getRandomCharacter = (
 		whitelist: CharacterWhitelist,
@@ -27,6 +30,7 @@
 	};
 
 	let characterToGuess = $state(getRandomCharacter($charactersWhitelist));
+	let toasterAlreadyShown = $state(false);
 
 	// reactivity on: characterToGuess
 	const onSuccess = $derived.by(() => {
@@ -34,6 +38,15 @@
 
 		return (word: WordEntry) => {
 			superMemo.guess.success(word.characterIds);
+			const minimumSuccessStreak = superMemo.guess.getMinimumSuccessStreak($charactersWhitelist);
+
+			if (!toasterAlreadyShown && minimumSuccessStreak >= SUCCESS_STREAK_TOAST_THRESHOLD) {
+				toasterAlreadyShown = true;
+				toaster.success({
+					title: `Each character has been successfully identified ${SUCCESS_STREAK_TOAST_THRESHOLD} times`,
+				});
+			}
+
 			characterToGuess = getRandomCharacter($charactersWhitelist, prev);
 		};
 	});
@@ -43,6 +56,7 @@
 
 		return (word: WordEntry) => {
 			superMemo.guess.error(word.characterIds);
+			toasterAlreadyShown = false;
 			characterToGuess = getRandomCharacter($charactersWhitelist, prev);
 		};
 	});

@@ -128,6 +128,21 @@ export const superMemo = {
 			const randIndex = Math.floor(Math.random() * ids.length);
 			return whitelist.get(ids[randIndex]) ?? null;
 		},
+		getMinimumSuccessStreak: (whitelist: CharacterWhitelist): number => {
+			let minSuccessStreak = 0;
+			const characterByScore = get(store).hiragana;
+			for (const characterId of whitelist.keys()) {
+				const scoreDetails = characterByScore.get(characterId);
+				if (scoreDetails?.successStreak === undefined) {
+					return 0;
+				}
+
+				if (scoreDetails.successStreak > minSuccessStreak) {
+					minSuccessStreak = scoreDetails.successStreak;
+				}
+			}
+			return minSuccessStreak;
+		},
 		/**
 		 * Update score details of every character after a successful guess
 		 */
