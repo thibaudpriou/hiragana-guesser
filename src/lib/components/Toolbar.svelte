@@ -2,7 +2,6 @@
 	import { Menu, Navigation, Portal, Slider } from '@skeletonlabs/skeleton-svelte';
 	import { ChessPawn, ChessQueen, SettingsIcon } from '@lucide/svelte';
 	import { ListCheck } from '@lucide/svelte';
-	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import {
 		maxAnimationSpeedLevel,
@@ -26,7 +25,6 @@
 	};
 
 	const handleReset = () => {
-		configStore.selectedHiragana.reset();
 		superMemo.guess.reset();
 	};
 </script>
@@ -127,9 +125,9 @@
 								<Navigation.TriggerAnchor
 									dir="horizontal"
 									onclick={handleReset}
-									aria-label="View character selection"
+									aria-label="Reset SuperMemo"
 								>
-									<Navigation.TriggerText>Reset configuration</Navigation.TriggerText>
+									<Navigation.TriggerText>Reset SuperMemo</Navigation.TriggerText>
 								</Navigation.TriggerAnchor>
 							</Menu.Item>
 						</Menu.Content>
