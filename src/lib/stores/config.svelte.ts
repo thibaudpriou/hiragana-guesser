@@ -7,44 +7,11 @@ type ConfigStore = {
 	selectedHiragana: SvelteSet<Character['id']>;
 };
 
-type LocalStorageConfig = {
-	selectedHiraganaIds: Character['id'][];
-};
-
-const LOCAL_STORAGE_KEY = 'config';
-
-const persistStoreValue = (value: ConfigStore) => {
-	const localValue: LocalStorageConfig = {
-		selectedHiraganaIds: value.selectedHiragana.keys().toArray(),
-	};
-	localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localValue));
-};
-
-const reset = (): ConfigStore => {
+const loadInitial = (): ConfigStore => {
 	const everyHiraganaIds = Object.values(hiragana).map((character) => character.id);
 	const value = {
 		selectedHiragana: new SvelteSet(everyHiraganaIds),
-	} as const;
-	persistStoreValue(value);
-	return value;
-};
-
-const loadInitial = (): ConfigStore => {
-	const localValueStringify = localStorage?.getItem(LOCAL_STORAGE_KEY);
-	let localValue: LocalStorageConfig | undefined;
-	if (localValueStringify) {
-		localValue = JSON.parse(localValueStringify) as LocalStorageConfig;
-		return {
-			selectedHiragana: new SvelteSet(localValue.selectedHiraganaIds),
-		};
-	}
-
-	// default value
-	const everyHiraganaIds = Object.values(hiragana).map((character) => character.id);
-	const value = {
-		selectedHiragana: new SvelteSet(localValue?.selectedHiraganaIds ?? everyHiraganaIds),
 	} satisfies ConfigStore;
-	persistStoreValue(value);
 	return value;
 };
 
@@ -54,11 +21,6 @@ const store = writable<ConfigStore>(initial);
 const update = (callback: Updater<ConfigStore>) => {
 	return store.update((last) => {
 		const value = callback(last);
-		const localValue: LocalStorageConfig = {
-			selectedHiraganaIds: value.selectedHiragana.keys().toArray(),
-		};
-		localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localValue));
-
 		return value;
 	});
 };
@@ -67,20 +29,31 @@ export const configStore = {
 	subscribe: store.subscribe,
 	update,
 	selectedHiragana: {
+		/** add new character to selection set */
 		add: (id: string) => {
 			return update((storeValue) => {
 				storeValue.selectedHiragana.add(id);
 				return storeValue;
 			});
 		},
+		/** remove character from selection set */
 		delete: (id: string) => {
 			return update((storeValue) => {
 				storeValue.selectedHiragana.delete(id);
 				return storeValue;
 			});
 		},
-		reset: () => {
-			return update(reset);
+		/** reset selection set */
+		reset: (shouldSelectAll: boolean = true) => {
+			return update((): ConfigStore => {
+				if (!shouldSelectAll) {
+					return { selectedHiragana: new SvelteSet() } as const;
+				}
+
+				const everyHiraganaIds = Object.values(hiragana).map((character) => character.id);
+				const value = { selectedHiragana: new SvelteSet(everyHiraganaIds) } as const;
+				return value;
+			});
 		},
 	},
 };

@@ -17,12 +17,21 @@
 	const isGroupActive = (characters: Character[]) => {
 		return characters.every((character) => !character || isActive(character.id));
 	};
-	const handleCharacterGroupClick = (characters: Character[]) => () => {
+	const handleCharacterGroupClick = (characters: Character[]) => (event: UIEvent) => {
+		if (event.detail > 1) {
+			return; // already handled by double click listener
+		}
+
 		if (isGroupActive(characters)) {
 			characters.forEach((item) => $configStore.selectedHiragana.delete(item.id));
 			return;
 		}
 		characters.forEach((item) => $configStore.selectedHiragana.add(item.id));
+	};
+
+	const handleCharacterGroupDblClick = (isCurrentlyActive: boolean) => () => {
+		const shouldSelectAll = isCurrentlyActive;
+		configStore.selectedHiragana.reset(shouldSelectAll);
 	};
 </script>
 
@@ -55,6 +64,7 @@
 			class="btn-icon"
 			class:preset-filled-secondary-500={active}
 			onclick={handleCharacterGroupClick(definedCharacters)}
+			ondblclick={handleCharacterGroupDblClick(active)}
 		>
 			{#if active}
 				<ListPlus />
