@@ -35,6 +35,9 @@
 				{#if character === null}
 					<!-- placeholder -->
 					<span></span>
+				{:else if character.romanji === null}
+					<!-- not supported -->
+					<span></span>
 				{:else}
 					<button
 						type="button"
