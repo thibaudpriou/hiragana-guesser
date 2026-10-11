@@ -3,7 +3,7 @@ import type { Character, CharacterWhitelist } from '../../types/character';
 import { SvelteDate, SvelteMap, SvelteSet } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
 import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
-import { computeSuperMemoScore } from '$lib/superMemo/super-memo';
+import { computeSuperMemoScore, computeWeightFromSuperMemoScore } from '$lib/superMemo/super-memo';
 
 /**
  * This file contains a simplified custom version of SuperMemo to track
@@ -83,50 +83,54 @@ export const superMemo = {
 	update,
 	guess: {
 		/**
-		 * Compute score for each hiragana character then returns the element
-		 * with the maximum score (or a random one between elements that share the maximum score)
+		 * Return a random element based on its score. The lower the score, the upper the
+		 * probability it will be picked
+		 *
 		 */
-		getMostForgettedCharacter: (
+		getRandomCharacter: (
 			whitelist: CharacterWhitelist,
 			excludeCharacterId?: Character['id']
 		): Character | null => {
 			const characterByScore = get(store).hiragana;
-			const scores: Array<{ id: Character['id']; score: number }> = characterByScore
+			const selectionItems: Array<{
+				id: Character['id'];
+				score: number;
+				accumulatedWeight: number;
+			}> = [];
+
+			const whitelistedCharacters = characterByScore
 				.entries()
 				.toArray()
-				.filter(([id]) => whitelist.has(id))
-				.map(([id, scoreDetails]) => {
-					return {
-						id,
-						score: computeSuperMemoScore(scoreDetails),
-					};
+				.filter(([id]) => whitelist.has(id));
+
+			if (whitelistedCharacters.length <= 1) {
+				return whitelist.get(whitelistedCharacters[0][0]) ?? null;
+			}
+
+			let totalWeight = 0;
+			for (const [id, scoreDetails] of whitelistedCharacters) {
+				if (id === excludeCharacterId) {
+					continue;
+				}
+				const score = computeSuperMemoScore(scoreDetails);
+				const weight = computeWeightFromSuperMemoScore(score);
+				selectionItems.push({
+					id,
+					score,
+					accumulatedWeight: totalWeight + weight,
 				});
-
-			if (scores.length <= 1) {
-				return whitelist.get(scores[0].id) ?? null;
+				totalWeight += weight;
 			}
 
-			const minIds = new SvelteSet<string>();
-			let minScore = 1;
-			for (const entry of scores) {
-				if (excludeCharacterId === entry.id) {
-					// skip this character to force a new guess each time
+			const rand = Math.floor(Math.random() * totalWeight);
+			for (const selectionItem of selectionItems) {
+				if (selectionItem.accumulatedWeight < rand) {
 					continue;
 				}
-				if (entry.score > minScore) {
-					continue;
-				}
-
-				if (entry.score < minScore) {
-					minScore = entry.score;
-					minIds.clear();
-				}
-				minIds.add(entry.id);
+				return whitelist.get(selectionItem.id) ?? null;
 			}
 
-			const ids = minIds.keys().toArray();
-			const randIndex = Math.floor(Math.random() * ids.length);
-			return whitelist.get(ids[randIndex]) ?? null;
+			return null;
 		},
 		getMinimumSuccessStreak: (whitelist: CharacterWhitelist): number => {
 			let minSuccessStreak = 0;

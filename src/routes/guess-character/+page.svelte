@@ -14,7 +14,7 @@
 		whitelist: CharacterWhitelist,
 		excludeCharacterId?: Character['id']
 	): Character => {
-		const character = superMemo.guess.getMostForgettedCharacter(whitelist, excludeCharacterId);
+		const character = superMemo.guess.getRandomCharacter(whitelist, excludeCharacterId);
 		if (!character) {
 			throw new Error('MostForgettedCharacter not found');
 		}
