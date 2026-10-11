@@ -1,62 +1,62 @@
 import type { Character } from '../../../../types';
-import * as A from './a.svelte';
-import * as CHI from './chi.svelte';
-import * as DA from './da.svelte';
-import * as DE from './de.svelte';
-import * as DO from './do.svelte';
-import * as E from './e.svelte';
-import * as GA from './ga.svelte';
-import * as GE from './ge.svelte';
-import * as GI from './gi.svelte';
-import * as GO from './go.svelte';
-import * as GU from './gu.svelte';
-import * as I from './i.svelte';
-import * as JI from './ji.svelte';
-import * as JI2 from './ji2.svelte';
-import * as KA from './ka.svelte';
-import * as KE from './ke.svelte';
-import * as KI from './ki.svelte';
-import * as KO from './ko.svelte';
-import * as KU from './ku.svelte';
-import * as NA from './na.svelte';
-import * as NE from './ne.svelte';
-import * as NI from './ni.svelte';
-import * as NO from './no.svelte';
-import * as NU from './nu.svelte';
-import * as O from './o.svelte';
-import * as SA from './sa.svelte';
-import * as SE from './se.svelte';
-import * as SHI from './shi.svelte';
-import * as SO from './so.svelte';
-import * as SU from './su.svelte';
-import * as TA from './ta.svelte';
-import * as TE from './te.svelte';
-import * as TO from './to.svelte';
-import * as TSU from './tsu.svelte';
-import * as U from './u.svelte';
-import * as ZA from './za.svelte';
-import * as ZE from './ze.svelte';
-import * as ZO from './zo.svelte';
-import * as ZU from './zu.svelte';
-import * as ZU2 from './zu2.svelte';
-import * as HA from './ha.svelte';
-import * as HI from './hi.svelte';
-import * as FU from './fu.svelte';
-import * as HE from './he.svelte';
-import * as HO from './ho.svelte';
-import * as MA from './ma.svelte';
-import * as MI from './mi.svelte';
-import * as MU from './mu.svelte';
-import * as ME from './me.svelte';
-import * as MO from './mo.svelte';
-import * as YA from './ya.svelte';
-import * as YU from './yu.svelte';
-import * as YO from './yo.svelte';
-import * as RA from './ra.svelte';
-import * as RI from './ri.svelte';
-import * as RU from './ru.svelte';
-import * as RE from './re.svelte';
-import * as RO from './ro.svelte';
+import * as A from './seion/a.svelte';
+import * as CHI from './seion/chi.svelte';
+import * as DA from './dakuon/da.svelte';
+import * as DE from './dakuon/de.svelte';
+import * as DO from './dakuon/do.svelte';
+import * as E from './seion/e.svelte';
+import * as GA from './dakuon/ga.svelte';
+import * as GE from './dakuon/ge.svelte';
+import * as GI from './dakuon/gi.svelte';
+import * as GO from './dakuon/go.svelte';
+import * as GU from './dakuon/gu.svelte';
+import * as I from './seion/i.svelte';
+import * as JI from './dakuon/ji.svelte';
+import * as JI2 from './dakuon/ji2.svelte';
+import * as KA from './seion/ka.svelte';
+import * as KE from './seion/ke.svelte';
+import * as KI from './seion/ki.svelte';
+import * as KO from './seion/ko.svelte';
+import * as KU from './seion/ku.svelte';
+import * as NA from './seion/na.svelte';
+import * as NE from './seion/ne.svelte';
+import * as NI from './seion/ni.svelte';
+import * as NO from './seion/no.svelte';
+import * as NU from './seion/nu.svelte';
+import * as O from './seion/o.svelte';
+import * as SA from './seion/sa.svelte';
+import * as SE from './seion/se.svelte';
+import * as SHI from './seion/shi.svelte';
+import * as SO from './seion/so.svelte';
+import * as SU from './seion/su.svelte';
+import * as TA from './seion/ta.svelte';
+import * as TE from './seion/te.svelte';
+import * as TO from './seion/to.svelte';
+import * as TSU from './seion/tsu.svelte';
+import * as U from './seion/u.svelte';
+import * as ZA from './dakuon/za.svelte';
+import * as ZE from './dakuon/ze.svelte';
+import * as ZO from './dakuon/zo.svelte';
+import * as ZU from './dakuon/zu.svelte';
+import * as ZU2 from './dakuon/zu2.svelte';
+import * as HA from './seion/ha.svelte';
+import * as HI from './seion/hi.svelte';
+import * as FU from './seion/fu.svelte';
+import * as HE from './seion/he.svelte';
+import * as HO from './seion/ho.svelte';
+import * as MA from './seion/ma.svelte';
+import * as MI from './seion/mi.svelte';
+import * as MU from './seion/mu.svelte';
+import * as ME from './seion/me.svelte';
+import * as MO from './seion/mo.svelte';
+import * as YA from './seion/ya.svelte';
+import * as YU from './seion/yu.svelte';
+import * as YO from './seion/yo.svelte';
+import * as RA from './seion/ra.svelte';
+import * as RI from './seion/ri.svelte';
+import * as RU from './seion/ru.svelte';
+import * as RE from './seion/re.svelte';
+import * as RO from './seion/ro.svelte';
 import * as SOKUON from './sokuon.svelte';
 import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 import { SvelteMap } from 'svelte/reactivity';
@@ -74,9 +74,9 @@ export const hiraganaSokuon = {
 	id: 'SPECIAL_SOKUON',
 	ascii: 'っ',
 	type: 'sokuon',
-} as const;
+} satisfies Character;
 
-export const hiragana: Record<string, Character> = {
+export const hiragana = {
 	A: {
 		...formatCharacter(A),
 		romanji: 'a',
@@ -489,7 +489,7 @@ export const hiragana: Record<string, Character> = {
 		ascii: 'ず',
 	},
 	SPECIAL_SOKUON: hiraganaSokuon,
-} as const;
+} satisfies Record<string, Character>;
 
 const hiraganaById = new SvelteMap(Object.entries(hiragana));
 

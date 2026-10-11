@@ -127,6 +127,7 @@
 		hiragana.RI,
 		hiragana.RO,
 	])}
+	{@render ControlledCharacterGroup([hiragana.WA, null, hiragana.WO, null, hiragana.N])}
 
 	<span class="vr"></span>
 
