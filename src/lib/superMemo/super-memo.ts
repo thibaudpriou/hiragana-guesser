@@ -16,8 +16,8 @@ const getStreakScore = (successStreak: number) => {
  *
  * This feature aims at finding the most forgetted character.
  */
-export const computeSuperMemoScore = (details: HiraganaScoreDetails): number => {
-	if (details.successStreak === 0) {
+export const computeSuperMemoScore = (details?: HiraganaScoreDetails): number => {
+	if (details === undefined || details.successStreak === 0) {
 		return 0;
 	}
 

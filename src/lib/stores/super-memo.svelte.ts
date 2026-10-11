@@ -1,6 +1,6 @@
 import { get, writable, type Updater } from 'svelte/store';
 import type { Character, CharacterWhitelist } from '../../types/character';
-import { SvelteDate, SvelteMap, SvelteSet } from 'svelte/reactivity';
+import { SvelteDate, SvelteMap } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
 import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
 import { computeSuperMemoScore, computeWeightFromSuperMemoScore } from '$lib/superMemo/super-memo';
@@ -98,17 +98,22 @@ export const superMemo = {
 				accumulatedWeight: number;
 			}> = [];
 
-			const whitelistedCharacters = characterByScore
+			const whitelistedCharacters = whitelist
 				.entries()
 				.toArray()
-				.filter(([id]) => whitelist.has(id));
+				.map(([id]) => {
+					return {
+						id,
+						scoreDetails: characterByScore.get(id),
+					};
+				});
 
-			if (whitelistedCharacters.length <= 1) {
-				return whitelist.get(whitelistedCharacters[0][0]) ?? null;
+			if (whitelistedCharacters.length == 0) {
+				return null;
 			}
 
 			let totalWeight = 0;
-			for (const [id, scoreDetails] of whitelistedCharacters) {
+			for (const { id, scoreDetails } of whitelistedCharacters) {
 				if (id === excludeCharacterId) {
 					continue;
 				}
