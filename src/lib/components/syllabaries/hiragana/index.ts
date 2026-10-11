@@ -57,6 +57,9 @@ import * as RI from './seion/ri.svelte';
 import * as RU from './seion/ru.svelte';
 import * as RE from './seion/re.svelte';
 import * as RO from './seion/ro.svelte';
+import * as WA from './seion/wa.svelte';
+import * as WO from './seion/wo.svelte';
+import * as N from './seion/n.svelte';
 import * as SOKUON from './sokuon.svelte';
 import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 import { SvelteMap } from 'svelte/reactivity';
@@ -378,6 +381,27 @@ export const hiragana = {
 		nbStrokes: 1,
 		id: 'RO',
 		ascii: 'ろ',
+	},
+	WA: {
+		...formatCharacter(WA),
+		romanji: 'wa',
+		nbStrokes: 2,
+		id: 'WA',
+		ascii: 'わ',
+	},
+	WO: {
+		...formatCharacter(WO),
+		romanji: 'wo',
+		nbStrokes: 3,
+		id: 'WO',
+		ascii: 'を',
+	},
+	N: {
+		...formatCharacter(N),
+		romanji: 'n',
+		nbStrokes: 1,
+		id: 'N',
+		ascii: 'ん',
 	},
 	// with gokuen
 	DA: {
