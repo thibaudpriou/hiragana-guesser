@@ -118,7 +118,7 @@ export const superMemo = {
 					continue;
 				}
 				const score = computeSuperMemoScore(scoreDetails);
-				const weight = computeWeightFromSuperMemoScore(score);
+				const weight = computeWeightFromSuperMemoScore(score, whitelistedCharacters.length);
 				selectionItems.push({
 					id,
 					score,

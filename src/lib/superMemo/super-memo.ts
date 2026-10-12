@@ -30,9 +30,15 @@ export const computeSuperMemoScore = (details?: HiraganaScoreDetails): number =>
 /**
  * Returns an integer to be used as weight to randomly select a character
  * - main: 1 => long-term memory
- * - man: 10 => never seen
+ * - man: X => never seen
+ *
+ * where X is the total number of characters in the selection set (see below)
+ *
+ * Worst case scenario: 1 character not known, all the others (X) fully remembered
+ * - probability of picking the unknown character: 0.5
+ * - probability of picking another character: 0.5 * 1/X
  */
-export const computeWeightFromSuperMemoScore = (normalizedScore: number) => {
+export const computeWeightFromSuperMemoScore = (normalizedScore: number, nbCharacters: number) => {
 	const inverted = 1 - normalizedScore;
-	return Math.ceil(inverted * 10);
+	return Math.ceil(inverted * nbCharacters);
 };
