@@ -146,7 +146,7 @@ export const superMemo = {
 					return 0;
 				}
 
-				if (scoreDetails.successStreak > minSuccessStreak) {
+				if (scoreDetails.successStreak < minSuccessStreak) {
 					minSuccessStreak = scoreDetails.successStreak;
 				}
 			}
