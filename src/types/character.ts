@@ -4,7 +4,7 @@ type CharacterProps = {
 	id: string;
 };
 
-type RegularCharacter = {
+export type RegularCharacter = {
 	id: string;
 	romanji: string;
 	nbStrokes: number;
@@ -12,7 +12,7 @@ type RegularCharacter = {
 	ascii: string;
 };
 
-type SpecialCharacter = {
+export type SpecialCharacter = {
 	id: string;
 	romanji: null;
 	nbStrokes: number;

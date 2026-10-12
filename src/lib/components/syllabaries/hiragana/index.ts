@@ -63,21 +63,13 @@ import * as N from './seion/n.svelte';
 import * as SOKUON from './sokuon.svelte';
 import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 import { SvelteMap } from 'svelte/reactivity';
+import type { RegularCharacter, SpecialCharacter } from '../../../../types/character';
 
 const formatCharacter = (raw: { default: unknown }): Pick<Character, 'component'> => {
 	return {
 		component: raw.default as Character['component'],
 	};
 };
-
-export const hiraganaSokuon = {
-	...formatCharacter(SOKUON),
-	romanji: null,
-	nbStrokes: 1,
-	id: 'SPECIAL_SOKUON',
-	ascii: 'っ',
-	type: 'sokuon',
-} satisfies Character;
 
 export const hiragana = {
 	A: {
@@ -512,9 +504,22 @@ export const hiragana = {
 		id: 'ZU',
 		ascii: 'ず',
 	},
-	SPECIAL_SOKUON: hiraganaSokuon,
-} satisfies Record<string, Character>;
+} satisfies Record<RegularCharacter['id'], RegularCharacter>;
 
-const hiraganaById = new SvelteMap(Object.entries(hiragana));
+export const hiraganaSpecials = {
+	SOKUON: {
+		...formatCharacter(SOKUON),
+		romanji: null,
+		nbStrokes: 1,
+		id: 'SPECIAL_SOKUON',
+		ascii: 'っ',
+		type: 'sokuon',
+	},
+} satisfies Record<SpecialCharacter['id'], SpecialCharacter>;
+
+const hiraganaById = new SvelteMap([
+	...Object.entries(hiragana as Record<Character['id'], Character>),
+	...Object.entries(hiraganaSpecials as Record<Character['id'], Character>),
+]);
 
 export const hiraganaByAscii = charactersToAsciiMap(hiraganaById);

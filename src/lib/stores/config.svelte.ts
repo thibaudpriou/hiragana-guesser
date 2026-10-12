@@ -1,14 +1,14 @@
 import { writable, type Updater } from 'svelte/store';
-import type { Character } from '../../types/character';
 import { SvelteSet } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
+import type { Character } from '../../types/character';
 
 type ConfigStore = {
 	selectedHiragana: SvelteSet<Character['id']>;
 };
 
 const loadInitial = (): ConfigStore => {
-	const everyHiraganaIds = Object.values(hiragana).map((character) => character.id);
+	const everyHiraganaIds = Object.keys(hiragana);
 	const value = {
 		selectedHiragana: new SvelteSet(everyHiraganaIds),
 	} satisfies ConfigStore;
