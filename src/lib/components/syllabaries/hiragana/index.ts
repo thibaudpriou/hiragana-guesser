@@ -60,6 +60,16 @@ import * as RO from './seion/ro.svelte';
 import * as WA from './seion/wa.svelte';
 import * as WO from './seion/wo.svelte';
 import * as N from './seion/n.svelte';
+import * as BA from './dakuon/ba.svelte';
+import * as BE from './dakuon/be.svelte';
+import * as BI from './dakuon/bi.svelte';
+import * as BO from './dakuon/bo.svelte';
+import * as BU from './dakuon/bu.svelte';
+import * as PA from './dakuon/pa.svelte';
+import * as PE from './dakuon/pe.svelte';
+import * as PI from './dakuon/pi.svelte';
+import * as PO from './dakuon/po.svelte';
+import * as PU from './dakuon/pu.svelte';
 import * as SOKUON from './sokuon.svelte';
 import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 import { SvelteMap } from 'svelte/reactivity';
@@ -503,6 +513,76 @@ export const hiragana = {
 		nbStrokes: 4,
 		id: 'ZU',
 		ascii: 'ず',
+	},
+	BA: {
+		...formatCharacter(BA),
+		romanji: 'ba',
+		nbStrokes: 0,
+		id: 'BA',
+		ascii: 'ば',
+	},
+	BI: {
+		...formatCharacter(BI),
+		romanji: 'bi',
+		nbStrokes: 0,
+		id: 'BI',
+		ascii: 'び',
+	},
+	BU: {
+		...formatCharacter(BU),
+		romanji: 'bu',
+		nbStrokes: 0,
+		id: 'BU',
+		ascii: 'ぶ',
+	},
+	BE: {
+		...formatCharacter(BE),
+		romanji: 'be',
+		nbStrokes: 0,
+		id: 'BE',
+		ascii: 'べ',
+	},
+	BO: {
+		...formatCharacter(BO),
+		romanji: 'bo',
+		nbStrokes: 0,
+		id: 'BO',
+		ascii: 'ぼ',
+	},
+	PA: {
+		...formatCharacter(PA),
+		romanji: 'pa',
+		nbStrokes: 0,
+		id: 'PA',
+		ascii: 'ぱ',
+	},
+	PI: {
+		...formatCharacter(PI),
+		romanji: 'pi',
+		nbStrokes: 0,
+		id: 'PI',
+		ascii: 'ぴ',
+	},
+	PU: {
+		...formatCharacter(PU),
+		romanji: 'pu',
+		nbStrokes: 0,
+		id: 'PU',
+		ascii: 'ぷ',
+	},
+	PE: {
+		...formatCharacter(PE),
+		romanji: 'pe',
+		nbStrokes: 0,
+		id: 'PE',
+		ascii: 'ぺ',
+	},
+	PO: {
+		...formatCharacter(PO),
+		romanji: 'po',
+		nbStrokes: 0,
+		id: 'PO',
+		ascii: 'ぽ',
 	},
 } satisfies Record<RegularCharacter['id'], RegularCharacter>;
 

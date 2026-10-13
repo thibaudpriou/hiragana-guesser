@@ -152,6 +152,20 @@
 		hiragana.DE,
 		hiragana.DO,
 	])}
+	{@render ControlledCharacterGroup([
+		hiragana.BA,
+		hiragana.BI,
+		hiragana.BU,
+		hiragana.BE,
+		hiragana.BO,
+	])}
+	{@render ControlledCharacterGroup([
+		hiragana.PA,
+		hiragana.PI,
+		hiragana.PU,
+		hiragana.PE,
+		hiragana.PO,
+	])}
 </div>
 
 <style>
