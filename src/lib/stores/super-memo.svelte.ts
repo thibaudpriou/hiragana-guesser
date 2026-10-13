@@ -138,10 +138,11 @@ export const superMemo = {
 			return null;
 		},
 		getMinimumSuccessStreak: (whitelist: CharacterWhitelist): number => {
-			let minSuccessStreak = 0;
+			let minSuccessStreak = Number.MAX_SAFE_INTEGER;
 			const characterByScore = get(store).hiragana;
 			for (const characterId of whitelist.keys()) {
 				const scoreDetails = characterByScore.get(characterId);
+
 				if (scoreDetails?.successStreak === undefined) {
 					return 0;
 				}
@@ -150,6 +151,7 @@ export const superMemo = {
 					minSuccessStreak = scoreDetails.successStreak;
 				}
 			}
+
 			return minSuccessStreak;
 		},
 		/**

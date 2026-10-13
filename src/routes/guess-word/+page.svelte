@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { hiragana, hiraganaSpecials } from '$lib/components/syllabaries/hiragana';
+	import { hiragana, hiraganaSpecials, isHiraganaKey } from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
 	import { getWordsN5 } from '$lib/jplt/jplt-word-series';
 	import { pickRandomElement } from '$lib/math/pick-random-element';
@@ -10,10 +10,6 @@
 	import type { Character } from '../../types/character';
 	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
-
-	function isHiraganaKey(key: string, obj: typeof hiragana): key is keyof typeof hiragana {
-		return key in obj;
-	}
 
 	const charactersWhitelist = $derived.by(() => {
 		const charactersIds = $configStore.selectedHiragana.keys().toArray();

@@ -523,3 +523,7 @@ const hiraganaById = new SvelteMap([
 ]);
 
 export const hiraganaByAscii = charactersToAsciiMap(hiraganaById);
+
+export const isHiraganaKey = (key: string, obj: typeof hiragana): key is keyof typeof hiragana => {
+	return key in obj;
+};

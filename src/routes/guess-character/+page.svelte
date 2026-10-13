@@ -16,7 +16,7 @@
 	): Character => {
 		const character = superMemo.guess.getRandomCharacter(whitelist, excludeCharacterId);
 		if (!character) {
-			throw new Error('MostForgettedCharacter not found');
+			throw new Error('getRandomCharacter did not return any character');
 		}
 		return { ...character }; // clone for reactivity
 	};
