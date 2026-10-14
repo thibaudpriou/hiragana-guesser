@@ -118,9 +118,9 @@
 								<Navigation.TriggerAnchor
 									dir="horizontal"
 									onclick={handleReset}
-									aria-label="Reset SuperMemo"
+									aria-label="Reset adaptative selection"
 								>
-									<Navigation.TriggerText>Reset SuperMemo</Navigation.TriggerText>
+									<Navigation.TriggerText>Reset adaptative selection</Navigation.TriggerText>
 								</Navigation.TriggerAnchor>
 							</Menu.Item>
 						</Menu.Content>

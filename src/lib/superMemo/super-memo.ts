@@ -1,5 +1,7 @@
 import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
 
+// TODO @tpriou: remove mentions of SuperMemo algorithm as it's not actually implemented
+
 /**
  * Returns a normalized score representing how known is a character.
  * note: Bezier score function

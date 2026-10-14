@@ -8,6 +8,8 @@ import { computeSuperMemoScore, computeWeightFromSuperMemoScore } from '$lib/sup
 /**
  * This file contains a simplified custom version of SuperMemo to track
  * characters' learning
+ *
+ * TODO @tpriou: remove mentions of SuperMemo algorithm as it's not actually implemented
  */
 
 type SuperMemoStore = {
