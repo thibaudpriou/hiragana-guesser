@@ -12,13 +12,9 @@
 />
 <defs>
 	<mask id={`${id}-mask-1`} style:--stroke-idx="0">
-		<path
-			pathLength="2000"
-			clip-path="url(#z12356c1)"
-			d="M 95,249 149,282 222,589 272,704 369,788 372,702 406,628"
-		/></mask
-	>
+		<path pathLength="2000" d="M 95,249 149,282 222,589 272,704 369,788 372,702 406,628" />
+	</mask>
 	<mask id={`${id}-mask-2`} style:--stroke-idx="1">
-		<path pathLength="2000" clip-path="url(#z12356c2)" d="M 678,273 754,342 836,472 867,639" />
+		<path pathLength="2000" d="M 678,273 754,342 836,472 867,639" />
 	</mask>
 </defs>
