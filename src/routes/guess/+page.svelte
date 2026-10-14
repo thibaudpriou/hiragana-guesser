@@ -7,17 +7,17 @@
 
 <div class="container">
 	<a class="nav-link" href={resolve('/guess-character')}>
-		<button class="btn preset-filled button-link">
+		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 			<span class="container-hiragana">
 				<CharacterContainer
 					id="ka0"
 					character={hiragana.KA}
-					active
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
+					inheritColors
 				/>
 			</span>
-			<span class="container-arrow">
+			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
 			</span>
 			<span class="container-romanji">{hiragana.KA.romanji}</span>
@@ -25,48 +25,51 @@
 	</a>
 
 	<a class="nav-link" href={resolve('/guess-romanji')}>
-		<button class="btn preset-filled button-link">
+		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 			<span class="container-romanji">{hiragana.WA.romanji}</span>
-			<span class="container-arrow">
+			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
 			</span>
 			<span class="container-hiragana">
 				<CharacterContainer
 					id="wa1"
 					character={hiragana.WA}
-					active
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
+					inheritColors
 				/>
 			</span>
 		</button>
 	</a>
 	<a class="nav-link" href={resolve('/guess-word')}>
-		<button class="btn preset-filled button-link" style:--nb-characters={3}>
+		<button
+			class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link"
+			style:--nb-characters={3}
+		>
 			<span class="container-hiragana">
 				<CharacterContainer
 					id="ka2"
 					character={hiragana.KA}
-					active
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
+					inheritColors
 				/>
 				<CharacterContainer
 					id="wa1"
 					character={hiragana.WA}
-					active
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
+					inheritColors
 				/>
 				<CharacterContainer
 					id="i1"
 					character={hiragana.I}
-					active
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
+					inheritColors
 				/>
 			</span>
-			<span class="container-arrow">
+			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
 			</span>
 			<span class="container-romanji"

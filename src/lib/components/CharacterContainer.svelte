@@ -25,6 +25,7 @@
 		};
 		extraDelay?: number;
 		active?: boolean;
+		inheritColors?: boolean;
 	};
 	let {
 		viewBox = '0 0 1024 1024',
@@ -36,6 +37,7 @@
 		character,
 		id,
 		active = false,
+		inheritColors,
 	}: Props = $props();
 
 	const delayNbCharacterSpacing = $derived(delay?.nbCharacters ?? 0);
@@ -63,6 +65,7 @@
 	height="100%"
 	class="svg-container"
 	class:active
+	class:inheritColors
 	style:--character-delay-ms={`${delayMs}ms`}
 	style:--stroke-duration-ms={`${strokeDurationMs}ms`}
 	style:--stroke-spacing-ms={`${strokeSpacingMs}ms`}
@@ -78,6 +81,10 @@
 
 	.svg-container.active {
 		fill: light-dark(var(--color-surface-50), var(--color-surface-950));
+	}
+
+	.svg-container.inheritColors {
+		fill: inherit;
 	}
 
 	.svg-container :global(mask > path) {
