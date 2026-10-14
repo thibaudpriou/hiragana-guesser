@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Menu, Navigation, Portal, Slider } from '@skeletonlabs/skeleton-svelte';
-	import { ChessPawn, ChessQueen, SettingsIcon } from '@lucide/svelte';
+	import { Gamepad2, SettingsIcon } from '@lucide/svelte';
 	import { ListCheck } from '@lucide/svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import {
@@ -31,17 +31,10 @@
 
 <div>
 	<Navigation layout="bar">
-		<Navigation.Menu class="grid grid-cols-4 gap-2">
-			<Navigation.TriggerAnchor
-				href="/guess-character"
-				aria-label="Train single hiragana characters"
-			>
-				<ChessPawn />
-				<Navigation.TriggerText>Individual</Navigation.TriggerText>
-			</Navigation.TriggerAnchor>
-			<Navigation.TriggerAnchor href="/guess-word" aria-label="Train hiragana words">
-				<ChessQueen />
-				<Navigation.TriggerText>Words</Navigation.TriggerText>
+		<Navigation.Menu class="grid grid-cols-3 gap-2">
+			<Navigation.TriggerAnchor href="/guess" aria-label="Guess characters">
+				<Gamepad2 />
+				<Navigation.TriggerText>Play</Navigation.TriggerText>
 			</Navigation.TriggerAnchor>
 			<Navigation.TriggerAnchor href="/list" aria-label="View character selection">
 				<ListCheck />

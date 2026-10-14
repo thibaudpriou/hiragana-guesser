@@ -1,5 +1,5 @@
 <script lang="ts">
 	import { redirect } from '@sveltejs/kit';
 
-	redirect(308, '/guess-character');
+	redirect(302, '/guess');
 </script>
