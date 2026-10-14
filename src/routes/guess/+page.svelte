@@ -25,7 +25,8 @@
 	</a>
 
 	<a class="nav-link" href={resolve('/guess-romanji')}>
-		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
+		<!-- TODO.romanji @tpriou remove disabled once implemented -->
+		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link" disabled>
 			<span class="container-romanji">{hiragana.WA.romanji}</span>
 			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
