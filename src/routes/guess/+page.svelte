@@ -10,8 +10,8 @@
 		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 			<span class="container-hiragana">
 				<CharacterContainer
-					id="ka0"
-					character={hiragana.KA}
+					id="ma0"
+					character={hiragana.MA}
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
 					inheritColors
@@ -20,21 +20,21 @@
 			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
 			</span>
-			<span class="container-romanji">{hiragana.KA.romanji}</span>
+			<span class="container-romanji">{hiragana.MA.romanji}</span>
 		</button>
 	</a>
 
 	<a class="nav-link" href={resolve('/guess-romanji')}>
 		<!-- TODO.romanji @tpriou remove disabled once implemented -->
 		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link" disabled>
-			<span class="container-romanji">{hiragana.WA.romanji}</span>
+			<span class="container-romanji">{hiragana.NA.romanji}</span>
 			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
 			</span>
 			<span class="container-hiragana">
 				<CharacterContainer
-					id="wa1"
-					character={hiragana.WA}
+					id="na1"
+					character={hiragana.NA}
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
 					inheritColors
@@ -49,22 +49,22 @@
 		>
 			<span class="container-hiragana">
 				<CharacterContainer
-					id="ka2"
-					character={hiragana.KA}
+					id="ma2"
+					character={hiragana.MA}
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
 					inheritColors
 				/>
 				<CharacterContainer
-					id="wa1"
-					character={hiragana.WA}
+					id="na2"
+					character={hiragana.NA}
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
 					inheritColors
 				/>
 				<CharacterContainer
-					id="i1"
-					character={hiragana.I}
+					id="bu1"
+					character={hiragana.BU}
 					strokeDurationMs={0}
 					strokeSpacingMs={0}
 					inheritColors
@@ -74,7 +74,7 @@
 				<ArrowRight class="size-full" />
 			</span>
 			<span class="container-romanji"
-				>{hiragana.KA.romanji}{hiragana.WA.romanji}{hiragana.I.romanji}</span
+				>{hiragana.MA.romanji}{hiragana.NA.romanji}{hiragana.BU.romanji}</span
 			>
 		</button>
 	</a>
