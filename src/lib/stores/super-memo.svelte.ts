@@ -4,6 +4,7 @@ import { SvelteDate, SvelteMap } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
 import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
 import { computeSuperMemoScore, computeWeightFromSuperMemoScore } from '$lib/superMemo/super-memo';
+import { shuffleArray } from '$lib/helpers/shuffleArray';
 
 /**
  * This file contains a simplified custom version of SuperMemo to track
@@ -89,7 +90,7 @@ export const superMemo = {
 		 * probability it will be picked
 		 *
 		 */
-		getRandomCharacter: (
+		getPseudoRandomCharacter: (
 			whitelist: CharacterWhitelist,
 			excludeCharacterId?: Character['id']
 		): Character | null => {
@@ -138,6 +139,31 @@ export const superMemo = {
 			}
 
 			return null;
+		},
+
+		/**
+		 * Return an array of truly random elements, independent of its score
+		 */
+		getRandomCharacters: (
+			whitelist: CharacterWhitelist,
+			nbElements: number,
+			excludeCharacterId?: Character['id']
+		): Character[] => {
+			const whitelistedCharactersId = whitelist
+				.keys()
+				.toArray()
+				.filter((id) => id !== excludeCharacterId);
+
+			const shuffled = shuffleArray(whitelistedCharactersId);
+
+			return shuffled.slice(0, nbElements).map((id) => {
+				const element = whitelist.get(id);
+
+				if (!element) {
+					throw new Error(`Character id not in whitelist: ${id}`);
+				}
+				return element;
+			});
 		},
 		getMinimumSuccessStreak: (whitelist: CharacterWhitelist): number => {
 			let minSuccessStreak = Number.MAX_SAFE_INTEGER;

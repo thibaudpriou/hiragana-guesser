@@ -14,9 +14,9 @@
 		whitelist: CharacterWhitelist,
 		excludeCharacterId?: Character['id']
 	): Character => {
-		const character = superMemo.guess.getRandomCharacter(whitelist, excludeCharacterId);
+		const character = superMemo.guess.getPseudoRandomCharacter(whitelist, excludeCharacterId);
 		if (!character) {
-			throw new Error('getRandomCharacter did not return any character');
+			throw new Error('getPseudoRandomCharacter did not return any character');
 		}
 		return { ...character }; // clone for reactivity
 	};

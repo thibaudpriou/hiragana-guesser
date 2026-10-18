@@ -38,6 +38,9 @@
 	let isError = $state(false); // is used for out animation direction
 	let currentSwipe = $state<'RIGHT' | 'LEFT' | null>(null);
 
+	const resetDisplayMode = () => {
+		displayMode = 'GUESS';
+	};
 	const preventBubble = (cb: () => void) => (event: Event) => {
 		event.preventDefault();
 		event.stopPropagation();
@@ -48,14 +51,14 @@
 		isError = false;
 
 		onSuccess(wordToGuess);
-		displayMode = 'GUESS';
+		resetDisplayMode();
 	};
 	const handleError = () => {
 		isError = true;
 
 		// TODO @tpriou display other controls to input errors?
 		onError(wordToGuess);
-		displayMode = 'GUESS';
+		resetDisplayMode();
 	};
 
 	const handleContainerClick = () => {
@@ -141,7 +144,7 @@
 				<div>
 					{#key caligraphyRedrawKey}
 						{#each delayedChars as character, i (character.id + i)}
-							<span class="item">
+							<span class="character-item">
 								<CharacterContainer
 									id={`${character.id}-${i}`}
 									delay={character.delay}
@@ -156,7 +159,7 @@
 
 				<p class:text-container-row-hidden={displayMode === 'GUESS'}>
 					{#each romanji as romanjiItem, i (romanjiItem + i)}
-						<span class="name" in:fade={{ duration: 300 }}>{romanjiItem}</span>
+						<span class="romanji" in:fade={{ duration: 300 }}>{romanjiItem}</span>
 					{/each}
 				</p>
 
@@ -243,7 +246,7 @@
 		opacity: 0;
 	}
 
-	.item {
+	.character-item {
 		display: inline-flex;
 		width: var(--size);
 		height: var(--size);
@@ -251,7 +254,7 @@
 		justify-content: center;
 	}
 
-	.name {
+	.romanji {
 		display: inline-flex;
 		user-select: none;
 		font-size: var(--size);
