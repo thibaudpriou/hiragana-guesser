@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade, fly } from 'svelte/transition';
 	import { shuffleArray } from '$lib/helpers/shuffleArray';
 	import type { Character } from '../../types';
 	import CharacterContainer from './CharacterContainer.svelte';
@@ -10,6 +11,8 @@
 	};
 
 	let { guessOptions, onSuccess, onError }: Props = $props();
+
+	const transitionRenderKey = $derived(`${guessOptions.character.id}-${Math.random()}`);
 
 	type DisplayMode = 'GUESS' | 'SOLUTION';
 	let displayMode = $state<DisplayMode>('GUESS');
@@ -30,7 +33,6 @@
 			onSuccess(guessOptions.character.id);
 		}
 		resetDisplayMode();
-		guessErrorId = null;
 	};
 
 	let choices = $derived.by(() => {
@@ -40,9 +42,8 @@
 	const onChoiceClick = (id: Character['id']) => {
 		displayMode = 'SOLUTION';
 		if (guessOptions.character.id === id) {
-			// TODO display success mode
+			guessErrorId = null;
 		} else {
-			// TODO display success mode + error
 			guessErrorId = id;
 		}
 	};
@@ -68,58 +69,79 @@
 
 		return id === guessOptions.character.id;
 	};
+
+	let clientWidth = $state(0);
 </script>
 
-<div class="romanji-guesser">
-	<div
-		class="guess-container"
-		onclick={handleGuessContainerClick}
-		onkeydown={handleGuessContainerClick}
-		tabindex="0"
-		role="button"
-	>
-		<span class="romanji">{guessOptions.character.romanji}</span>
-	</div>
-
-	<div class="container-choices">
-		{#each choices as character, i (character.id + i)}
-			{@const id = character.id}
+<div class="romanji-guesser" bind:clientWidth>
+	{#key transitionRenderKey}
+		<!-- TODO in/out animation may not be relevant in this component  -->
+		{const outDuration = 250}
+		{const inDuration = 100}
+		<div
+			class="container-transition"
+			out:fly={{
+				x: guessErrorId !== null ? -clientWidth / 2 : clientWidth / 2,
+				duration: outDuration,
+				opacity: 0,
+			}}
+			in:fade={{ delay: outDuration, duration: inDuration }}
+		>
 			<div
-				class="character-item"
-				class:preset-filled-surface-300-700={isItemViewDefault(id)}
-				class:fill-surface-950-50={isItemViewDefault(id)}
-				class:preset-filled-error-300-700={isItemViewError(id)}
-				class:fill-error-950-50={isItemViewError(id)}
-				class:preset-filled-success-300-700={isItemViewSuccess(id)}
-				class:fill-success-950-50={isItemViewSuccess(id)}
-				onclick={() => onChoiceClick(id)}
-				onkeydown={() => onChoiceClick(id)}
+				class="container-guess"
+				onclick={handleGuessContainerClick}
+				onkeydown={handleGuessContainerClick}
 				tabindex="0"
 				role="button"
 			>
-				<CharacterContainer
-					id={`${character.id}-${i}`}
-					{character}
-					inheritColors
-					strokeDurationMs={0}
-					characterSpacingMs={0}
-					strokeSpacingMs={0}
-				/>
+				<span class="romanji">{guessOptions.character.romanji}</span>
 			</div>
-		{/each}
-	</div>
+
+			<div class="container-choices">
+				{#each choices as character, i (character.id + i)}
+					{@const id = character.id}
+					<div
+						class="character-item"
+						class:preset-filled-surface-300-700={isItemViewDefault(id)}
+						class:fill-surface-950-50={isItemViewDefault(id)}
+						class:preset-filled-error-300-700={isItemViewError(id)}
+						class:fill-error-950-50={isItemViewError(id)}
+						class:preset-filled-success-300-700={isItemViewSuccess(id)}
+						class:fill-success-950-50={isItemViewSuccess(id)}
+						onclick={() => onChoiceClick(id)}
+						onkeydown={() => onChoiceClick(id)}
+						tabindex="0"
+						role="button"
+					>
+						<CharacterContainer
+							id={`${character.id}-${i}`}
+							{character}
+							inheritColors
+							strokeDurationMs={0}
+							characterSpacingMs={0}
+							strokeSpacingMs={0}
+						/>
+					</div>
+				{/each}
+			</div>
+		</div>
+	{/key}
 </div>
 
 <style>
 	.romanji-guesser {
 		--size: 1em;
-		display: flex;
 		width: 100%;
 		height: 100%;
 		font-size: 10vw;
-		flex-direction: column;
 		padding: 0 1em;
 		user-select: none;
+	}
+
+	.container-transition {
+		display: flex;
+		min-height: 100%;
+		flex-direction: column;
 	}
 
 	.container-choices {
@@ -140,7 +162,7 @@
 		padding: 0.2em 0.1em;
 	}
 
-	.guess-container {
+	.container-guess {
 		flex-grow: 1;
 		display: flex;
 		align-items: center;
