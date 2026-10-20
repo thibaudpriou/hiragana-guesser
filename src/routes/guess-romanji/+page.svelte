@@ -34,7 +34,7 @@
 	let guessOptions = $state(getRandomGuessOptions($charactersWhitelist));
 	let toasterAlreadyShown = $state(false);
 
-	const onSuccess = (guessId: Character['id']) => {
+	const onGuessSucess = (guessId: Character['id']) => {
 		superMemo.guess.success([guessId]);
 		const minimumSuccessStreak = superMemo.guess.getMinimumSuccessStreak($charactersWhitelist);
 
@@ -47,11 +47,11 @@
 		guessOptions = getRandomGuessOptions($charactersWhitelist, guessId);
 	};
 
-	const onError = (guessId: Character['id'], guessErrorId: Character['id']) => {
+	const onGuessError = (guessId: Character['id'], guessErrorId: Character['id']) => {
 		superMemo.guess.error([guessId, guessErrorId]);
 		toasterAlreadyShown = false;
 		guessOptions = getRandomGuessOptions($charactersWhitelist, guessId);
 	};
 </script>
 
-<RomanjiGuesser {guessOptions} {onSuccess} {onError} />
+<RomanjiGuesser {guessOptions} {onGuessSucess} {onGuessError} />

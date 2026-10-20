@@ -33,7 +33,7 @@
 	let toasterAlreadyShown = $state(false);
 
 	// reactivity on: characterToGuess
-	const onSuccess = $derived.by(() => {
+	const onGuessSucess = $derived.by(() => {
 		const prev = characterToGuess.id;
 
 		return (word: WordEntry) => {
@@ -51,7 +51,7 @@
 		};
 	});
 
-	const onError = $derived.by(() => {
+	const onGuessError = $derived.by(() => {
 		const prev = characterToGuess.id;
 
 		return (word: WordEntry) => {
@@ -72,7 +72,7 @@
 <WordGuesser
 	characters={$charactersWhitelist}
 	{wordToGuess}
-	{onSuccess}
-	{onError}
+	{onGuessSucess}
+	{onGuessError}
 	{caligraphyAnimationConfig}
 />

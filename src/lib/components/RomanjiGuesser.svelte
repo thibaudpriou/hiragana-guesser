@@ -6,11 +6,11 @@
 
 	type Props = {
 		guessOptions: { character: Character; otherChoices: Character[] };
-		onSuccess: (guessId: Character['id']) => void;
-		onError: (guessId: Character['id'], guessErrorId: Character['id']) => void;
+		onGuessSucess: (guessId: Character['id']) => void;
+		onGuessError: (guessId: Character['id'], guessErrorId: Character['id']) => void;
 	};
 
-	let { guessOptions, onSuccess, onError }: Props = $props();
+	let { guessOptions, onGuessSucess, onGuessError }: Props = $props();
 
 	const transitionRenderKey = $derived(`${guessOptions.character.id}-${Math.random()}`);
 
@@ -28,9 +28,9 @@
 		}
 
 		if (guessErrorId) {
-			onError(guessOptions.character.id, guessErrorId);
+			onGuessError(guessOptions.character.id, guessErrorId);
 		} else {
-			onSuccess(guessOptions.character.id);
+			onGuessSucess(guessOptions.character.id);
 		}
 		resetDisplayMode();
 	};

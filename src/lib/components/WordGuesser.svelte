@@ -14,12 +14,13 @@
 	type Props = {
 		characters: CharacterWhitelist;
 		wordToGuess: WordEntry;
-		onSuccess: (wordtoGuess: WordEntry) => void;
-		onError: (wordtoGuess: WordEntry) => void;
+		onGuessSucess: (wordtoGuess: WordEntry) => void;
+		onGuessError: (wordtoGuess: WordEntry) => void;
 		caligraphyAnimationConfig: CaligraphyAnimationConfig;
 	};
 
-	let { wordToGuess, characters, onSuccess, onError, caligraphyAnimationConfig }: Props = $props();
+	let { wordToGuess, characters, onGuessSucess, onGuessError, caligraphyAnimationConfig }: Props =
+		$props();
 
 	const transitionRenderKey = $derived(`${wordToGuess.ascii.join('')}-${Math.random()}`); // also resets caligraphy animations
 
@@ -50,14 +51,14 @@
 	const handleSuccess = () => {
 		isError = false;
 
-		onSuccess(wordToGuess);
+		onGuessSucess(wordToGuess);
 		resetDisplayMode();
 	};
 	const handleError = () => {
 		isError = true;
 
 		// TODO @tpriou display other controls to input errors?
-		onError(wordToGuess);
+		onGuessError(wordToGuess);
 		resetDisplayMode();
 	};
 

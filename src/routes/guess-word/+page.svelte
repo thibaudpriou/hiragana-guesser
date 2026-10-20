@@ -33,14 +33,14 @@
 	const words = $derived(getWordsN5(charactersWhitelist));
 
 	let wordToGuess = $derived(pickRandomElement(words));
-	const onSuccess = (word: WordEntry) => {
+	const onGuessSucess = (word: WordEntry) => {
 		superMemo.guess.success(word.characterIds);
 
 		// TODO prioritize getMostForgettedCharacter
 		wordToGuess = pickRandomElement(words);
 	};
 
-	const onError = (word: WordEntry) => {
+	const onGuessError = (word: WordEntry) => {
 		superMemo.guess.error(word.characterIds);
 
 		// TODO prioritize getMostForgettedCharacter
@@ -56,7 +56,7 @@
 <WordGuesser
 	characters={charactersWhitelist}
 	{wordToGuess}
-	{onSuccess}
-	{onError}
+	{onGuessSucess}
+	{onGuessError}
 	{caligraphyAnimationConfig}
 />
