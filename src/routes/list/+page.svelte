@@ -63,6 +63,7 @@
 			type="button"
 			class="btn-icon"
 			class:preset-filled-secondary-500={active}
+			class:preset-outlined-secondary-500={!active}
 			onclick={handleCharacterGroupClick(definedCharacters)}
 			ondblclick={handleCharacterGroupDblClick(active)}
 		>
