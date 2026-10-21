@@ -2,11 +2,21 @@
 	import { resolve } from '$app/paths';
 	import CharacterContainer from '$lib/components/CharacterContainer.svelte';
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
+	import type { SelectionNextPagesName } from '$lib/navigation/selection-next-page';
 	import { ArrowRight } from '@lucide/svelte';
+
+	/**
+	 * Build next page url
+	 * Users are required to select characters before landing in the correct page
+	 */
+	const buildNextPageUrl = (selectionNextPage: SelectionNextPagesName) => {
+		const searchParams = new URLSearchParams({ goto: selectionNextPage });
+		return resolve(`/select-characters?${searchParams.toString()}`);
+	};
 </script>
 
 <div class="container">
-	<a class="nav-link" href={resolve('/guess-character')}>
+	<a class="nav-link" href={buildNextPageUrl('/guess-character')}>
 		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 			<span class="container-hiragana">
 				<CharacterContainer
@@ -24,7 +34,7 @@
 		</button>
 	</a>
 
-	<a class="nav-link" href={resolve('/guess-romanji')}>
+	<a class="nav-link" href={buildNextPageUrl('/guess-romanji')}>
 		<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 			<span class="container-romanji">{hiragana.NA.romanji}</span>
 			<span class="container-arrow text-success-700 dark:text-success-600">
@@ -41,7 +51,7 @@
 			</span>
 		</button>
 	</a>
-	<a class="nav-link" href={resolve('/guess-word')}>
+	<a class="nav-link" href={buildNextPageUrl('/guess-word')}>
 		<button
 			class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link"
 			style:--nb-characters={3}
@@ -72,9 +82,9 @@
 			<span class="container-arrow text-success-700 dark:text-success-600">
 				<ArrowRight class="size-full" />
 			</span>
-			<span class="container-romanji"
-				>{hiragana.MA.romanji}{hiragana.NA.romanji}{hiragana.BU.romanji}</span
-			>
+			<span class="container-romanji">
+				{hiragana.MA.romanji}{hiragana.NA.romanji}{hiragana.BU.romanji}
+			</span>
 		</button>
 	</a>
 </div>
