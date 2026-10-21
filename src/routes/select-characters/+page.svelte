@@ -222,6 +222,8 @@
 	.form-container {
 		overflow: scroll;
 		height: 100%;
+		display: flex;
+		align-items: center;
 	}
 
 	.form {
@@ -233,6 +235,7 @@
 		gap: 0.75em;
 		overflow: scroll;
 		flex-grow: 1;
+		flex-shrink: 0;
 	}
 
 	.form-row {
