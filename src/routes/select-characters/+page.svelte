@@ -8,6 +8,7 @@
 	import { GOTO_SEARCH_PARAM_NAME } from '../../constants';
 	import { resolve } from '$app/paths';
 	import { validateSelectionNextPage } from '$lib/navigation/selection-next-page';
+	import { onMount } from 'svelte';
 
 	const isActive = (id: Character['id']) => $configStore.selectedHiragana.has(id);
 	const handleCharacterClick = (id: Character['id']) => () => {
@@ -47,7 +48,10 @@
 		return resolve(goto);
 	};
 
-	const nextPageUrl = getNextPageUrl(page.url.searchParams);
+	let nextPageUrl = $state<null | string>(null);
+	onMount(() => {
+		nextPageUrl = getNextPageUrl(page.url.searchParams);
+	});
 </script>
 
 {#snippet ControlledCharacterGroup(characters: Array<null | Character>)}
