@@ -34,7 +34,7 @@
 
 <style>
 	.container {
-		height: 100lvh;
+		height: 100%;
 		min-width: 100%;
 		display: flex;
 		flex-direction: column;
