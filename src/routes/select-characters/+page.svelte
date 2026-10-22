@@ -45,10 +45,10 @@
 			return null;
 		}
 
-		return resolve(goto);
+		return goto;
 	};
 
-	let nextPageUrl = $state<null | string>(null);
+	let nextPageUrl = $state<ReturnType<typeof getNextPageUrl>>(null);
 	onMount(() => {
 		nextPageUrl = getNextPageUrl(page.url.searchParams);
 	});
@@ -128,9 +128,9 @@
 			])}
 			{@render ControlledCharacterGroup([
 				hiragana.NA,
-				hiragana.NE,
-				hiragana.NU,
 				hiragana.NI,
+				hiragana.NU,
+				hiragana.NE,
 				hiragana.NO,
 			])}
 			{@render ControlledCharacterGroup([
@@ -142,17 +142,17 @@
 			])}
 			{@render ControlledCharacterGroup([
 				hiragana.MA,
-				hiragana.ME,
-				hiragana.MU,
 				hiragana.MI,
+				hiragana.MU,
+				hiragana.ME,
 				hiragana.MO,
 			])}
 			{@render ControlledCharacterGroup([hiragana.YA, null, hiragana.YU, null, hiragana.YO])}
 			{@render ControlledCharacterGroup([
 				hiragana.RA,
-				hiragana.RE,
-				hiragana.RU,
 				hiragana.RI,
+				hiragana.RU,
+				hiragana.RE,
 				hiragana.RO,
 			])}
 			{@render ControlledCharacterGroup([hiragana.WA, null, hiragana.WO, null, hiragana.N])}
@@ -199,7 +199,7 @@
 
 	{#if nextPageUrl !== null}
 		<div class="container-actions">
-			<a href={nextPageUrl} class="action-link">
+			<a href={resolve(nextPageUrl)} class="action-link">
 				<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 					Play <MoveRight />
 				</button>
