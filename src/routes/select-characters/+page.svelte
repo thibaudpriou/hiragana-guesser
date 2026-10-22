@@ -1,42 +1,21 @@
 <script lang="ts">
-	import CharacterContainerWithRomanji from '$lib/components/CharacterContainerWithRomanji.svelte';
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
 	import { configStore } from '$lib/stores/config.svelte';
 	import type { Character } from '../../types';
-	import { ListPlus, ListX, MoveRight } from '@lucide/svelte';
+	import { MoveRight } from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { GOTO_SEARCH_PARAM_NAME } from '../../constants';
 	import { resolve } from '$app/paths';
 	import { validateSelectionNextPage } from '$lib/navigation/selection-next-page';
 	import { onMount } from 'svelte';
+	import CharacterFormGroup from '$lib/components/CharacterFormGroup.svelte';
 
-	const isActive = (id: Character['id']) => $configStore.selectedHiragana.has(id);
-	const handleCharacterClick = (id: Character['id']) => () => {
-		if ($configStore.selectedHiragana.has(id)) {
-			configStore.selectedHiragana.delete(id);
-			return;
-		}
-		configStore.selectedHiragana.add(id);
+	const isActive = (character: Character) => $configStore.selectedHiragana.has(character.id);
+	const selectCharacters = (characters: Character[]) => {
+		characters.forEach((item) => configStore.selectedHiragana.add(item.id));
 	};
-
-	const isGroupActive = (characters: Character[]) => {
-		return characters.every((character) => !character || isActive(character.id));
-	};
-	const handleCharacterGroupClick = (characters: Character[]) => (event: UIEvent) => {
-		if (event.detail > 1) {
-			return; // already handled by double click listener
-		}
-
-		if (isGroupActive(characters)) {
-			characters.forEach((item) => $configStore.selectedHiragana.delete(item.id));
-			return;
-		}
-		characters.forEach((item) => $configStore.selectedHiragana.add(item.id));
-	};
-
-	const handleCharacterGroupDblClick = (isCurrentlyActive: boolean) => () => {
-		const shouldSelectAll = isCurrentlyActive;
-		configStore.selectedHiragana.reset(shouldSelectAll);
+	const deselectCharacters = (characters: Character[]) => {
+		characters.forEach((item) => configStore.selectedHiragana.delete(item.id));
 	};
 
 	const getNextPageUrl = (searchParams: URLSearchParams) => {
@@ -52,148 +31,84 @@
 	onMount(() => {
 		nextPageUrl = getNextPageUrl(page.url.searchParams);
 	});
+
+	const characterFormGroupProps = {
+		selectCharacters,
+		deselectCharacters,
+		isActive,
+		reset: (shouldSelectAll?: boolean) => {
+			console.log('DEBUG @tpriou reset', shouldSelectAll);
+			configStore.selectedHiragana.reset(shouldSelectAll);
+		},
+	};
 </script>
-
-{#snippet ControlledCharacterGroup(characters: Array<null | Character>)}
-	{@const definedCharacters = characters.filter(Boolean) as Character[]}
-	{@const active = isGroupActive(definedCharacters)}
-	<section class="form-row">
-		<div class="grid grid-rows-5 container-character-button">
-			{#each characters as character, idx (character?.id ?? idx)}
-				{#if character === null}
-					<!-- placeholder -->
-					<span></span>
-				{:else if character.romanji === null}
-					<!-- not supported -->
-					<span></span>
-				{:else}
-					<button
-						type="button"
-						class="btn character-button"
-						onclick={handleCharacterClick(character.id)}
-					>
-						<CharacterContainerWithRomanji {character} active={isActive(character.id)} />
-					</button>
-				{/if}
-			{/each}
-		</div>
-
-		<button
-			type="button"
-			class="btn-icon"
-			class:preset-filled-secondary-500={active}
-			class:preset-outlined-secondary-500={!active}
-			onclick={handleCharacterGroupClick(definedCharacters)}
-			ondblclick={handleCharacterGroupDblClick(active)}
-		>
-			{#if active}
-				<ListPlus />
-			{:else}
-				<ListX />
-			{/if}
-		</button>
-	</section>
-{/snippet}
 
 <div class="select-characters">
 	<div class="form-container">
 		<div class="form">
-			{@render ControlledCharacterGroup([
-				hiragana.A,
-				hiragana.I,
-				hiragana.U,
-				hiragana.E,
-				hiragana.O,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.KA,
-				hiragana.KI,
-				hiragana.KU,
-				hiragana.KE,
-				hiragana.KO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.SA,
-				hiragana.SHI,
-				hiragana.SU,
-				hiragana.SE,
-				hiragana.SO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.TA,
-				hiragana.CHI,
-				hiragana.TSU,
-				hiragana.TE,
-				hiragana.TO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.NA,
-				hiragana.NI,
-				hiragana.NU,
-				hiragana.NE,
-				hiragana.NO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.HA,
-				hiragana.HI,
-				hiragana.FU,
-				hiragana.HE,
-				hiragana.HO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.MA,
-				hiragana.MI,
-				hiragana.MU,
-				hiragana.ME,
-				hiragana.MO,
-			])}
-			{@render ControlledCharacterGroup([hiragana.YA, null, hiragana.YU, null, hiragana.YO])}
-			{@render ControlledCharacterGroup([
-				hiragana.RA,
-				hiragana.RI,
-				hiragana.RU,
-				hiragana.RE,
-				hiragana.RO,
-			])}
-			{@render ControlledCharacterGroup([hiragana.WA, null, hiragana.WO, null, hiragana.N])}
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.A, hiragana.I, hiragana.U, hiragana.E, hiragana.O]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.KA, hiragana.KI, hiragana.KU, hiragana.KE, hiragana.KO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.SA, hiragana.SHI, hiragana.SU, hiragana.SE, hiragana.SO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.TA, hiragana.CHI, hiragana.TSU, hiragana.TE, hiragana.TO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.NA, hiragana.NI, hiragana.NU, hiragana.NE, hiragana.NO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.HA, hiragana.HI, hiragana.FU, hiragana.HE, hiragana.HO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.MA, hiragana.MI, hiragana.MU, hiragana.ME, hiragana.MO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.YA, null, hiragana.YU, null, hiragana.YO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.RA, hiragana.RI, hiragana.RU, hiragana.RE, hiragana.RO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.WA, null, hiragana.WO, null, hiragana.N]}
+			/>
 
 			<span class="vr"></span>
 
-			{@render ControlledCharacterGroup([
-				hiragana.GA,
-				hiragana.GI,
-				hiragana.GU,
-				hiragana.GE,
-				hiragana.GO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.ZA,
-				hiragana.JI,
-				hiragana.ZU,
-				hiragana.ZE,
-				hiragana.ZO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.DA,
-				hiragana.JI2,
-				hiragana.ZU2,
-				hiragana.DE,
-				hiragana.DO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.BA,
-				hiragana.BI,
-				hiragana.BU,
-				hiragana.BE,
-				hiragana.BO,
-			])}
-			{@render ControlledCharacterGroup([
-				hiragana.PA,
-				hiragana.PI,
-				hiragana.PU,
-				hiragana.PE,
-				hiragana.PO,
-			])}
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.GA, hiragana.GI, hiragana.GU, hiragana.GE, hiragana.GO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.ZA, hiragana.JI, hiragana.ZU, hiragana.ZE, hiragana.ZO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.DA, hiragana.JI2, hiragana.ZU2, hiragana.DE, hiragana.DO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.BA, hiragana.BI, hiragana.BU, hiragana.BE, hiragana.BO]}
+			/>
+			<CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[hiragana.PA, hiragana.PI, hiragana.PU, hiragana.PE, hiragana.PO]}
+			/>
 		</div>
 	</div>
 
@@ -236,21 +151,6 @@
 		overflow: scroll;
 		flex-grow: 1;
 		flex-shrink: 0;
-	}
-
-	.form-row {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 3em;
-	}
-
-	.character-button {
-		padding: 0;
-	}
-
-	.container-character-button {
-		gap: 0.75em;
 	}
 
 	.container-actions {
