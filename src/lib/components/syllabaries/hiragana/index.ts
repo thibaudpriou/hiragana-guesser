@@ -259,6 +259,7 @@ export const hiragana = {
 	},
 	HA: {
 		...formatCharacter(HA),
+		/* NOTE: can also be pronounced "wa" when used as a topic marker */
 		romanji: 'ha',
 		nbStrokes: 3,
 		id: 'HA',
