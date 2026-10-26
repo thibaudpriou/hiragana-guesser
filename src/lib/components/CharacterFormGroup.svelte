@@ -37,7 +37,6 @@
 	};
 
 	const handleCharacterGroupDblClick = $derived(() => {
-		console.log('DEBUg @tpriou handleCharacterGroupDblClick');
 		const shouldSelectAll = isGroupActive;
 		reset(shouldSelectAll);
 	});

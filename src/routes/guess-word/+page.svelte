@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { hiragana, hiraganaSpecials, isHiraganaKey } from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
-	import { getWordsN5 } from '$lib/jplt/jplt-word-series';
+	import { getJpltWords } from '$lib/jplt/jplt-word-series';
 	import { pickRandomElement } from '$lib/math/pick-random-element';
 	import { configStore } from '$lib/stores/config.svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
@@ -10,6 +10,7 @@
 	import type { Character } from '../../types/character';
 	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
+	import { jpltWordLevelStore } from '$lib/stores/jplt-word-level';
 
 	const charactersWhitelist = $derived.by(() => {
 		const charactersIds = $configStore.selectedHiragana.keys().toArray();
@@ -38,7 +39,7 @@
 		return whitelist;
 	});
 
-	const words = $derived(getWordsN5(charactersWhitelist));
+	const words = $derived(getJpltWords(charactersWhitelist, $jpltWordLevelStore));
 
 	let wordToGuess = $derived(pickRandomElement(words));
 	const onGuessSucess = (word: WordEntry) => {

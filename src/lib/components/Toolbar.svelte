@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AppBar, Menu, Navigation, Portal, Slider } from '@skeletonlabs/skeleton-svelte';
+	import { AppBar, Menu, Portal, Slider } from '@skeletonlabs/skeleton-svelte';
 	import { Gamepad2, SettingsIcon } from '@lucide/svelte';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import {
@@ -8,20 +8,24 @@
 		type AnimationSpeedLevel,
 	} from '../../types/caligraphy';
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
+	import { DEFAULT_JPLT_WORD_LEVEL, jpltWordLevelStore } from '$lib/stores/jplt-word-level';
 	import { resolve } from '$app/paths';
+	import type { JPLT_LEVEL } from '../../types/jplt';
 
 	const onAnimationSpeedChange = (value: number[]) => {
 		const level = value[0];
 		if (level === undefined || level < minAnimationSpeedLevel || level > maxAnimationSpeedLevel) {
-			throw new Error(`onAnimationSpeedChange: unexpected level ${level}`);
+			throw new Error(`onAnimationSpeedChange: unexpected speed level ${level}`);
 		}
 		animationSpeedStore.set(level as AnimationSpeedLevel);
 	};
 
-	const wordList = $state(-5);
-	const onWordListChange = () => {
-		// TODO @tpriou save config in store then use it everywhere
-		throw new Error('not yet implemented');
+	const onWordListChange = (value: number[]) => {
+		const level = value[0] !== undefined ? value[0] * -1 : undefined;
+		if (level === undefined || level < 1 || level > 5) {
+			throw new Error(`onWordListChange: unexpected JPLT level ${level}`);
+		}
+		jpltWordLevelStore.set(level as JPLT_LEVEL);
 	};
 
 	const handleReset = () => {
@@ -70,16 +74,14 @@
 								</Menu.Item>
 
 								<Menu.Item value="wordList">
-									<!-- TODO @tpriou remove disabled once implemented -->
 									<Slider
-										defaultValue={[-5]}
+										defaultValue={[DEFAULT_JPLT_WORD_LEVEL * -1]}
 										min={-5}
 										max={-1}
 										step={1}
-										onValueChange={onWordListChange}
-										disabled
+										onValueChange={(details) => onWordListChange(details.value)}
 									>
-										<Slider.Label>Word list: N{wordList * -1}</Slider.Label>
+										<Slider.Label>Word list: N{$jpltWordLevelStore}</Slider.Label>
 										<Slider.Control>
 											<Slider.Track>
 												<Slider.Range />
