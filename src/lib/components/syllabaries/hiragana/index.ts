@@ -71,13 +71,19 @@ import * as PI from './dakuon/pi.svelte';
 import * as PO from './dakuon/po.svelte';
 import * as PU from './dakuon/pu.svelte';
 import * as SOKUON from './sokuon.svelte';
+import * as YOON_YA from './yoon/yoon-ya.svelte';
+import * as YOON_YU from './yoon/yoon-yu.svelte';
+import * as YOON_YO from './yoon/yoon-yo.svelte';
 import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
 import { SvelteMap } from 'svelte/reactivity';
 import type { RegularCharacter, SpecialCharacter } from '../../../../types/character';
 
-const formatCharacter = (raw: { default: unknown }): Pick<Character, 'component'> => {
+const formatCharacter = (raw: {
+	default: unknown;
+}): Pick<RegularCharacter, 'component' | 'type'> => {
 	return {
 		component: raw.default as Character['component'],
+		type: 'regular',
 	};
 };
 
@@ -518,70 +524,70 @@ export const hiragana = {
 	BA: {
 		...formatCharacter(BA),
 		romanji: 'ba',
-		nbStrokes: 0,
+		nbStrokes: 5,
 		id: 'BA',
 		ascii: 'ば',
 	},
 	BI: {
 		...formatCharacter(BI),
 		romanji: 'bi',
-		nbStrokes: 0,
+		nbStrokes: 3,
 		id: 'BI',
 		ascii: 'び',
 	},
 	BU: {
 		...formatCharacter(BU),
 		romanji: 'bu',
-		nbStrokes: 0,
+		nbStrokes: 6,
 		id: 'BU',
 		ascii: 'ぶ',
 	},
 	BE: {
 		...formatCharacter(BE),
 		romanji: 'be',
-		nbStrokes: 0,
+		nbStrokes: 3,
 		id: 'BE',
 		ascii: 'べ',
 	},
 	BO: {
 		...formatCharacter(BO),
 		romanji: 'bo',
-		nbStrokes: 0,
+		nbStrokes: 6,
 		id: 'BO',
 		ascii: 'ぼ',
 	},
 	PA: {
 		...formatCharacter(PA),
 		romanji: 'pa',
-		nbStrokes: 0,
+		nbStrokes: 4,
 		id: 'PA',
 		ascii: 'ぱ',
 	},
 	PI: {
 		...formatCharacter(PI),
 		romanji: 'pi',
-		nbStrokes: 0,
+		nbStrokes: 2,
 		id: 'PI',
 		ascii: 'ぴ',
 	},
 	PU: {
 		...formatCharacter(PU),
 		romanji: 'pu',
-		nbStrokes: 0,
+		nbStrokes: 5,
 		id: 'PU',
 		ascii: 'ぷ',
 	},
 	PE: {
 		...formatCharacter(PE),
 		romanji: 'pe',
-		nbStrokes: 0,
+		nbStrokes: 2,
 		id: 'PE',
 		ascii: 'ぺ',
 	},
 	PO: {
 		...formatCharacter(PO),
 		romanji: 'po',
-		nbStrokes: 0,
+		nbStrokes: 5,
 		id: 'PO',
 		ascii: 'ぽ',
 	},
@@ -595,6 +601,30 @@ export const hiraganaSpecials = {
 		id: 'SPECIAL_SOKUON',
 		ascii: 'っ',
 		type: 'sokuon',
+	},
+	YOON_YA: {
+		...formatCharacter(YOON_YA),
+		romanji: 'ya',
+		nbStrokes: 3,
+		id: 'YOON_YA',
+		ascii: 'ゃ',
+		type: 'yoon',
+	},
+	YOON_YU: {
+		...formatCharacter(YOON_YU),
+		romanji: 'yu',
+		nbStrokes: 2,
+		id: 'YOON_YU',
+		ascii: 'ゅ',
+		type: 'yoon',
+	},
+	YOON_YO: {
+		...formatCharacter(YOON_YO),
+		romanji: 'yo',
+		nbStrokes: 2,
+		id: 'YOON_YO',
+		ascii: 'ょ',
+		type: 'yoon',
 	},
 } satisfies Record<SpecialCharacter['id'], SpecialCharacter>;
 

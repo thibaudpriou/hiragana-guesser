@@ -10,16 +10,26 @@ export type RegularCharacter = {
 	nbStrokes: number;
 	component: Component<CharacterProps>;
 	ascii: string;
+	type: 'regular';
 };
 
-export type SpecialCharacter = {
-	id: string;
-	romanji: null;
-	nbStrokes: number;
-	component: Component<CharacterProps>;
-	ascii: string;
-	type: 'sokuon'; // TODO handle other "changing sound" characters
-};
+export type SpecialCharacter =
+	| {
+			id: string;
+			romanji: null;
+			nbStrokes: number;
+			component: Component<CharacterProps>;
+			ascii: string;
+			type: 'sokuon';
+	  }
+	| {
+			id: string;
+			romanji: string;
+			nbStrokes: number;
+			component: Component<CharacterProps>;
+			ascii: string;
+			type: 'yoon';
+	  };
 
 export type Character = RegularCharacter | SpecialCharacter;
 

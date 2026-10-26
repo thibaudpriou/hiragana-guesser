@@ -22,9 +22,17 @@
 			whitelist.set(id, hiragana[id]);
 		}
 
-		// TODO handle other "changing sounds" characters
 		if (whitelist.has(hiragana.TSU.id)) {
 			whitelist.set(hiraganaSpecials.SOKUON.id, hiraganaSpecials.SOKUON);
+		}
+		if (whitelist.has(hiragana.YA.id)) {
+			whitelist.set(hiraganaSpecials.YOON_YA.id, hiraganaSpecials.YOON_YA);
+		}
+		if (whitelist.has(hiragana.YU.id)) {
+			whitelist.set(hiraganaSpecials.YOON_YU.id, hiraganaSpecials.YOON_YU);
+		}
+		if (whitelist.has(hiragana.YO.id)) {
+			whitelist.set(hiraganaSpecials.YOON_YO.id, hiraganaSpecials.YOON_YO);
 		}
 
 		return whitelist;

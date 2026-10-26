@@ -37,7 +37,6 @@
 		deselectCharacters,
 		isActive,
 		reset: (shouldSelectAll?: boolean) => {
-			console.log('DEBUG @tpriou reset', shouldSelectAll);
 			configStore.selectedHiragana.reset(shouldSelectAll);
 		},
 	};
