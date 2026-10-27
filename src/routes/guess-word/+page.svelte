@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { hiragana, hiraganaSpecials, isHiraganaKey } from '$lib/components/syllabaries/hiragana';
+	import {
+		hiragana,
+		hiraganaByAscii,
+		hiraganaSpecials,
+		isHiraganaKey,
+	} from '$lib/components/syllabaries/hiragana';
 	import WordGuesser from '$lib/components/WordGuesser.svelte';
 	import { getJpltWords } from '$lib/jplt/jplt-word-series';
 	import { pickRandomElement } from '$lib/math/pick-random-element';
@@ -11,6 +16,7 @@
 	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
 	import { jpltWordLevelStore } from '$lib/stores/jplt-word-level';
+	import { wordList } from '$lib/jplt/word-list';
 
 	const charactersWhitelist = $derived.by(() => {
 		const charactersIds = $configStore.selectedHiragana.keys().toArray();
@@ -39,7 +45,9 @@
 		return whitelist;
 	});
 
-	const words = $derived(getJpltWords(charactersWhitelist, $jpltWordLevelStore));
+	const words = $derived(
+		getJpltWords(charactersWhitelist, $jpltWordLevelStore, wordList, hiraganaByAscii.get)
+	);
 
 	let wordToGuess = $derived(pickRandomElement(words));
 	const onGuessSucess = (word: WordEntry) => {

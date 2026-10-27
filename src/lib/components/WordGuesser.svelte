@@ -5,7 +5,7 @@
 	import type { WordEntry } from '../../types/wordEntry';
 	import { getDelayedChars } from '$lib/caligraphy/get-delayed-characters';
 	import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
-	import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
+	import { convertAsciiToCharacters } from '$lib/conversions/convert-ascii-to-characters';
 	import { CheckCheck, X } from '@lucide/svelte';
 	import { onToucheMove, onTouchEnd, onTouchStart } from '$lib/interactions/swipe';
 	import type { CaligraphyAnimationConfig } from '../../types/caligraphy';
@@ -30,8 +30,8 @@
 	);
 
 	const charactersMap = $derived(charactersToAsciiMap(characters));
-
-	let chars = $derived(asciiToCharacters(charactersMap, wordToGuess.ascii));
+	const asciiToCharacter = $derived(charactersMap.get);
+	let chars = $derived(convertAsciiToCharacters(asciiToCharacter, wordToGuess.ascii));
 
 	type DisplayMode = 'GUESS' | 'SOLUTION';
 	let displayMode = $state<DisplayMode>('GUESS');

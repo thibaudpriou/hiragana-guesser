@@ -1,15 +1,15 @@
 import { type Character } from '../../types/character';
 
+type AsciiTopCharacterCallback = (ascii: string) => Character | undefined;
+
 /**
  * Converts ASCII string to array of characters
  */
-export const asciiToCharacters = (
-	charactersMap: Map<string, Character>,
+export const convertAsciiToCharacters = (
+	asciiToCharacter: AsciiTopCharacterCallback,
 	str: string[]
 ): Character[] => {
-	const converted = str.map((c) => {
-		return charactersMap.get(c);
-	});
+	const converted = str.map(asciiToCharacter);
 
 	const defined = converted.filter(Boolean) as Character[];
 	// TODO handle error / mismatch between length

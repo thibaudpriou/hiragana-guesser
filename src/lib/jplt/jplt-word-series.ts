@@ -1,56 +1,45 @@
-import { hiraganaByAscii } from '$lib/components/syllabaries/hiragana';
-import { asciiToCharacters } from '$lib/conversions/ascii-to-characters';
+import { convertAsciiToCharacters } from '$lib/conversions/convert-ascii-to-characters';
 import type { Character } from '../../types';
 import type { WordEntry } from '../../types/wordEntry';
-import n5 from './assets/n5.csv';
-import n4 from './assets/n4.csv';
-import n3 from './assets/n3.csv';
-import n2 from './assets/n2.csv';
-import n1 from './assets/n1.csv';
-import type { JPLT_LEVEL } from '../../types/jplt';
+import type { JPLT_LEVEL, WordCsvRow } from '../../types/jplt';
 
-type WordCsvRow = {
-	expression: string; // kanji
-	guid: string; // string
-	meaning: string; // english translation
-	reading: string; // hiragana (or katana)
-	tags: string; // list of tags, separated by space char
-};
-
-const wordListToSet = (list: WordCsvRow[]): WordEntry[] => {
+const wordListToSet = (
+	list: WordCsvRow[],
+	asciiToCharacter: (ascii: string) => Character | undefined
+): WordEntry[] => {
 	return list.map((row) => {
 		const ascii = row.reading.split('');
 
 		return {
 			ascii,
 			meaning: row.meaning,
-			characterIds: asciiToCharacters(hiraganaByAscii, ascii).map((c) => c.id),
+			characterIds: convertAsciiToCharacters(asciiToCharacter, ascii).map((c) => c.id),
 		};
 	});
 };
 
-const n5Entries = wordListToSet(n5);
-const n4Entries = wordListToSet(n4);
-const n3Entries = wordListToSet(n3);
-const n2Entries = wordListToSet(n2);
-const n1Entries = wordListToSet(n1);
+const jpltLevelToEntries = (
+	maxLevel: JPLT_LEVEL,
+	wordLists: Record<JPLT_LEVEL, WordCsvRow[]>,
+	asciiToCharacter: (ascii: string) => Character | undefined
+): WordEntry[] => {
+	const getWordSet = (level: JPLT_LEVEL) => wordListToSet(wordLists[level], asciiToCharacter);
 
-const jpltLevelToEntries = (maxLevel: JPLT_LEVEL): WordEntry[] => {
 	const entries: WordEntry[] = [];
 	if (maxLevel <= 5) {
-		entries.push(...n5Entries);
+		entries.push(...getWordSet(5));
 	}
 	if (maxLevel <= 4) {
-		entries.push(...n4Entries);
+		entries.push(...getWordSet(4));
 	}
 	if (maxLevel <= 3) {
-		entries.push(...n3Entries);
+		entries.push(...getWordSet(3));
 	}
 	if (maxLevel <= 2) {
-		entries.push(...n2Entries);
+		entries.push(...getWordSet(2));
 	}
 	if (maxLevel == 1) {
-		entries.push(...n1Entries);
+		entries.push(...getWordSet(1));
 	}
 
 	return entries;
@@ -60,10 +49,12 @@ const jpltLevelToEntries = (maxLevel: JPLT_LEVEL): WordEntry[] => {
  * @returns every JPLT words related to max level, excluding characters not in whitelist when provided
  */
 export const getJpltWords = (
-	whitelist: Map<Character['id'], Character>,
-	maxLevel: JPLT_LEVEL
+	whitelist: Map<Character['id'], Pick<Character, 'ascii'>>,
+	maxLevel: JPLT_LEVEL,
+	wordLists: Record<JPLT_LEVEL, WordCsvRow[]>,
+	asciiToCharacter: (ascii: string) => Character | undefined
 ): WordEntry[] => {
-	const entries = jpltLevelToEntries(maxLevel);
+	const entries = jpltLevelToEntries(maxLevel, wordLists, asciiToCharacter);
 	if (!whitelist.size) {
 		return entries;
 	}
