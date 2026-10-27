@@ -3,12 +3,18 @@ import type { Character } from '../../types';
 import type { WordEntry } from '../../types/wordEntry';
 import type { JPLT_LEVEL, WordCsvRow } from '../../types/jplt';
 
+/**
+ * Convert a CSV row object to a word entry
+ *
+ * NOTE: only the first reading is returned
+ */
 const wordListToSet = (
 	list: WordCsvRow[],
 	asciiToCharacter: (ascii: string) => Character | undefined
 ): WordEntry[] => {
 	return list.map((row) => {
-		const ascii = row.reading.split('');
+		const readings = row.reading.split('; ');
+		const ascii = readings[0].split('');
 
 		return {
 			ascii,

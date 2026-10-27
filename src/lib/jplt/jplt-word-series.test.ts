@@ -98,4 +98,121 @@ describe('getJpltWords', () => {
 			]);
 		});
 	});
+
+	describe('should exclude words with characters not in whitelist', () => {
+		const mockWordLists: Record<JPLT_LEVEL, WordCsvRow[]> = {
+			5: [
+				createWordCsvRow({ meaning: 'word 5: a', reading: 'あ' }),
+				createWordCsvRow({ meaning: 'word 5: ii', reading: 'いい' }),
+				createWordCsvRow({ meaning: 'word 5: u', reading: 'う' }),
+			],
+			4: [
+				createWordCsvRow({ meaning: 'word 4: i', reading: 'い' }),
+				createWordCsvRow({ meaning: 'word 4: ai', reading: 'あい' }),
+				createWordCsvRow({ meaning: 'word 4: uu', reading: 'うう' }),
+				createWordCsvRow({ meaning: 'word 4: au', reading: 'あう' }),
+			],
+			3: [],
+			2: [],
+			1: [],
+		};
+
+		test('should only return words in whitelist', () => {
+			const maxLevel = 5;
+			const mockWhitelistSet: Map<string, Pick<RegularCharacter, 'ascii'>> = new Map([
+				['a', { ascii: 'あ' }],
+				// ['i', { ascii: 'い' }],
+				['u', { ascii: 'う' }],
+				// ['e', { ascii: 'え' }],
+				// ['o', { ascii: 'お' }],
+			]);
+
+			const result = getJpltWords(mockWhitelistSet, maxLevel, mockWordLists, mockAsciiToCharacter);
+
+			expect(result).toStrictEqual([
+				expect.objectContaining({ meaning: 'word 5: a' }),
+				expect.objectContaining({ meaning: 'word 5: u' }),
+			]);
+		});
+
+		test('should only return words in whitelist, with multiple JPLT levels', () => {
+			const maxLevel = 4;
+			const mockWhitelistSet: Map<string, Pick<RegularCharacter, 'ascii'>> = new Map([
+				['a', { ascii: 'あ' }],
+				// ['i', { ascii: 'い' }],
+				['u', { ascii: 'う' }],
+				// ['e', { ascii: 'え' }],
+				// ['o', { ascii: 'お' }],
+			]);
+
+			const result = getJpltWords(mockWhitelistSet, maxLevel, mockWordLists, mockAsciiToCharacter);
+
+			expect(result).toStrictEqual([
+				expect.objectContaining({ meaning: 'word 5: a' }),
+				expect.objectContaining({ meaning: 'word 5: u' }),
+				expect.objectContaining({ meaning: 'word 4: uu' }),
+				expect.objectContaining({ meaning: 'word 4: au' }),
+			]);
+		});
+	});
+
+	describe('should support words with different reading forms', () => {
+		const mockWordLists: Record<JPLT_LEVEL, WordCsvRow[]> = {
+			5: [
+				createWordCsvRow({ meaning: 'word 5 with single form', reading: 'あ' }),
+				createWordCsvRow({ meaning: 'word 5 with 2 forms', reading: 'う; いい' }),
+			],
+			4: [],
+			3: [],
+			2: [],
+			1: [],
+		};
+
+		test('should return word when both forms contain characters in whitelist', () => {
+			const maxLevel = 5;
+			const mockWhitelistSet: Map<string, Pick<RegularCharacter, 'ascii'>> = new Map([
+				['a', { ascii: 'あ' }],
+				['i', { ascii: 'い' }],
+				['u', { ascii: 'う' }],
+			]);
+
+			const result = getJpltWords(mockWhitelistSet, maxLevel, mockWordLists, mockAsciiToCharacter);
+
+			expect(result).toStrictEqual([
+				expect.objectContaining({ meaning: 'word 5 with single form', ascii: ['あ'] }),
+				expect.objectContaining({ meaning: 'word 5 with 2 forms', ascii: ['う'] }),
+			]);
+		});
+
+		test('should return word when 1st form in whitelist', () => {
+			const maxLevel = 5;
+			const mockWhitelistSet: Map<string, Pick<RegularCharacter, 'ascii'>> = new Map([
+				['a', { ascii: 'あ' }],
+				// ['i', { ascii: 'い' }],
+				['u', { ascii: 'う' }],
+			]);
+
+			const result = getJpltWords(mockWhitelistSet, maxLevel, mockWordLists, mockAsciiToCharacter);
+
+			expect(result).toStrictEqual([
+				expect.objectContaining({ meaning: 'word 5 with single form', ascii: ['あ'] }),
+				expect.objectContaining({ meaning: 'word 5 with 2 forms', ascii: ['う'] }),
+			]);
+		});
+
+		test('should not return word when only 2nd form in whitelist', () => {
+			const maxLevel = 5;
+			const mockWhitelistSet: Map<string, Pick<RegularCharacter, 'ascii'>> = new Map([
+				['a', { ascii: 'あ' }],
+				['i', { ascii: 'い' }],
+				// ['u', { ascii: 'う' }],
+			]);
+
+			const result = getJpltWords(mockWhitelistSet, maxLevel, mockWordLists, mockAsciiToCharacter);
+
+			expect(result).toStrictEqual([
+				expect.objectContaining({ meaning: 'word 5 with single form', ascii: ['あ'] }),
+			]);
+		});
+	});
 });

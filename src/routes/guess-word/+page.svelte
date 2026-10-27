@@ -45,8 +45,9 @@
 		return whitelist;
 	});
 
+	const asciiToCharacter = (k: string) => hiraganaByAscii.get(k);
 	const words = $derived(
-		getJpltWords(charactersWhitelist, $jpltWordLevelStore, wordList, hiraganaByAscii.get)
+		getJpltWords(charactersWhitelist, $jpltWordLevelStore, wordList, asciiToCharacter)
 	);
 
 	let wordToGuess = $derived(pickRandomElement(words));

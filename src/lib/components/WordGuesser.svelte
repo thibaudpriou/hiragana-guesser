@@ -29,8 +29,10 @@
 		`${caligraphyAnimationConfig.speedLevel}-${caligraphyForceRedrawKey}`
 	);
 
-	const charactersMap = $derived(charactersToAsciiMap(characters));
-	const asciiToCharacter = $derived(charactersMap.get);
+	const asciiToCharacter = $derived.by(() => {
+		const characterMap = charactersToAsciiMap(characters);
+		return (k: string) => characterMap.get(k);
+	});
 	let chars = $derived(convertAsciiToCharacters(asciiToCharacter, wordToGuess.ascii));
 
 	type DisplayMode = 'GUESS' | 'SOLUTION';
