@@ -25,6 +25,10 @@
 		};
 		extraDelay?: number;
 		active?: boolean;
+		/**
+		 * Animated stroke will inherit color from parent
+		 * Background stroke not affected: neutral color
+		 */
 		inheritColors?: boolean;
 	};
 	let {
@@ -70,7 +74,12 @@
 	style:--stroke-duration-ms={`${strokeDurationMs}ms`}
 	style:--stroke-spacing-ms={`${strokeSpacingMs}ms`}
 >
-	<character.component {id} />
+	<g class="background fill-neutral-300 dark:fill-neutral-700">
+		<character.component id={`${id}-background`} />
+	</g>
+	<g class="stroke">
+		<character.component id={`${id}-stroke`} />
+	</g>
 </svg>
 
 <style>
@@ -87,7 +96,7 @@
 		fill: inherit;
 	}
 
-	.svg-container :global(mask > path) {
+	.svg-container g.stroke :global(mask > path) {
 		fill: none;
 		stroke: #fff;
 
@@ -102,6 +111,10 @@
 		stroke-width: 128;
 		stroke-linejoin: bevel;
 		stroke-linecap: round;
+	}
+
+	.svg-container g.background :global(path) {
+		mask: none;
 	}
 
 	@keyframes strokeOffset {
