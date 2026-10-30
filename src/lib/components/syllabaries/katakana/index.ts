@@ -149,6 +149,7 @@ export const katakana = {
 	WA: formatCharacter(WA, 'WA', 'wa', 2, 'ワ'),
 	WO: formatCharacter(WO, 'WO', 'wo', 3, 'ヲ'),
 	N: formatCharacter(N, 'N', 'n', 2, 'ン'),
+	/** with gokuen */
 	GA: formatCharacter(GA, 'GA', 'ga', 4, 'ガ'),
 	GI: formatCharacter(GI, 'GI', 'gi', 5, 'ギ'),
 	GU: formatCharacter(GU, 'GU', 'gu', 4, 'グ'),
