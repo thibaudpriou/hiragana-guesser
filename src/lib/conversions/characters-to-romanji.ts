@@ -1,4 +1,5 @@
 import { hiragana } from '$lib/components/syllabaries/hiragana';
+import { katakana } from '$lib/components/syllabaries/katakana';
 import type { Character, KanaType, RegularCharacter, SpecialCharacter } from '../../types';
 
 export const yoonToRomanji = (
@@ -6,6 +7,10 @@ export const yoonToRomanji = (
 	yoon: SpecialCharacter<KanaType> & { romanji: string }
 ): string => {
 	const getPrefix = (char: RegularCharacter<KanaType>) => char.romanji.slice(0, -1);
+	/**
+	 * NOTE: katakana and hiragana characters actually have the same ID
+	 * This have no impact here albeit weird when reading code
+	 */
 	switch (previousCharacter.id) {
 		case hiragana.KI.id:
 		case hiragana.NI.id:
@@ -14,7 +19,15 @@ export const yoonToRomanji = (
 		case hiragana.RI.id:
 		case hiragana.GI.id:
 		case hiragana.BI.id:
-		case hiragana.PI.id: {
+		case hiragana.PI.id:
+		case katakana.KI.id:
+		case katakana.NI.id:
+		case katakana.HI.id:
+		case katakana.MI.id:
+		case katakana.RI.id:
+		case katakana.GI.id:
+		case katakana.BI.id:
+		case katakana.PI.id: {
 			const prefix = getPrefix(previousCharacter as RegularCharacter<KanaType>);
 			return `${prefix}${yoon.romanji}`;
 		}
@@ -22,7 +35,11 @@ export const yoonToRomanji = (
 		case hiragana.SHI.id:
 		case hiragana.CHI.id:
 		case hiragana.JI.id:
-		case hiragana.JI2.id: {
+		case hiragana.JI2.id:
+		case katakana.SHI.id:
+		case katakana.CHI.id:
+		case katakana.JI.id:
+		case katakana.JI2.id: {
 			const prefix = getPrefix(previousCharacter as RegularCharacter<KanaType>);
 			const suffix = yoon.romanji.slice(1);
 			return `${prefix}${suffix}`;
@@ -56,8 +73,6 @@ export const charactersToRomanji = (characters: Character<KanaType>[]): string[]
 			romanji.push(yoonToRomanji(previousCharacter, char));
 			return;
 		}
-
-		// TODO handle others special characters
 
 		romanji.push(char.romanji);
 	});

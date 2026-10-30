@@ -50,7 +50,7 @@
 				{...characterFormGroupProps}
 				characters={[katakana.A, katakana.I, katakana.U, katakana.E, katakana.O]}
 			/>
-			<!-- <CharacterFormGroup
+			<CharacterFormGroup
 				{...characterFormGroupProps}
 				characters={[katakana.KA, katakana.KI, katakana.KU, katakana.KE, katakana.KO]}
 			/>
@@ -85,11 +85,11 @@
 			<CharacterFormGroup
 				{...characterFormGroupProps}
 				characters={[katakana.WA, null, katakana.WO, null, katakana.N]}
-			/> -->
+			/>
 
 			<span class="vr"></span>
 
-			<!-- <CharacterFormGroup
+			<CharacterFormGroup
 				{...characterFormGroupProps}
 				characters={[katakana.GA, katakana.GI, katakana.GU, katakana.GE, katakana.GO]}
 			/>
@@ -108,7 +108,7 @@
 			<CharacterFormGroup
 				{...characterFormGroupProps}
 				characters={[katakana.PA, katakana.PI, katakana.PU, katakana.PE, katakana.PO]}
-			/> -->
+			/>
 		</div>
 	</div>
 

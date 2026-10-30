@@ -1,0 +1,20 @@
+<script lang="ts">
+	let { id }: { id: string } = $props();
+</script>
+
+<path
+	mask={`url(#${id}-mask-1)`}
+	d="M328 313C205 323 343 371 408 360C579 329 638 335 731 323C746 320 775 293 692 271C654 260 653 284 328 313Z"
+/>
+<path
+	mask={`url(#${id}-mask-2)`}
+	d="M864 670C912 672 901 644 892 636C870 615 832 571 765 583C581 615 234 640 142 642C101 642 130 673 145 685C157 695 184 717 231 709C543 654 622 659 864 670Z"
+/>
+<defs>
+	<mask id={`${id}-mask-1`} style:--stroke-idx="0">
+		<path pathLength="2000" d="M 301,327 420,332 734,293" />
+	</mask>
+	<mask id={`${id}-mask-2`} style:--stroke-idx="1">
+		<path pathLength="2000" d="M 129,655 206,676 779,621 896,651" />
+	</mask>
+</defs>

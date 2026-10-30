@@ -263,9 +263,9 @@ export const hiragana = {
 		id: 'NO',
 		ascii: 'の',
 	},
+	/* NOTE: can also be pronounced "wa" when used as a topic marker */
 	HA: {
 		...formatCharacter(HA),
-		/* NOTE: can also be pronounced "wa" when used as a topic marker */
 		romanji: 'ha',
 		nbStrokes: 3,
 		id: 'HA',
@@ -420,17 +420,16 @@ export const hiragana = {
 		id: 'DA',
 		ascii: 'だ',
 	},
+	// "DI"
 	JI2: {
-		// "DI"
 		...formatCharacter(JI2),
 		romanji: 'ji',
 		nbStrokes: 4,
 		id: 'JI2',
 		ascii: 'ぢ',
 	},
-
+	// "DU"
 	ZU2: {
-		// "DU"
 		...formatCharacter(ZU2),
 		romanji: 'zu',
 		nbStrokes: 3,

@@ -17,7 +17,7 @@
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
 	import { jpltWordLevelStore } from '$lib/stores/jplt-word-level';
 	import { wordList } from '$lib/jplt/word-list';
-	import { isKatakanaKey, katakana } from '$lib/components/syllabaries/katakana';
+	import { isKatakanaKey, katakana, katakanaSpecials } from '$lib/components/syllabaries/katakana';
 
 	const charactersWhitelist = $derived.by(() => {
 		const hiraganaIds = $configStore.selectedHiragana.keys().toArray();
@@ -27,6 +27,8 @@
 			hiragana: new SvelteMap<Character<KanaType>['id'], Character<KanaType.HIRAGANA>>(),
 			katakana: new SvelteMap<Character<KanaType>['id'], Character<KanaType.KATAKANA>>(),
 		};
+
+		// * hiragana
 		for (const id of hiraganaIds) {
 			if (!isHiraganaKey(id, hiragana)) {
 				throw new Error(`Unknown character ID: ${id}`);
@@ -47,11 +49,25 @@
 			whitelist.hiragana.set(hiraganaSpecials.YOON_YO.id, hiraganaSpecials.YOON_YO);
 		}
 
+		// * katakana
 		for (const id of katakanaIds) {
 			if (!isKatakanaKey(id, katakana)) {
 				throw new Error(`Unknown katakana character ID: ${id}`);
 			}
 			whitelist.katakana.set(id, katakana[id]);
+		}
+
+		if (whitelist.katakana.has(katakana.TSU.id)) {
+			whitelist.katakana.set(katakanaSpecials.SOKUON.id, katakanaSpecials.SOKUON);
+		}
+		if (whitelist.katakana.has(katakana.YA.id)) {
+			whitelist.katakana.set(katakanaSpecials.YOON_YA.id, katakanaSpecials.YOON_YA);
+		}
+		if (whitelist.katakana.has(katakana.YU.id)) {
+			whitelist.katakana.set(katakanaSpecials.YOON_YU.id, katakanaSpecials.YOON_YU);
+		}
+		if (whitelist.katakana.has(katakana.YO.id)) {
+			whitelist.katakana.set(katakanaSpecials.YOON_YO.id, katakanaSpecials.YOON_YO);
 		}
 
 		return whitelist;
