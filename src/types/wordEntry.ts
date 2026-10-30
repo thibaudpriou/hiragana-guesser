@@ -1,7 +1,7 @@
-import type { Character } from './character';
+import type { CharacterIdObject } from './character';
 
 export type WordEntry = {
 	ascii: string[]; // array of ASCII Characters
-	characterIds: Character['id'][]; // array of ASCII Characters
+	characterIds: CharacterIdObject[];
 	meaning?: string;
 };

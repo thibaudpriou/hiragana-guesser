@@ -11,7 +11,7 @@
 	 */
 	const buildNextPageUrl = (selectionNextPage: SelectionNextPagesName) => {
 		const searchParams = new URLSearchParams({ goto: selectionNextPage });
-		return resolve(`/select-characters?${searchParams.toString()}`);
+		return resolve(`/select-characters-hiragana?${searchParams.toString()}`);
 	};
 </script>
 

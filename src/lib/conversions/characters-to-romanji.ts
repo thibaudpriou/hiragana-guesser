@@ -1,11 +1,11 @@
 import { hiragana } from '$lib/components/syllabaries/hiragana';
-import type { Character, RegularCharacter, SpecialCharacter } from '../../types';
+import type { Character, KanaType, RegularCharacter, SpecialCharacter } from '../../types';
 
 export const yoonToRomanji = (
-	previousCharacter: Character,
-	yoon: SpecialCharacter & { romanji: string }
+	previousCharacter: Character<KanaType>,
+	yoon: SpecialCharacter<KanaType> & { romanji: string }
 ): string => {
-	const getPrefix = (char: RegularCharacter) => char.romanji.slice(0, -1);
+	const getPrefix = (char: RegularCharacter<KanaType>) => char.romanji.slice(0, -1);
 	switch (previousCharacter.id) {
 		case hiragana.KI.id:
 		case hiragana.NI.id:
@@ -15,7 +15,7 @@ export const yoonToRomanji = (
 		case hiragana.GI.id:
 		case hiragana.BI.id:
 		case hiragana.PI.id: {
-			const prefix = getPrefix(previousCharacter as RegularCharacter);
+			const prefix = getPrefix(previousCharacter as RegularCharacter<KanaType>);
 			return `${prefix}${yoon.romanji}`;
 		}
 
@@ -23,7 +23,7 @@ export const yoonToRomanji = (
 		case hiragana.CHI.id:
 		case hiragana.JI.id:
 		case hiragana.JI2.id: {
-			const prefix = getPrefix(previousCharacter as RegularCharacter);
+			const prefix = getPrefix(previousCharacter as RegularCharacter<KanaType>);
 			const suffix = yoon.romanji.slice(1);
 			return `${prefix}${suffix}`;
 		}
@@ -33,7 +33,7 @@ export const yoonToRomanji = (
 	}
 };
 
-export const charactersToRomanji = (characters: Character[]): string[] => {
+export const charactersToRomanji = (characters: Character<KanaType>[]): string[] => {
 	const romanji: string[] = [];
 	characters.forEach((char, i, arr) => {
 		// * "changing sounds" characters

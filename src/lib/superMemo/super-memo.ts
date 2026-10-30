@@ -1,4 +1,4 @@
-import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
+import type { CharacterScoreDetails } from '../../types/character-score-details';
 
 // TODO @tpriou: remove mentions of SuperMemo algorithm as it's not actually implemented
 
@@ -18,7 +18,7 @@ const getStreakScore = (successStreak: number) => {
  *
  * This feature aims at finding the most forgetted character.
  */
-export const computeSuperMemoScore = (details?: HiraganaScoreDetails): number => {
+export const computeSuperMemoScore = (details?: CharacterScoreDetails): number => {
 	if (details === undefined || details.successStreak === 0) {
 		return 0;
 	}

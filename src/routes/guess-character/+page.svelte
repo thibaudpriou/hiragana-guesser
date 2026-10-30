@@ -5,15 +5,20 @@
 	import { charactersWhitelist } from '$lib/stores/characters-whistelist';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import { toaster } from '$lib/toaster/toaster';
-	import type { Character, CharacterWhitelist } from '../../types/character';
+	import {
+		KanaType,
+		type Character,
+		type CharacterIdObject,
+		type CharacterWhitelist,
+	} from '../../types/character';
 	import type { WordEntry } from '../../types/wordEntry';
 
 	const SUCCESS_STREAK_TOAST_THRESHOLD = 5;
 
 	const getRandomCharacter = (
 		whitelist: CharacterWhitelist,
-		excludeCharacterId?: Character['id']
-	): Character => {
+		excludeCharacterId?: CharacterIdObject
+	): Character<KanaType> => {
 		const character = superMemo.guess.getPseudoRandomCharacter(whitelist, excludeCharacterId);
 		if (!character) {
 			throw new Error('getPseudoRandomCharacter did not return any character');
@@ -21,11 +26,13 @@
 		return { ...character }; // clone for reactivity
 	};
 
-	const characterToWordEntry = (character: Character): WordEntry => {
+	const characterToWordEntry = (character: Character<KanaType>): WordEntry => {
 		// single-letter word
 		return {
 			ascii: [character.ascii],
-			characterIds: [character.id],
+			characterIds: [{ id: character.id, kanaType: character.kanaType }] satisfies [
+				CharacterIdObject,
+			],
 		};
 	};
 
@@ -34,7 +41,7 @@
 
 	// reactivity on: characterToGuess
 	const onGuessSucess = $derived.by(() => {
-		const prev = characterToGuess.id;
+		const prev = { id: characterToGuess.id, kanaType: characterToGuess.kanaType };
 
 		return (word: WordEntry) => {
 			superMemo.guess.success(word.characterIds);
@@ -52,7 +59,7 @@
 	});
 
 	const onGuessError = $derived.by(() => {
-		const prev = characterToGuess.id;
+		const prev = { id: characterToGuess.id, kanaType: characterToGuess.kanaType };
 
 		return (word: WordEntry) => {
 			superMemo.guess.error(word.characterIds);

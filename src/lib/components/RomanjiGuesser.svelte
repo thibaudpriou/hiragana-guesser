@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { shuffleArray } from '$lib/helpers/shuffleArray';
-	import type { Character } from '../../types';
+	import type { Character, CharacterIdObject, KanaType } from '../../types/character';
 	import CharacterContainer from './CharacterContainer.svelte';
 
 	type Props = {
-		guessOptions: { character: Character; otherChoices: Character[] };
-		onGuessSucess: (guessId: Character['id']) => void;
-		onGuessError: (guessId: Character['id'], guessErrorId: Character['id']) => void;
+		guessOptions: { character: Character<KanaType>; otherChoices: Character<KanaType>[] };
+		onGuessSucess: (guessId: CharacterIdObject) => void;
+		onGuessError: (guessId: CharacterIdObject, guessErrorId: CharacterIdObject) => void;
 	};
 
 	let { guessOptions, onGuessSucess, onGuessError }: Props = $props();
@@ -16,7 +16,7 @@
 
 	type DisplayMode = 'GUESS' | 'SOLUTION';
 	let displayMode = $state<DisplayMode>('GUESS');
-	let guessErrorId = $state<Character['id'] | null>(null);
+	let guessErrorId = $state<CharacterIdObject | null>(null);
 	const resetDisplayMode = () => {
 		displayMode = 'GUESS';
 	};
@@ -28,9 +28,9 @@
 		}
 
 		if (guessErrorId) {
-			onGuessError(guessOptions.character.id, guessErrorId);
+			onGuessError(guessOptions.character, guessErrorId);
 		} else {
-			onGuessSucess(guessOptions.character.id);
+			onGuessSucess(guessOptions.character);
 		}
 		resetDisplayMode();
 	};
@@ -39,35 +39,38 @@
 		return shuffleArray([guessOptions.character, ...guessOptions.otherChoices]);
 	});
 
-	const onChoiceClick = (id: Character['id']) => {
+	const onChoiceClick = (id: Character<KanaType>['id'], kanaType: KanaType) => {
 		displayMode = 'SOLUTION';
-		if (guessOptions.character.id === id) {
+		if (guessOptions.character.id === id && guessOptions.character.kanaType === kanaType) {
 			guessErrorId = null;
 		} else {
-			guessErrorId = id;
+			guessErrorId = { id, kanaType };
 		}
 	};
 
-	const isItemViewDefault = (id: Character['id']) => {
+	const isItemViewDefault = (id: Character<KanaType>['id'], kanaType: KanaType) => {
 		if (displayMode === 'GUESS') {
 			return true;
 		}
 
-		return id !== guessOptions.character.id && id !== guessErrorId;
+		return (
+			(id !== guessOptions.character.id || kanaType !== guessOptions.character.kanaType) &&
+			(id !== guessErrorId?.id || kanaType !== guessErrorId?.kanaType)
+		);
 	};
-	const isItemViewError = (id: Character['id']) => {
+	const isItemViewError = (id: Character<KanaType>['id'], kanaType: KanaType) => {
 		if (displayMode === 'GUESS') {
 			return false;
 		}
 
-		return id === guessErrorId;
+		return id === guessErrorId?.id && kanaType === guessErrorId?.kanaType;
 	};
-	const isItemViewSuccess = (id: Character['id']) => {
+	const isItemViewSuccess = (id: Character<KanaType>['id'], kanaType: KanaType) => {
 		if (displayMode === 'GUESS') {
 			return false;
 		}
 
-		return id === guessOptions.character.id;
+		return id === guessOptions.character.id && kanaType === guessOptions.character.kanaType;
 	};
 
 	let clientWidth = $state(0);
@@ -98,18 +101,19 @@
 			</div>
 
 			<div class="container-choices">
-				{#each choices as character, i (character.id + i)}
+				{#each choices as character, i (character.kanaType + character.id + i)}
 					{@const id = character.id}
+					{@const kanaType = character.kanaType}
 					<div
 						class="character-item"
-						class:preset-filled-surface-300-700={isItemViewDefault(id)}
-						class:fill-surface-950-50={isItemViewDefault(id)}
-						class:preset-filled-error-300-700={isItemViewError(id)}
-						class:fill-error-950-50={isItemViewError(id)}
-						class:preset-filled-success-300-700={isItemViewSuccess(id)}
-						class:fill-success-950-50={isItemViewSuccess(id)}
-						onclick={() => onChoiceClick(id)}
-						onkeydown={() => onChoiceClick(id)}
+						class:preset-filled-surface-300-700={isItemViewDefault(id, kanaType)}
+						class:fill-surface-950-50={isItemViewDefault(id, kanaType)}
+						class:preset-filled-error-300-700={isItemViewError(id, kanaType)}
+						class:fill-error-950-50={isItemViewError(id, kanaType)}
+						class:preset-filled-success-300-700={isItemViewSuccess(id, kanaType)}
+						class:fill-success-950-50={isItemViewSuccess(id, kanaType)}
+						onclick={() => onChoiceClick(id, kanaType)}
+						onkeydown={() => onChoiceClick(id, kanaType)}
 						tabindex="0"
 						role="button"
 					>

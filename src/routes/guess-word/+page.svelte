@@ -12,34 +12,46 @@
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { WordEntry } from '../../types/wordEntry';
-	import type { Character } from '../../types/character';
+	import type { Character, CharacterWhitelist, KanaType } from '../../types/character';
 	import { getCaligraphyAnimationConfig } from '$lib/caligraphy/caligraphy-animation-config';
 	import { animationSpeedStore } from '$lib/stores/animation-speed';
 	import { jpltWordLevelStore } from '$lib/stores/jplt-word-level';
 	import { wordList } from '$lib/jplt/word-list';
+	import { isKatakanaKey, katakana } from '$lib/components/syllabaries/katakana';
 
 	const charactersWhitelist = $derived.by(() => {
-		const charactersIds = $configStore.selectedHiragana.keys().toArray();
+		const hiraganaIds = $configStore.selectedHiragana.keys().toArray();
+		const katakanaIds = $configStore.selectedKatakana.keys().toArray();
 
-		const whitelist = new SvelteMap<Character['id'], Character>();
-		for (const id of charactersIds) {
+		const whitelist: CharacterWhitelist = {
+			hiragana: new SvelteMap<Character<KanaType>['id'], Character<KanaType.HIRAGANA>>(),
+			katakana: new SvelteMap<Character<KanaType>['id'], Character<KanaType.KATAKANA>>(),
+		};
+		for (const id of hiraganaIds) {
 			if (!isHiraganaKey(id, hiragana)) {
 				throw new Error(`Unknown character ID: ${id}`);
 			}
-			whitelist.set(id, hiragana[id]);
+			whitelist.hiragana.set(id, hiragana[id]);
 		}
 
-		if (whitelist.has(hiragana.TSU.id)) {
-			whitelist.set(hiraganaSpecials.SOKUON.id, hiraganaSpecials.SOKUON);
+		if (whitelist.hiragana.has(hiragana.TSU.id)) {
+			whitelist.hiragana.set(hiraganaSpecials.SOKUON.id, hiraganaSpecials.SOKUON);
 		}
-		if (whitelist.has(hiragana.YA.id)) {
-			whitelist.set(hiraganaSpecials.YOON_YA.id, hiraganaSpecials.YOON_YA);
+		if (whitelist.hiragana.has(hiragana.YA.id)) {
+			whitelist.hiragana.set(hiraganaSpecials.YOON_YA.id, hiraganaSpecials.YOON_YA);
 		}
-		if (whitelist.has(hiragana.YU.id)) {
-			whitelist.set(hiraganaSpecials.YOON_YU.id, hiraganaSpecials.YOON_YU);
+		if (whitelist.hiragana.has(hiragana.YU.id)) {
+			whitelist.hiragana.set(hiraganaSpecials.YOON_YU.id, hiraganaSpecials.YOON_YU);
 		}
-		if (whitelist.has(hiragana.YO.id)) {
-			whitelist.set(hiraganaSpecials.YOON_YO.id, hiraganaSpecials.YOON_YO);
+		if (whitelist.hiragana.has(hiragana.YO.id)) {
+			whitelist.hiragana.set(hiraganaSpecials.YOON_YO.id, hiraganaSpecials.YOON_YO);
+		}
+
+		for (const id of katakanaIds) {
+			if (!isKatakanaKey(id, katakana)) {
+				throw new Error(`Unknown katakana character ID: ${id}`);
+			}
+			whitelist.katakana.set(id, katakana[id]);
 		}
 
 		return whitelist;

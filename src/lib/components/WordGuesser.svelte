@@ -30,7 +30,10 @@
 	);
 
 	const asciiToCharacter = $derived.by(() => {
-		const characterMap = charactersToAsciiMap(characters);
+		const characterMap = charactersToAsciiMap([
+			...characters.hiragana.values(),
+			...characters.katakana.values(),
+		]);
 		return (k: string) => characterMap.get(k);
 	});
 	let chars = $derived(convertAsciiToCharacters(asciiToCharacter, wordToGuess.ascii));
@@ -146,10 +149,10 @@
 			>
 				<div>
 					{#key caligraphyRedrawKey}
-						{#each delayedChars as character, i (character.id + i)}
+						{#each delayedChars as character, i (character.kanaType + character.id + i)}
 							<span class="character-item">
 								<CharacterContainer
-									id={`${character.id}-${i}`}
+									id={`${character.kanaType}-${character.id}-${i}`}
 									delay={character.delay}
 									{...caligraphyAnimationConfig}
 									extraDelay={caligraphyForceRedrawKey ? 0 : outDuration + inDuration}

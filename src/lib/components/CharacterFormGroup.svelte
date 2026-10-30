@@ -1,22 +1,22 @@
 <script lang="ts">
 	import { ListPlus, ListX } from '@lucide/svelte';
-	import type { Character } from '../../types/character';
+	import type { Character, KanaType } from '../../types/character';
 	import CharacterContainerWithRomanji from './CharacterContainerWithRomanji.svelte';
 
 	type Props = {
-		characters: Array<null | Character>;
-		isActive: (id: Character) => boolean;
-		selectCharacters: (ids: Character[]) => void;
-		deselectCharacters: (ids: Character[]) => void;
+		characters: Array<null | Character<KanaType>>;
+		isActive: (character: Character<KanaType>) => boolean;
+		selectCharacters: (ids: Character<KanaType>[]) => void;
+		deselectCharacters: (ids: Character<KanaType>[]) => void;
 		reset: (shouldSelectAll: boolean) => void;
 	};
 
 	const { characters, isActive, selectCharacters, deselectCharacters, reset }: Props = $props();
 
-	const definedCharacters = $derived(characters.filter(Boolean) as Character[]);
+	const definedCharacters = $derived(characters.filter(Boolean) as Character<KanaType>[]);
 	const isGroupActive = $derived(definedCharacters.every(isActive));
 
-	const handleCharacterClick = (character: Character) => {
+	const handleCharacterClick = (character: Character<KanaType>) => {
 		if (isActive(character)) {
 			deselectCharacters([character]);
 			return;

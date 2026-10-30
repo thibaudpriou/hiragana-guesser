@@ -3,7 +3,12 @@
 	import { charactersWhitelist } from '$lib/stores/characters-whistelist';
 	import { superMemo } from '$lib/stores/super-memo.svelte';
 	import { toaster } from '$lib/toaster/toaster';
-	import type { Character, CharacterWhitelist } from '../../types/character';
+	import type {
+		Character,
+		CharacterIdObject,
+		CharacterWhitelist,
+		KanaType,
+	} from '../../types/character';
 
 	const SUCCESS_STREAK_TOAST_THRESHOLD = 5;
 
@@ -12,8 +17,8 @@
 
 	const getRandomGuessOptions = (
 		whitelist: CharacterWhitelist,
-		excludeCharacterId?: Character['id']
-	): { character: Character; otherChoices: Character[] } => {
+		excludeCharacterId?: CharacterIdObject
+	): { character: Character<KanaType>; otherChoices: Character<KanaType>[] } => {
 		const character = superMemo.guess.getPseudoRandomCharacter(whitelist, excludeCharacterId);
 		if (!character) {
 			throw new Error('getPseudoRandomCharacter did not return any character');
@@ -22,7 +27,7 @@
 		const otherChoiceCharacters = superMemo.guess.getRandomCharacters(
 			whitelist,
 			NB_OPTIONS - 1,
-			character.id
+			character
 		);
 
 		return {
@@ -34,7 +39,7 @@
 	let guessOptions = $state(getRandomGuessOptions($charactersWhitelist));
 	let toasterAlreadyShown = $state(false);
 
-	const onGuessSucess = (guessId: Character['id']) => {
+	const onGuessSucess = (guessId: CharacterIdObject) => {
 		superMemo.guess.success([guessId]);
 		const minimumSuccessStreak = superMemo.guess.getMinimumSuccessStreak($charactersWhitelist);
 
@@ -47,7 +52,7 @@
 		guessOptions = getRandomGuessOptions($charactersWhitelist, guessId);
 	};
 
-	const onGuessError = (guessId: Character['id'], guessErrorId: Character['id']) => {
+	const onGuessError = (guessId: CharacterIdObject, guessErrorId: CharacterIdObject) => {
 		superMemo.guess.error([guessId, guessErrorId]);
 		toasterAlreadyShown = false;
 		guessOptions = getRandomGuessOptions($charactersWhitelist, guessId);

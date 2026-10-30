@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { hiragana } from '$lib/components/syllabaries/hiragana';
+	import { katakana } from '$lib/components/syllabaries/katakana';
 	import { configStore } from '$lib/stores/config.svelte';
-	import type { Character } from '../../types';
+	import type { Character, KanaType } from '../../types/character';
 	import { MoveRight } from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { GOTO_SEARCH_PARAM_NAME } from '../../constants';
@@ -10,12 +10,13 @@
 	import { onMount } from 'svelte';
 	import CharacterFormGroup from '$lib/components/CharacterFormGroup.svelte';
 
-	const isActive = (character: Character) => $configStore.selectedHiragana.has(character.id);
-	const selectCharacters = (characters: Character[]) => {
-		characters.forEach((item) => configStore.selectedHiragana.add(item.id));
+	const isActive = (character: Character<KanaType>) =>
+		$configStore.selectedKatakana.has(character.id);
+	const selectCharacters = (characters: Character<KanaType>[]) => {
+		characters.forEach((item) => configStore.selectedKatakana.add(item.id));
 	};
-	const deselectCharacters = (characters: Character[]) => {
-		characters.forEach((item) => configStore.selectedHiragana.delete(item.id));
+	const deselectCharacters = (characters: Character<KanaType>[]) => {
+		characters.forEach((item) => configStore.selectedKatakana.delete(item.id));
 	};
 
 	const getNextPageUrl = (searchParams: URLSearchParams) => {
@@ -37,77 +38,77 @@
 		deselectCharacters,
 		isActive,
 		reset: (shouldSelectAll?: boolean) => {
-			configStore.selectedHiragana.reset(shouldSelectAll);
+			configStore.selectedKatakana.reset(shouldSelectAll);
 		},
 	};
 </script>
 
-<div class="select-characters">
+<div class="select-characters-katakana">
 	<div class="form-container">
 		<div class="form">
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.A, hiragana.I, hiragana.U, hiragana.E, hiragana.O]}
+				characters={[katakana.A, katakana.I, katakana.U, katakana.E, katakana.O]}
+			/>
+			<!-- <CharacterFormGroup
+				{...characterFormGroupProps}
+				characters={[katakana.KA, katakana.KI, katakana.KU, katakana.KE, katakana.KO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.KA, hiragana.KI, hiragana.KU, hiragana.KE, hiragana.KO]}
+				characters={[katakana.SA, katakana.SHI, katakana.SU, katakana.SE, katakana.SO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.SA, hiragana.SHI, hiragana.SU, hiragana.SE, hiragana.SO]}
+				characters={[katakana.TA, katakana.CHI, katakana.TSU, katakana.TE, katakana.TO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.TA, hiragana.CHI, hiragana.TSU, hiragana.TE, hiragana.TO]}
+				characters={[katakana.NA, katakana.NI, katakana.NU, katakana.NE, katakana.NO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.NA, hiragana.NI, hiragana.NU, hiragana.NE, hiragana.NO]}
+				characters={[katakana.HA, katakana.HI, katakana.FU, katakana.HE, katakana.HO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.HA, hiragana.HI, hiragana.FU, hiragana.HE, hiragana.HO]}
+				characters={[katakana.MA, katakana.MI, katakana.MU, katakana.ME, katakana.MO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.MA, hiragana.MI, hiragana.MU, hiragana.ME, hiragana.MO]}
+				characters={[katakana.YA, null, katakana.YU, null, katakana.YO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.YA, null, hiragana.YU, null, hiragana.YO]}
+				characters={[katakana.RA, katakana.RI, katakana.RU, katakana.RE, katakana.RO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.RA, hiragana.RI, hiragana.RU, hiragana.RE, hiragana.RO]}
-			/>
-			<CharacterFormGroup
-				{...characterFormGroupProps}
-				characters={[hiragana.WA, null, hiragana.WO, null, hiragana.N]}
-			/>
+				characters={[katakana.WA, null, katakana.WO, null, katakana.N]}
+			/> -->
 
 			<span class="vr"></span>
 
-			<CharacterFormGroup
+			<!-- <CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.GA, hiragana.GI, hiragana.GU, hiragana.GE, hiragana.GO]}
+				characters={[katakana.GA, katakana.GI, katakana.GU, katakana.GE, katakana.GO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.ZA, hiragana.JI, hiragana.ZU, hiragana.ZE, hiragana.ZO]}
+				characters={[katakana.ZA, katakana.JI, katakana.ZU, katakana.ZE, katakana.ZO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.DA, hiragana.JI2, hiragana.ZU2, hiragana.DE, hiragana.DO]}
+				characters={[katakana.DA, katakana.JI2, katakana.ZU2, katakana.DE, katakana.DO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.BA, hiragana.BI, hiragana.BU, hiragana.BE, hiragana.BO]}
+				characters={[katakana.BA, katakana.BI, katakana.BU, katakana.BE, katakana.BO]}
 			/>
 			<CharacterFormGroup
 				{...characterFormGroupProps}
-				characters={[hiragana.PA, hiragana.PI, hiragana.PU, hiragana.PE, hiragana.PO]}
-			/>
+				characters={[katakana.PA, katakana.PI, katakana.PU, katakana.PE, katakana.PO]}
+			/> -->
 		</div>
 	</div>
 
@@ -123,7 +124,7 @@
 </div>
 
 <style>
-	.select-characters {
+	.select-characters-katakana {
 		display: flex;
 		flex-direction: column;
 		height: 100%;

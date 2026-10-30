@@ -1,4 +1,4 @@
-import type { Character } from '../../../../types';
+import { KanaType, type Character } from '../../../../types';
 import * as A from './seion/a.svelte';
 import * as CHI from './seion/chi.svelte';
 import * as DA from './dakuon/da.svelte';
@@ -75,14 +75,14 @@ import * as YOON_YA from './yoon/yoon-ya.svelte';
 import * as YOON_YU from './yoon/yoon-yu.svelte';
 import * as YOON_YO from './yoon/yoon-yo.svelte';
 import { charactersToAsciiMap } from '$lib/conversions/characters-to-ascii-map';
-import { SvelteMap } from 'svelte/reactivity';
 import type { RegularCharacter, SpecialCharacter } from '../../../../types/character';
 
 const formatCharacter = (raw: {
 	default: unknown;
-}): Pick<RegularCharacter, 'component' | 'type'> => {
+}): Pick<RegularCharacter<KanaType.HIRAGANA>, 'component' | 'type' | 'kanaType'> => {
 	return {
-		component: raw.default as Character['component'],
+		component: raw.default as Character<KanaType>['component'],
+		kanaType: KanaType.HIRAGANA,
 		type: 'regular',
 	};
 };
@@ -591,7 +591,7 @@ export const hiragana = {
 		id: 'PO',
 		ascii: 'ぽ',
 	},
-} satisfies Record<RegularCharacter['id'], RegularCharacter>;
+} satisfies Record<RegularCharacter<KanaType.HIRAGANA>['id'], RegularCharacter<KanaType.HIRAGANA>>;
 
 export const hiraganaSpecials = {
 	SOKUON: {
@@ -626,14 +626,12 @@ export const hiraganaSpecials = {
 		ascii: 'ょ',
 		type: 'yoon',
 	},
-} satisfies Record<SpecialCharacter['id'], SpecialCharacter>;
+} satisfies Record<SpecialCharacter<KanaType.HIRAGANA>['id'], SpecialCharacter<KanaType.HIRAGANA>>;
 
-const hiraganaById = new SvelteMap([
-	...Object.entries(hiragana as Record<Character['id'], Character>),
-	...Object.entries(hiraganaSpecials as Record<Character['id'], Character>),
+export const hiraganaByAscii = charactersToAsciiMap([
+	...Object.values(hiragana),
+	...Object.values(hiraganaSpecials),
 ]);
-
-export const hiraganaByAscii = charactersToAsciiMap(hiraganaById);
 
 export const isHiraganaKey = (key: string, obj: typeof hiragana): key is keyof typeof hiragana => {
 	return key in obj;

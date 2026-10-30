@@ -1,10 +1,17 @@
 import { get, writable, type Updater } from 'svelte/store';
-import type { Character, CharacterWhitelist } from '../../types/character';
+import {
+	KanaType,
+	type Character,
+	type CharacterIdObject,
+	type CharacterMapById,
+	type CharacterWhitelist,
+} from '../../types/character';
 import { SvelteDate, SvelteMap } from 'svelte/reactivity';
 import { hiragana } from '$lib/components/syllabaries/hiragana';
-import type { HiraganaScoreDetails } from '../../types/hiraganaScoreDetails';
+import type { CharacterScoreDetails } from '../../types/character-score-details';
 import { computeSuperMemoScore, computeWeightFromSuperMemoScore } from '$lib/superMemo/super-memo';
 import { shuffleArray } from '$lib/helpers/shuffleArray';
+import { katakana } from '$lib/components/syllabaries/katakana';
 
 /**
  * This file contains a simplified custom version of SuperMemo to track
@@ -14,13 +21,15 @@ import { shuffleArray } from '$lib/helpers/shuffleArray';
  */
 
 type SuperMemoStore = {
-	hiragana: SvelteMap<Character['id'], HiraganaScoreDetails>;
+	hiragana: SvelteMap<Character<KanaType.HIRAGANA>['id'], CharacterScoreDetails>;
+	katakana: SvelteMap<Character<KanaType.KATAKANA>['id'], CharacterScoreDetails>;
 };
 
-type SuperMemoTuple = [Character['id'], HiraganaScoreDetails];
+type SuperMemoTuple = [Character<KanaType>['id'], CharacterScoreDetails];
 
 type LocalStorageSuperMemo = {
 	hiraganaByScore: Array<SuperMemoTuple>;
+	katakanaByScore: Array<SuperMemoTuple>;
 };
 
 const LOCAL_STORAGE_KEY = 'superMemo';
@@ -28,17 +37,26 @@ const LOCAL_STORAGE_KEY = 'superMemo';
 const persistStoreValue = (value: SuperMemoStore) => {
 	const localValue: LocalStorageSuperMemo = {
 		hiraganaByScore: value.hiragana.entries().toArray(),
+		katakanaByScore: value.katakana.entries().toArray(),
 	};
 	localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localValue));
 };
 
-const reset = (): SuperMemoStore => {
-	const everyHiraganaIds: SuperMemoTuple[] = Object.values(hiragana).map((character) => [
+const getEveryHiraganaIds = (): SuperMemoTuple[] =>
+	Object.values(hiragana).map((character) => [
 		character.id,
 		{ lastSeenAt: undefined, successStreak: 0 },
 	]);
+const getEveryKatakanaIds = (): SuperMemoTuple[] =>
+	Object.values(katakana).map((character) => [
+		character.id,
+		{ lastSeenAt: undefined, successStreak: 0 },
+	]);
+
+const reset = (): SuperMemoStore => {
 	const value = {
-		hiragana: new SvelteMap(everyHiraganaIds),
+		hiragana: new SvelteMap(getEveryHiraganaIds()),
+		katakana: new SvelteMap(getEveryKatakanaIds()),
 	};
 	persistStoreValue(value);
 	return value;
@@ -51,19 +69,45 @@ const loadInitial = (): SuperMemoStore => {
 		localValue = JSON.parse(localValueStringify) as LocalStorageSuperMemo;
 		return {
 			hiragana: new SvelteMap(localValue.hiraganaByScore),
+			katakana: new SvelteMap(localValue.katakanaByScore),
 		};
 	}
 
 	// default value
-	const everyHiraganaIds: SuperMemoTuple[] = Object.values(hiragana).map((character) => [
-		character.id,
-		{ lastSeenAt: undefined, successStreak: 0 },
-	]);
 	const value = {
-		hiragana: new SvelteMap(localValue?.hiraganaByScore ?? everyHiraganaIds),
+		hiragana: new SvelteMap(localValue?.hiraganaByScore ?? getEveryHiraganaIds()),
+		katakana: new SvelteMap(localValue?.katakanaByScore ?? getEveryKatakanaIds()),
 	};
 	persistStoreValue(value);
 	return value;
+};
+
+const getCharacterFromWhitelist = (whitelist: CharacterWhitelist, item: CharacterIdObject) => {
+	switch (item.kanaType) {
+		case KanaType.HIRAGANA: {
+			return whitelist.hiragana.get(item.id) ?? null;
+		}
+		case KanaType.KATAKANA: {
+			return whitelist.katakana.get(item.id) ?? null;
+		}
+		default: {
+			throw new Error(`Unknown kana type: ${item.kanaType}`);
+		}
+	}
+};
+
+const getKanaStore = (store: SuperMemoStore, kanaType: KanaType) => {
+	switch (kanaType) {
+		case KanaType.HIRAGANA: {
+			return store.hiragana;
+		}
+		case KanaType.KATAKANA: {
+			return store.katakana;
+		}
+		default: {
+			throw new Error(`Unknown kana type: ${kanaType}`);
+		}
+	}
 };
 
 const initial = loadInitial();
@@ -74,6 +118,7 @@ const update = (callback: Updater<SuperMemoStore>) => {
 		const value = callback(last);
 		const localValue: LocalStorageSuperMemo = {
 			hiraganaByScore: value.hiragana.entries().toArray(),
+			katakanaByScore: value.katakana.entries().toArray(),
 		};
 		localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localValue));
 
@@ -92,32 +137,44 @@ export const superMemo = {
 		 */
 		getPseudoRandomCharacter: (
 			whitelist: CharacterWhitelist,
-			excludeCharacterId?: Character['id']
-		): Character | null => {
-			const characterByScore = get(store).hiragana;
+			excludeCharacterId?: CharacterIdObject
+		): Character<KanaType> | null => {
 			const selectionItems: Array<{
-				id: Character['id'];
+				id: Character<KanaType>['id'];
 				score: number;
 				accumulatedWeight: number;
+				kanaType: KanaType;
 			}> = [];
 
-			const whitelistedCharacters = whitelist
-				.entries()
-				.toArray()
-				.map(([id]) => {
-					return {
-						id,
-						scoreDetails: characterByScore.get(id),
-					};
-				});
+			const formatWhitelist = (
+				whitelistCharactersById: Map<string, Character<KanaType>>,
+				scoreMap: SvelteMap<string, CharacterScoreDetails>,
+				kanaType: KanaType
+			) =>
+				whitelistCharactersById
+					.entries()
+					.toArray()
+					.map(([id]) => {
+						return {
+							id,
+							kanaType,
+							scoreDetails: scoreMap.get(id),
+						};
+					});
 
+			const hiraganaByScore = get(store).hiragana;
+			const katakanaByScore = get(store).katakana;
+			const whitelistedCharacters = [
+				...formatWhitelist(whitelist.hiragana, hiraganaByScore, KanaType.HIRAGANA),
+				...formatWhitelist(whitelist.katakana, katakanaByScore, KanaType.KATAKANA),
+			];
 			if (whitelistedCharacters.length == 0) {
 				return null;
 			}
 
 			let totalWeight = 0;
-			for (const { id, scoreDetails } of whitelistedCharacters) {
-				if (id === excludeCharacterId) {
+			for (const { id, kanaType, scoreDetails } of whitelistedCharacters) {
+				if (id === excludeCharacterId?.id && kanaType === excludeCharacterId.kanaType) {
 					continue;
 				}
 				const score = computeSuperMemoScore(scoreDetails);
@@ -125,6 +182,7 @@ export const superMemo = {
 				selectionItems.push({
 					id,
 					score,
+					kanaType,
 					accumulatedWeight: totalWeight + weight,
 				});
 				totalWeight += weight;
@@ -135,7 +193,8 @@ export const superMemo = {
 				if (selectionItem.accumulatedWeight < rand) {
 					continue;
 				}
-				return whitelist.get(selectionItem.id) ?? null;
+
+				return getCharacterFromWhitelist(whitelist, selectionItem);
 			}
 
 			return null;
@@ -147,29 +206,49 @@ export const superMemo = {
 		getRandomCharacters: (
 			whitelist: CharacterWhitelist,
 			nbElements: number,
-			excludeCharacterId?: Character['id']
-		): Character[] => {
-			const whitelistedCharactersId = whitelist
-				.keys()
-				.toArray()
-				.filter((id) => id !== excludeCharacterId);
+			excludeCharacterId?: CharacterIdObject
+		): Character<KanaType>[] => {
+			const formatWhitelist = <T extends KanaType>(kanaType: T, byId: CharacterMapById<T>) =>
+				byId
+					.keys()
+					.toArray()
+					.map((id) => ({ id, kanaType }));
+			const whitelistedCharactersId = [
+				...formatWhitelist(KanaType.HIRAGANA, whitelist.hiragana),
+				...formatWhitelist(KanaType.KATAKANA, whitelist.katakana),
+			].filter(
+				({ id, kanaType }) =>
+					id !== excludeCharacterId?.id || kanaType !== excludeCharacterId?.kanaType
+			);
 
 			const shuffled = shuffleArray(whitelistedCharactersId);
 
-			return shuffled.slice(0, nbElements).map((id) => {
-				const element = whitelist.get(id);
+			return shuffled.slice(0, nbElements).map((item) => {
+				const element = getCharacterFromWhitelist(whitelist, item);
 
 				if (!element) {
-					throw new Error(`Character id not in whitelist: ${id}`);
+					throw new Error(`Character id not in whitelist: ${item.id} (${item.kanaType})`);
 				}
 				return element;
 			});
 		},
 		getMinimumSuccessStreak: (whitelist: CharacterWhitelist): number => {
 			let minSuccessStreak = Number.MAX_SAFE_INTEGER;
-			const characterByScore = get(store).hiragana;
-			for (const characterId of whitelist.keys()) {
-				const scoreDetails = characterByScore.get(characterId);
+			const hiraganaByScore = get(store).hiragana;
+			for (const hiraganaId of whitelist.hiragana.keys()) {
+				const scoreDetails = hiraganaByScore.get(hiraganaId);
+
+				if (scoreDetails?.successStreak === undefined) {
+					return 0;
+				}
+
+				if (scoreDetails.successStreak < minSuccessStreak) {
+					minSuccessStreak = scoreDetails.successStreak;
+				}
+			}
+			const katakanaByScore = get(store).katakana;
+			for (const katakanaId of whitelist.katakana.keys()) {
+				const scoreDetails = katakanaByScore.get(katakanaId);
 
 				if (scoreDetails?.successStreak === undefined) {
 					return 0;
@@ -185,12 +264,14 @@ export const superMemo = {
 		/**
 		 * Update score details of every character after a successful guess
 		 */
-		success: (characterIds: Character['id'][]) => {
+		success: (characterIds: CharacterIdObject[]) => {
 			return update((storeValue) => {
 				for (const characterId of characterIds) {
-					const previous = storeValue.hiragana.get(characterId);
+					const kanaStore = getKanaStore(storeValue, characterId.kanaType);
+					const previous = kanaStore.get(characterId.id);
 					const previousSuccessStreak = previous?.successStreak ?? 0;
-					storeValue.hiragana.set(characterId, {
+
+					kanaStore.set(characterId.id, {
 						lastSeenAt: new SvelteDate().toISOString(),
 						successStreak: previousSuccessStreak + 1,
 					});
@@ -202,10 +283,11 @@ export const superMemo = {
 		/**
 		 * Update score details of every character after a wrong guess
 		 */
-		error: (characterIds: Character['id'][]) => {
+		error: (characterIds: CharacterIdObject[]) => {
 			return update((storeValue) => {
 				for (const characterId of characterIds) {
-					storeValue.hiragana.set(characterId, {
+					const kanaStore = getKanaStore(storeValue, characterId.kanaType);
+					kanaStore.set(characterId.id, {
 						lastSeenAt: new SvelteDate().toISOString(),
 						successStreak: 0,
 					});
