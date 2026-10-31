@@ -162,7 +162,7 @@ export const katakana = {
 	ZO: formatCharacter(ZO, 'ZO', 'zo', 0, 'ゾ'),
 	DA: formatCharacter(DA, 'DA', 'da', 5, 'ダ'),
 	JI2: formatCharacter(JI2, 'JI2', 'ji', 5, 'ヂ'),
-	ZU2: formatCharacter(ZU2, 'ZU', 'zu', 5, 'ヅ'),
+	ZU2: formatCharacter(ZU2, 'ZU2', 'zu', 5, 'ヅ'),
 	DE: formatCharacter(DE, 'DE', 'de', 5, 'デ'),
 	DO: formatCharacter(DO, 'DO', 'do', 4, 'ド'),
 	BA: formatCharacter(BA, 'BA', 'ba', 4, 'バ'),
