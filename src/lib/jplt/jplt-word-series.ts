@@ -14,7 +14,7 @@ const wordListToSet = (
 	asciiToCharacter: (ascii: string) => Character<KanaType> | undefined
 ): WordEntry[] => {
 	return list.map((row) => {
-		const readings = row.reading.split('; ');
+		const readings = row.reading?.length ? row.reading.split('; ') : row.expression.split(';');
 		const ascii = readings[0].split('');
 
 		return {
