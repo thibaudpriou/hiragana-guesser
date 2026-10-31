@@ -1,1 +1,1 @@
-export const GOTO_SEARCH_PARAM_NAME = 'goto';
+export const GUESS_MODE_URL_SEARCH_PARAM_NAME = 'guessModeUrl';

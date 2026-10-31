@@ -2,15 +2,18 @@
 	import { resolve } from '$app/paths';
 	import CharacterContainer from '$lib/components/CharacterContainer.svelte';
 	import { hiragana } from '$lib/components/syllabaries/hiragana';
-	import type { SelectionNextPagesName } from '$lib/navigation/selection-next-page';
+	import type { GuessModeUrl } from '$lib/navigation/validate-guess-mode-url';
 	import { ArrowRight } from '@lucide/svelte';
+	import { GUESS_MODE_URL_SEARCH_PARAM_NAME } from '../../constants';
 
 	/**
 	 * Build next page url
 	 * Users are required to select characters before landing in the correct page
 	 */
-	const buildNextPageUrl = (selectionNextPage: SelectionNextPagesName) => {
-		const searchParams = new URLSearchParams({ goto: selectionNextPage });
+	const buildNextPageUrl = (selectionNextPage: GuessModeUrl) => {
+		const searchParams = new URLSearchParams({
+			[GUESS_MODE_URL_SEARCH_PARAM_NAME]: selectionNextPage,
+		});
 		return resolve(`/select-characters-hiragana?${searchParams.toString()}`);
 	};
 </script>

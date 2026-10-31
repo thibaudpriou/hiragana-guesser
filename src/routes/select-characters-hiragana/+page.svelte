@@ -4,11 +4,12 @@
 	import type { Character, KanaType } from '../../types';
 	import { MoveRight } from '@lucide/svelte';
 	import { page } from '$app/state';
-	import { GOTO_SEARCH_PARAM_NAME } from '../../constants';
+
 	import { resolve } from '$app/paths';
-	import { validateSelectionNextPage } from '$lib/navigation/selection-next-page';
+	import { validateGuessModeUrl } from '$lib/navigation/validate-guess-mode-url';
 	import { onMount } from 'svelte';
 	import CharacterFormGroup from '$lib/components/CharacterFormGroup.svelte';
+	import { GUESS_MODE_URL_SEARCH_PARAM_NAME } from '../../constants';
 
 	const isActive = (character: Character<KanaType>) =>
 		$configStore.selectedHiragana.has(character.id);
@@ -19,18 +20,20 @@
 		characters.forEach((item) => configStore.selectedHiragana.delete(item.id));
 	};
 
-	const getNextPageUrl = (searchParams: URLSearchParams) => {
-		const goto = searchParams.get(GOTO_SEARCH_PARAM_NAME);
-		if (!goto || !validateSelectionNextPage(goto)) {
+	const getGuessModeUrl = (searchParams: URLSearchParams) => {
+		const guessNodeUrl = searchParams.get(GUESS_MODE_URL_SEARCH_PARAM_NAME);
+		if (!guessNodeUrl || !validateGuessModeUrl(guessNodeUrl)) {
 			return null;
 		}
 
-		return goto;
+		return guessNodeUrl;
 	};
 
-	let nextPageUrl = $state<null | `/select-characters-katakana?goto=${string}`>(null);
+	let guessModeUrl = $state<
+		null | `/select-characters-katakana?${typeof GUESS_MODE_URL_SEARCH_PARAM_NAME}=${string}`
+	>(null);
 	onMount(() => {
-		nextPageUrl = `/select-characters-katakana?goto=${getNextPageUrl(page.url.searchParams)}`;
+		guessModeUrl = `/select-characters-katakana?${GUESS_MODE_URL_SEARCH_PARAM_NAME}=${getGuessModeUrl(page.url.searchParams)}`;
 	});
 
 	const characterFormGroupProps = {
@@ -44,6 +47,7 @@
 </script>
 
 <div class="select-characters-hiragana">
+	<h2 class="h2">Hiragana ~ ひらがな</h2>
 	<div class="form-container">
 		<div class="form">
 			<CharacterFormGroup
@@ -112,9 +116,9 @@
 		</div>
 	</div>
 
-	{#if nextPageUrl !== null}
+	{#if guessModeUrl !== null}
 		<div class="container-actions">
-			<a href={resolve(nextPageUrl)} class="action-link">
+			<a href={resolve(guessModeUrl)} class="action-link">
 				<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 					Next <MoveRight />
 				</button>

@@ -2,11 +2,11 @@
 	import { katakana } from '$lib/components/syllabaries/katakana';
 	import { configStore } from '$lib/stores/config.svelte';
 	import type { Character, KanaType } from '../../types/character';
-	import { MoveRight } from '@lucide/svelte';
+	import { MoveLeft, MoveRight } from '@lucide/svelte';
 	import { page } from '$app/state';
-	import { GOTO_SEARCH_PARAM_NAME } from '../../constants';
+	import { GUESS_MODE_URL_SEARCH_PARAM_NAME } from '../../constants';
 	import { resolve } from '$app/paths';
-	import { validateSelectionNextPage } from '$lib/navigation/selection-next-page';
+	import { validateGuessModeUrl } from '$lib/navigation/validate-guess-mode-url';
 	import { onMount } from 'svelte';
 	import CharacterFormGroup from '$lib/components/CharacterFormGroup.svelte';
 
@@ -19,18 +19,18 @@
 		characters.forEach((item) => configStore.selectedKatakana.delete(item.id));
 	};
 
-	const getNextPageUrl = (searchParams: URLSearchParams) => {
-		const goto = searchParams.get(GOTO_SEARCH_PARAM_NAME);
-		if (!goto || !validateSelectionNextPage(goto)) {
+	const getGuessModeUrl = (searchParams: URLSearchParams) => {
+		const guessNodeUrl = searchParams.get(GUESS_MODE_URL_SEARCH_PARAM_NAME);
+		if (!guessNodeUrl || !validateGuessModeUrl(guessNodeUrl)) {
 			return null;
 		}
 
-		return goto;
+		return guessNodeUrl;
 	};
 
-	let nextPageUrl = $state<ReturnType<typeof getNextPageUrl>>(null);
+	let guessModeUrl = $state<ReturnType<typeof getGuessModeUrl>>(null);
 	onMount(() => {
-		nextPageUrl = getNextPageUrl(page.url.searchParams);
+		guessModeUrl = getGuessModeUrl(page.url.searchParams);
 	});
 
 	const characterFormGroupProps = {
@@ -44,6 +44,7 @@
 </script>
 
 <div class="select-characters-katakana">
+	<h2 class="h2">Katakana ~ カタカナ</h2>
 	<div class="form-container">
 		<div class="form">
 			<CharacterFormGroup
@@ -112,9 +113,19 @@
 		</div>
 	</div>
 
-	{#if nextPageUrl !== null}
+	{#if guessModeUrl !== null}
 		<div class="container-actions">
-			<a href={resolve(nextPageUrl)} class="action-link">
+			<a
+				href={resolve(
+					`/select-characters-hiragana?${GUESS_MODE_URL_SEARCH_PARAM_NAME}=${getGuessModeUrl(page.url.searchParams)}`
+				)}
+				class="action-link"
+			>
+				<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
+					<MoveLeft /> Prev
+				</button>
+			</a>
+			<a href={resolve(guessModeUrl)} class="action-link">
 				<button class="btn preset-filled-surface-300-700 fill-surface-950-50 button-link">
 					Play <MoveRight />
 				</button>
@@ -155,7 +166,7 @@
 
 	.container-actions {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 	}
 
 	.action-link {
